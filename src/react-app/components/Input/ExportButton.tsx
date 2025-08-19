@@ -48,7 +48,6 @@ export function ExportButton() {
 
         for (let i = 0; i < rows.length; i++) {
             const row = rows[i]
-            console.log('row', row)
             
             const fileIds = row.fileIds
             const maradFileIds = row.maradFileIds
@@ -59,7 +58,7 @@ export function ExportButton() {
                 allFileIds.map(async (file, subIndex) => {
                     return processFile(
                         file.id,
-                        i,
+                        i + 1,
                         subIndex,
                         row.docType.slug,
                         clientFullName,
@@ -74,7 +73,6 @@ export function ExportButton() {
         const zip = new JSZip()
 
         for (const file of files) {
-            console.log('file', file)
             zip.file(file.name, file.file)
         }
 
