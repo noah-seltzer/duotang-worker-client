@@ -1,7 +1,14 @@
-import { defineConfig } from "vite";
-import react from "@vitejs/plugin-react";
-import { cloudflare } from "@cloudflare/vite-plugin";
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react-swc'
+import { cloudflare } from '@cloudflare/vite-plugin'
+import tailwindcss from '@tailwindcss/vite'
+import { tanstackRouter } from '@tanstack/router-plugin/vite'
 
 export default defineConfig({
-  plugins: [react(), cloudflare()],
-});
+    plugins: [
+        react(),
+        tailwindcss(),
+        tanstackRouter({ target: 'react', autoCodeSplitting: true }),
+        cloudflare()
+    ]
+})
