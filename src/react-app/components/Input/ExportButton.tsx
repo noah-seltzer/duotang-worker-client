@@ -45,17 +45,14 @@ export function ExportButton() {
 
     const handleZipAndDownload = async () => {
         const files: ExportFileData[] = []
-        const rowsWithFiles = rows.filter(row => row.fileIds.length > 0 || row.maradFileIds.length > 0)
+        const rowsWithFiles = rows.filter(row => row.fileIds.length > 0)
         for (let i = 0; i < rowsWithFiles.length; i++) {
             const row = rows[i]
-            
-            const fileIds = row.fileIds
-            const maradFileIds = row.maradFileIds
-            const allFileIds = [...fileIds, ...maradFileIds]
-            const hasMultipleFiles = allFileIds.length > 1
+            const { fileIds } = row
+            const hasMultipleFiles = fileIds.length > 1
             
             const newFiles = await Promise.all(
-                allFileIds.map(async (file, subIndex) => {
+                fileIds.map(async (file, subIndex) => {
                     return processFile(
                         file.id,
                         i + 1,

@@ -11,6 +11,7 @@ import { FileTypeSelector } from './FileTypeSelector'
 import { getDocumentRowType } from '../../lib/files'
 import { FileUploadInput } from '../Input/FileUploadInput'
 import { StatusBar } from './StatusBar'
+import { FileCacheData } from '../../types/FileCacheData'
 
 export interface FileRowProps {
     row: FileInfo
@@ -21,8 +22,9 @@ export function FileRow({ row, index }: FileRowProps) {
     const dispatch = useAppDispatch()
     const clientInfo = useAppSelector(selectClientInfo)
 
-    const { fileIds, docType, maradFileIds } = row
+    const { fileIds, docType } = row
     const { slug, label } = docType
+    const maradFileIds = row.fileIds.filter((f) => f.isMarad)
 
     const isComplete =
         fileIds?.length > 0 && (docType.marad ? maradFileIds?.length > 0 : true)
@@ -33,7 +35,13 @@ export function FileRow({ row, index }: FileRowProps) {
     }))
 
     const currentOption = { value: slug, label: label }
-    const hasMaradFiles = !!maradFileIds && maradFileIds.length > 0
+    const hasMaradFiles = maradFileIds.length > 0
+
+    const addFiles = (files: FileCacheData[]) => {
+        const newFiles = [...row.fileIds, ...files]
+        dispatch(updateFileRow({ ...row, fileIds: newFiles }))
+    }
+
     return (
         <TableRow>
             {/* Status */}
@@ -62,9 +70,10 @@ export function FileRow({ row, index }: FileRowProps) {
                     <div className='flex flex-col gap-2'>
                         <FileUploadInput
                             onSaved={(files) =>
-                                dispatch(
-                                    updateFileRow({ ...row, fileIds: files })
-                                )
+                                // dispatch(
+                                //     updateFileRow({ ...row, fileIds: files })
+                                // )
+                                addFiles(files)
                             }
                         />
                         <StatusBar
@@ -78,12 +87,23 @@ export function FileRow({ row, index }: FileRowProps) {
                     <div className='flex flex-col items-center gap-2'>
                         <FileUploadInput
                             title='Add Marad File'
+                            // onSaved={(files) =>
+                            //     // dispatch(
+                            //     //     updateFileRow({
+                            //     //         ...row,
+                            //     //         fileIds: files.map((f) => ({
+                            //     //             ...f,
+                            //     //             isMarad: true
+                            //     //         }))
+                            //     //     })
+                            //     // )
+                            // }
                             onSaved={(files) =>
-                                dispatch(
-                                    updateFileRow({
-                                        ...row,
-                                        maradFileIds: files
-                                    })
+                                addFiles(
+                                    files.map((f) => ({
+                                        ...f,
+                                        isMarad: true
+                                    }))
                                 )
                             }
                         />

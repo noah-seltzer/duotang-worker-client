@@ -8,7 +8,7 @@ interface ButtonProps {
 }
 
 export function Button({children, onClick = () => {}, className}: ButtonProps) {
-    return <button className={classNames(className, "bg-gray-300 hover:bg-gray-400 text-gray-400 font-bold px-4 rounded-l")} onClick={onClick}>
+    return <button className={classNames("bg-gray-300 hover:bg-gray-400 text-gray-400 font-bold px-4 rounded-l", className)} onClick={onClick}>
         {children}
     </button>
 }
