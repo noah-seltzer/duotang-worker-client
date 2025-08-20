@@ -57,21 +57,6 @@ export const createFileNamePreviews = (
         )
     )
 
-    // if (fileInfo.docType.marad && maradFileIds.length > 0) {
-    //     const maradFiles = maradFileIds.map((file, i) =>
-    //         createFileName(
-    //             file.name,
-    //             slug,
-    //             index,
-    //             i,
-    //             clientFullName,
-    //             hasMultipleFiles,
-    //             MARAD_STRING
-    //         )
-    //     )
-    //     fileNames.push(...maradFiles)
-    // }
-
     return fileNames
 }
 

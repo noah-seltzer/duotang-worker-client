@@ -69,12 +69,7 @@ export function FileRow({ row, index }: FileRowProps) {
                 <div className='flex flex-row items-center gap-2'>
                     <div className='flex flex-col gap-2'>
                         <FileUploadInput
-                            onSaved={(files) =>
-                                // dispatch(
-                                //     updateFileRow({ ...row, fileIds: files })
-                                // )
-                                addFiles(files)
-                            }
+                            onSaved={addFiles}
                         />
                         <StatusBar
                             status={fileIds.length > 0 ? 'success' : 'error'}
@@ -87,17 +82,6 @@ export function FileRow({ row, index }: FileRowProps) {
                     <div className='flex flex-col items-center gap-2'>
                         <FileUploadInput
                             title='Add Marad File'
-                            // onSaved={(files) =>
-                            //     // dispatch(
-                            //     //     updateFileRow({
-                            //     //         ...row,
-                            //     //         fileIds: files.map((f) => ({
-                            //     //             ...f,
-                            //     //             isMarad: true
-                            //     //         }))
-                            //     //     })
-                            //     // )
-                            // }
                             onSaved={(files) =>
                                 addFiles(
                                     files.map((f) => ({
