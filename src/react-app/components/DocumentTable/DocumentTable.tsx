@@ -43,23 +43,16 @@ export function DocumentTable(): React.JSX.Element {
 
     return (
         <div>
-            <div className='flex justify-left'>
+            <div className='flex justify-left gap-2 mb-2'>
                 <LoginOutButtons />
+                <ClientInput />
             </div>
-            <ClientInput />
             <div className='relative'>
                 <Table rowNames={rowNames} rows={rowElements} />
             </div>
             <div className='flex justify-between mt-2 w-full'>
                 <Button onClick={addRow}>Add Row</Button>
                 <ExportButton />
-                <button
-                    onClick={() => {
-                        throw new Error('This is your first error!' + Math.random())
-                    }}
-                >
-                    Break the world
-                </button>
             </div>
         </div>
     )
