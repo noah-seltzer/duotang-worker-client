@@ -2,6 +2,7 @@ import * as Sentry from "@sentry/react";
 
 Sentry.init({
   debug: true,
+  enabled: true,
   integrations: [
     Sentry.browserTracingIntegration(),
     Sentry.browserProfilingIntegration(),

@@ -17,7 +17,6 @@ export const createBlankRow = (index: number = 0) => {
     }
 }
 
-
 const rowNames = [
     'Status',
     'Document',
@@ -52,11 +51,15 @@ export function DocumentTable(): React.JSX.Element {
                 <Table rowNames={rowNames} rows={rowElements} />
             </div>
             <div className='flex justify-between mt-2 w-full'>
-                <Button onClick={addRow}>
-                    Add Row
-                </Button>
+                <Button onClick={addRow}>Add Row</Button>
                 <ExportButton />
-                {/* <FileInput folder onChange={save} title='Export' /> */}
+                <button
+                    onClick={() => {
+                        throw new Error('This is your first error!' + Math.random())
+                    }}
+                >
+                    Break the world
+                </button>
             </div>
         </div>
     )
