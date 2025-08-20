@@ -1,14 +1,20 @@
 import { createFileNamePreviews } from '../../lib/files'
 import type { ClientInfo } from '../../types/ClientInfo'
 import type { FileInfo } from '../../types/FileInfo'
+import { HoverCard } from '../Skeleton/HoverCard'
 
 export function DisplayName({ name }: { name: string }) {
     const isOverflow = name.length > 20
     const displayName = isOverflow ? `${name.slice(0, 20)}...` : name
+
+    const trigger = (
+        <span className={isOverflow ? 'overflow' : ''}>{displayName}</span>
+    )
+
     return (
-        <span title={name} className={isOverflow ? 'overflow' : ''}>
-            {displayName}
-        </span>
+        <HoverCard closeOnHover={true} trigger={trigger}>
+            <div className='bg-black rounded-md py-2 px-4'>{name}</div>
+        </HoverCard>
     )
 }
 

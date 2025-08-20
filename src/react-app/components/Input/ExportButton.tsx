@@ -45,8 +45,8 @@ export function ExportButton() {
 
     const handleZipAndDownload = async () => {
         const files: ExportFileData[] = []
-
-        for (let i = 0; i < rows.length; i++) {
+        const rowsWithFiles = rows.filter(row => row.fileIds.length > 0 || row.maradFileIds.length > 0)
+        for (let i = 0; i < rowsWithFiles.length; i++) {
             const row = rows[i]
             
             const fileIds = row.fileIds
