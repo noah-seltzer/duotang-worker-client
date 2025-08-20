@@ -37,13 +37,13 @@ export const createFileNamePreviews = (
     clientInfo: ClientInfo,
     index: number
 ): string[] => {
-    const { fileIds = [], maradFileIds = [], docType } = fileInfo
+    const { fileIds = [], docType } = fileInfo
     const { slug } = docType
     if (fileIds.length === 0) return ['None']
 
     const clientFullName = createClientNameString(clientInfo)
 
-    const hasMultipleFiles = fileIds.length > 1 || maradFileIds.length > 1
+    const hasMultipleFiles = fileIds.length > 1
 
     const fileNames = fileIds.map((file, i) =>
         createFileName(
@@ -52,24 +52,10 @@ export const createFileNamePreviews = (
             index,
             i,
             clientFullName,
-            hasMultipleFiles
+            hasMultipleFiles,
+            file.isMarad ? MARAD_STRING : undefined
         )
     )
-
-    if (fileInfo.docType.marad && maradFileIds.length > 0) {
-        const maradFiles = maradFileIds.map((file, i) =>
-            createFileName(
-                file.name,
-                slug,
-                index,
-                i,
-                clientFullName,
-                hasMultipleFiles,
-                MARAD_STRING
-            )
-        )
-        fileNames.push(...maradFiles)
-    }
 
     return fileNames
 }

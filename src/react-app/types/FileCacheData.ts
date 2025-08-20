@@ -4,4 +4,5 @@
 export interface FileCacheData {
     name: string
     id: string
+    isMarad?: boolean
 }
