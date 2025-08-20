@@ -8,7 +8,7 @@ export default defineConfig({
     plugins: [
         react(),
         tailwindcss(),
-        tanstackRouter({ target: 'react', autoCodeSplitting: true }),
+        tanstackRouter({ target: 'react', autoCodeSplitting: true, routesDirectory: './src/react-app/routes' }),
         cloudflare()
     ]
 })
