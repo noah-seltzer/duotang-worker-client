@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom/client'
 import { RouterProvider, createRouter } from '@tanstack/react-router'
 
 // Import the generated route tree
-import { routeTree } from './routeTree.gen'
+import { routeTree } from '../routeTree.gen'
 import { PublicClientApplication } from '@azure/msal-browser'
 import { MsalProvider } from '@azure/msal-react'
 import { msalConfig } from './data/auth-config'
