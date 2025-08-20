@@ -5,7 +5,7 @@ import { FilePreviews } from './FilePreview'
 import type { FileInfo } from '../../types/FileInfo'
 import { classNames } from '../../lib/tw'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { selectfileList, updateFileRow } from '../../store/fileListSlice'
+import { updateFileRow } from '../../store/fileListSlice'
 import { selectClientInfo } from '../../store/clientInfoSlice'
 import { FileTypeSelector } from './FileTypeSelector'
 import { getDocumentRowType } from '../../lib/files'
@@ -20,7 +20,6 @@ export interface FileRowProps {
 export function FileRow({ row, index }: FileRowProps) {
     const dispatch = useAppDispatch()
     const clientInfo = useAppSelector(selectClientInfo)
-    const rows = useAppSelector(selectfileList)
 
     const { fileIds, docType, maradFileIds } = row
     const { slug, label } = docType
@@ -28,12 +27,7 @@ export function FileRow({ row, index }: FileRowProps) {
     const isComplete =
         fileIds?.length > 0 && (docType.marad ? maradFileIds?.length > 0 : true)
 
-    const usedSlugs = rows.map((row) => row.docType.slug)
-    const unusedFileTypes = DOCUMENT_TYPES.filter(
-        (type) => !usedSlugs.includes(type.slug)
-    )
-
-    const options = unusedFileTypes.map((docType) => ({
+    const options = DOCUMENT_TYPES.map((docType) => ({
         value: docType.slug,
         label: docType.label
     }))
