@@ -23,20 +23,23 @@ export function DeleteButton({ onClick }: DeleteButtonProps) {
                 </IconButton>
             )}
             {buttonState === TOCONFIRM && (
-                <>
-                    <IconButton onClick={() => setButtonState(UNCLICKED)}>
-                        <Cross1Icon />
-                    </IconButton>
-                    <IconButton
-                        className='hover:bg-green-500'
-                        onClick={(e) => {
-                            setButtonState(LOADING)
-                            onClick(e)
-                        }}
-                    >
-                        <CheckIcon />
-                    </IconButton>
-                </>
+                <div className='flex flex-col gap-1 items-center justify-center'>
+                    <div>Delete File?</div>
+                    <div className='flex flex-row gap-1'>
+                        <IconButton onClick={() => setButtonState(UNCLICKED)}>
+                            <Cross1Icon />
+                        </IconButton>
+                        <IconButton
+                            className='hover:bg-green-500'
+                            onClick={(e) => {
+                                setButtonState(LOADING)
+                                onClick(e)
+                            }}
+                        >
+                            <CheckIcon />
+                        </IconButton>
+                    </div>
+                </div>
             )}
             {buttonState === LOADING && <>Loading...</>}
         </>
