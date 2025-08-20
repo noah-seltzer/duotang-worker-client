@@ -11,6 +11,8 @@ import { msalConfig } from './data/auth-config'
 import { persistor, store } from './store'
 import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
+import './lib/sentry'
+
 
 // Create a new router instance
 const router = createRouter({ routeTree })
