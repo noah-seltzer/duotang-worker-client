@@ -1,5 +1,5 @@
-import { MouseEventHandler } from "react"
-import { classNames } from "../../lib/tw"
+import { MouseEventHandler } from 'react'
+import { classNames } from '../../lib/tw'
 
 interface IconButtonProps {
     children: React.ReactNode

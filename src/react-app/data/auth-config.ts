@@ -63,9 +63,15 @@ export const loginRequest = {
     scopes: ['User.Read']
 }
 
-
 export const fileDownloadRequest = {
- scopes: ['Files.Read', 'Files.ReadWrite', 'Files.Read.All', 'Files.ReadWrite.All', 'Sites.Read.All', 'Sites.ReadWrite.All']
+    scopes: [
+        'Files.Read',
+        'Files.ReadWrite',
+        'Files.Read.All',
+        'Files.ReadWrite.All',
+        'Sites.Read.All',
+        'Sites.ReadWrite.All'
+    ]
 }
 
 /**

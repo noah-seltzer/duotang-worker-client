@@ -5,7 +5,11 @@ import { selectfileList } from '../../store/fileListSlice'
 import { useAppSelector } from '../../store'
 import { selectClientInfo } from '../../store/clientInfoSlice'
 import localforage from 'localforage'
-import { createClientNameString, createFileName, MARAD_STRING } from '../../lib/files'
+import {
+    createClientNameString,
+    createFileName,
+    MARAD_STRING
+} from '../../lib/files'
 import { Button } from '../Skeleton/Button'
 
 interface ExportFileData {
@@ -45,12 +49,12 @@ export function ExportButton() {
 
     const handleZipAndDownload = async () => {
         const files: ExportFileData[] = []
-        const rowsWithFiles = rows.filter(row => row.fileIds.length > 0)
+        const rowsWithFiles = rows.filter((row) => row.fileIds.length > 0)
         for (let i = 0; i < rowsWithFiles.length; i++) {
             const row = rows[i]
             const { fileIds } = row
             const hasMultipleFiles = fileIds.length > 1
-            
+
             const newFiles = await Promise.all(
                 fileIds.map(async (file, subIndex) => {
                     return processFile(

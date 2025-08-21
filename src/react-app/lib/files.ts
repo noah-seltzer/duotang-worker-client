@@ -3,7 +3,18 @@ import type { ClientInfo } from '../types/ClientInfo'
 import type { DocumentRowType } from '../types/DocumentRowType'
 import type { FileInfo } from '../types/FileInfo'
 
-export const ALPHABETICAL_INDEXES = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
+export const ALPHABETICAL_INDEXES = [
+    'a',
+    'b',
+    'c',
+    'd',
+    'e',
+    'f',
+    'g',
+    'h',
+    'i',
+    'j'
+]
 export const DEFAULT_LASTNAME = 'LastName'
 export const DEFAULT_FIRSTNAME = 'FirstName'
 export const MARAD_STRING = '_Marad_Confirmation_'

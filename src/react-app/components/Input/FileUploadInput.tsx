@@ -82,9 +82,7 @@ export function FileUploadInput({
 
     return (
         <div className='flex flex-row items-center gap-1'>
-            <FileInput
-                onChange={(e) => processFileSelected(e.target.files)}
-            />
+            <FileInput onChange={(e) => processFileSelected(e.target.files)} />
             {isLoggedIn ? (
                 <>
                     <DialogRoot>

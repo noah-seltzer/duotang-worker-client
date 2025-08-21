@@ -38,7 +38,7 @@ export function FileTypeSelector({
                     control: (base) => ({
                         ...base,
                         background: '#1a1a1a',
-                        color: '#99a1af',
+                        color: '#99a1af'
                     })
                 }}
                 theme={(theme) => ({

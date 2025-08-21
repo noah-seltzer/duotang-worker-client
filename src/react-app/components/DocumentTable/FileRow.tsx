@@ -68,9 +68,7 @@ export function FileRow({ row, index }: FileRowProps) {
             <TableCell>
                 <div className='flex flex-row items-center gap-2'>
                     <div className='flex flex-col gap-2'>
-                        <FileUploadInput
-                            onSaved={addFiles}
-                        />
+                        <FileUploadInput onSaved={addFiles} />
                         <StatusBar
                             status={fileIds.length > 0 ? 'success' : 'error'}
                         />

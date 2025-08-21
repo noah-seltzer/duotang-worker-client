@@ -13,7 +13,11 @@ interface HoverCardProps {
     closeOnHover?: boolean
 }
 
-export function HoverCard({ children, trigger, closeOnHover = false }: HoverCardProps) {
+export function HoverCard({
+    children,
+    trigger,
+    closeOnHover = false
+}: HoverCardProps) {
     const [isOpen, setIsOpen] = useState<boolean>(false)
     const onMouseOver = closeOnHover ? () => setIsOpen(false) : () => {}
     return (

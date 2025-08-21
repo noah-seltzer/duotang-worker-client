@@ -1,14 +1,13 @@
 'use client'
-import { memo, Suspense, use } from 'react'
-import localforage from 'localforage'
+import { Suspense, use } from 'react'
 import type { FileInfo } from '../../types/FileInfo'
 import { getFileExtensionFromName } from '../../lib/files'
 import { HoverCard } from '../Skeleton/HoverCard'
 import { FileFrame } from './FileFrame'
-import { Cross1Icon } from '@radix-ui/react-icons'
 import { DeleteButton } from '../Input/DeleteButton'
 import { useAppDispatch } from '../../store'
-import { updateFileRow } from '../../store/fileListSlice'
+import { loadFromLocalCache } from '../../lib/cache'
+import { deleteFileFromCache } from '../../store/fileListThunks'
 
 interface FilePreviewsProps {
     row: FileInfo
@@ -21,19 +20,28 @@ export function FilePreviews({ row }: FilePreviewsProps): React.JSX.Element {
     if (fileIds.length === 0) return <>None</>
 
     function deleteFile(fileId: string) {
-        localforage.removeItem(fileId)
-        const newFileIds = row.fileIds.filter((file) => file.id !== fileId)
-        dispatch(updateFileRow({ ...row, fileIds: newFileIds }))
+        dispatch(deleteFileFromCache({ fileId: fileId, row }))
     }
     return (
         <div className='flex flex-row gap-2'>
-            <MemoPreview files={fileIds} onClick={deleteFile} />
+            <div className='flex flex-col gap-2'>
+                {fileIds.map((file) => (
+                    <div
+                        key={file}
+                        className='flex flex-row items-center gap-2'
+                    >
+                        <Suspense fallback={<div>Loading...</div>}>
+                            <FilePreview
+                                filePromise={loadFromLocalCache(file)}
+                                key={file}
+                            />
+                            <DeleteButton onClick={() => deleteFile(file)} />
+                        </Suspense>
+                    </div>
+                ))}
+            </div>
         </div>
     )
-}
-
-async function loadFile(fileId: string): Promise<File | null> {
-    return localforage.getItem(fileId)
 }
 
 interface FilePreviewProps {
@@ -59,31 +67,11 @@ function FilePreview({ filePromise }: FilePreviewProps) {
     return (
         <div className='flex flex-row items-center gap-2'>
             <HoverCard trigger={trigger}>
-                <FileFrame url={url} width={200} height={200} />
+                <div className='bg-black p-2 flex flex-col items-center gap-2 rounded-md'>
+                    <FileFrame url={url} width={200} height={200} />
+                    {file.name}
+                </div>
             </HoverCard>
         </div>
     )
 }
-
-interface MemoPreviewProps {
-    files: string[]
-    onClick: (file: string) => void
-}
-
-const MemoPreview = memo(function SuspendedPreview({
-    files,
-    onClick
-}: MemoPreviewProps) {
-    return (
-        <div className='flex flex-col gap-2'>
-            {files.map((file) => (
-                <div key={file} className='flex flex-row items-center gap-2'>
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <FilePreview filePromise={loadFile(file)} key={file} />
-                        <DeleteButton onClick={() => onClick(file)} />
-                    </Suspense>
-                </div>
-            ))}
-        </div>
-    )
-})
