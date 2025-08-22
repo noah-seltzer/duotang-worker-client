@@ -1,27 +1,45 @@
 import { IDLE, LOADING_STATE } from './../constants/state'
-import { createSlice } from '@reduxjs/toolkit'
+import {
+    createEntityAdapter,
+    createSlice,
+    EntityState,
+    PayloadAction
+} from '@reduxjs/toolkit'
 import type { FileInfo } from '../types/FileInfo'
 import { DOCUMENT_TYPES } from '../data/document-list'
 import type { RootState } from '.'
 import { FileCacheData } from '../types/FileCacheData'
 import { addFileToCache, deleteFileFromCache } from './fileListThunks'
+import { DocumentRowType } from '../types/DocumentRowType'
 
 export interface FileListState {
     fileList: FileInfo[]
     loadingState: LOADING_STATE
+    ids: string[]
+    entities: EntityState<FileInfo, string>
 }
 
-export const createBlankRow = (index: number = 0): FileInfo => {
+const fileEntity = createEntityAdapter<FileInfo>()
+
+export const createBlankRow = (
+    index: number = 0,
+    typeSlug?: string
+): FileInfo => {
+    const docType = !!typeSlug
+        ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentRowType)
+        : DOCUMENT_TYPES[0]
     return {
-        id: index + 1,
-        docType: DOCUMENT_TYPES[0],
+        id: String(index + 1),
+        docType,
         fileIds: []
     }
 }
 
 const initialState: FileListState = {
     fileList: [createBlankRow(0)],
-    loadingState: IDLE
+    entities: fileEntity.getInitialState(),
+    loadingState: IDLE,
+    ids: []
 }
 
 function updateFileListItem(state: FileListState, newRow: FileInfo) {
@@ -41,18 +59,15 @@ export const fileListSlice = createSlice({
     name: 'fileRow',
     initialState,
     reducers: {
-        addFileRow: (state) => {
+        addFileRow: (state, action: PayloadAction<string | undefined>) => {
             state.fileList = [
                 ...state.fileList,
-                createBlankRow(state.fileList.length + 1)
+                createBlankRow(state.fileList.length + 1, action.payload)
             ]
         },
         updateFileRow: (state, action) => {
             const updatedRow = action.payload
             updateFileListItem(state, updatedRow)
-        },
-        resetFileList: (state) => {
-            state = initialState
         },
         deleteRow: (state, action) => {
             state.fileList = state.fileList.filter(

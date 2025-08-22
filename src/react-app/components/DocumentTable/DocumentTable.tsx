@@ -40,7 +40,19 @@ export function DocumentTable(): React.JSX.Element {
     const rowElements = rows.map((r, i) => (
         <FileRow index={i + 1} key={r.id} row={r} />
     ))
+    // const options = DOCUMENT_TYPES.map((docType) => ({
+    //     value: docType.slug,
+    //     label: docType.label
+    // }))
+    // const usedSlugs = rows.map((r) => r.docType.slug)
 
+    // const unusedOptions = options.filter(
+    //     (option) => !usedSlugs.includes(option.value)
+    // )
+
+    // const PopoverTrigger = (
+    //     <Button onClick={() => setIsOpen(true)}>Add Row</Button>
+    // )
     return (
         <div>
             <div className='flex justify-left gap-2 mb-2'>
@@ -50,9 +62,24 @@ export function DocumentTable(): React.JSX.Element {
             <div className='relative'>
                 <Table rowNames={rowNames} rows={rowElements} />
             </div>
+            <div className='w-full flex justify-left mt-2'>
+                {/* <Popover
+                    trigger={PopoverTrigger}
+                    side='right'
+                    onOpenChange={setIsOpen}
+                >
+                    <div className='pt-2'>
+                        <FileTypeSelector
+                            currentOption={unusedOptions[0]}
+                            options={unusedOptions}
+                            onChange={(value) => addRow(value.value)}
+                        />
+                    </div>
+                </Popover> */}
+            </div>
             <div className='flex justify-between mt-2 w-full'>
-                <Button onClick={addRow}>Add Row</Button>
                 <ExportButton />
+                <Button onClick={() => addRow()}>Add Row</Button>
             </div>
         </div>
     )

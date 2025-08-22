@@ -28,28 +28,24 @@ export function FileTypeSelector({
                     if (!value) return
                     onChange(value)
                 }}
-                styles={{
-                    singleValue: (base) => ({ ...base, color: 'white' }),
-                    valueContainer: (base) => ({
-                        ...base,
-                        color: 'hotpink',
-                        width: '100%'
-                    }),
-                    control: (base) => ({
-                        ...base,
-                        background: '#1a1a1a',
-                        color: '#99a1af'
-                    })
-                }}
                 theme={(theme) => ({
                     ...theme,
-                    neutral30: 'white', //control/borderColor(focused)
-                    neutral80: 'white', //input color
-                    primary25: '#ccc', //option bg color focued
-                    primary: 'black', //option bg color selected
-                    primary50: 'white', // option bg color active(enavled or available)
-                    neutral90: 'hotpink'
+                    borderRadius: 0,
+                    colors: {
+                        ...theme.colors,
+                        primary25: 'hotpink',
+                        primary: 'black'
+                    }
                 })}
+                styles={{
+                    option: (base, props) => {
+                        const color = props.isSelected ? 'white' : 'black'
+                        return {
+                            ...base,
+                            color
+                        }
+                    }
+                }}
             />
         </div>
     )
