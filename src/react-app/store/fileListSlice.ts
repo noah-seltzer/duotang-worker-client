@@ -1,45 +1,42 @@
+import { file } from 'jszip'
 import { IDLE, LOADING_STATE } from './../constants/state'
 import {
     createEntityAdapter,
     createSlice,
     EntityState,
+    nanoid,
     PayloadAction
 } from '@reduxjs/toolkit'
 import type { FileInfo } from '../types/FileInfo'
 import { DOCUMENT_TYPES } from '../data/document-list'
-import type { RootState } from '.'
 import { FileCacheData } from '../types/FileCacheData'
 import { addFileToCache, deleteFileFromCache } from './fileListThunks'
 import { DocumentRowType } from '../types/DocumentRowType'
+import { RootState } from '.'
 
 export interface FileListState {
     fileList: FileInfo[]
     loadingState: LOADING_STATE
-    ids: string[]
     entities: EntityState<FileInfo, string>
 }
 
 const fileEntity = createEntityAdapter<FileInfo>()
 
-export const createBlankRow = (
-    index: number = 0,
-    typeSlug?: string
-): FileInfo => {
+export const createBlankRow = (typeSlug?: string): FileInfo => {
     const docType = !!typeSlug
         ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentRowType)
         : DOCUMENT_TYPES[0]
     return {
-        id: String(index + 1),
+        id: nanoid(),
         docType,
         fileIds: []
     }
 }
 
 const initialState: FileListState = {
-    fileList: [createBlankRow(0)],
+    fileList: [createBlankRow()],
     entities: fileEntity.getInitialState(),
-    loadingState: IDLE,
-    ids: []
+    loadingState: IDLE
 }
 
 function updateFileListItem(state: FileListState, newRow: FileInfo) {
@@ -60,19 +57,17 @@ export const fileListSlice = createSlice({
     initialState,
     reducers: {
         addFileRow: (state, action: PayloadAction<string | undefined>) => {
-            state.fileList = [
-                ...state.fileList,
-                createBlankRow(state.fileList.length + 1, action.payload)
-            ]
+            fileEntity.addOne(state.entities, createBlankRow(action.payload))
         },
-        updateFileRow: (state, action) => {
+        updateFileRow: (state, action: PayloadAction<FileInfo>) => {
             const updatedRow = action.payload
-            updateFileListItem(state, updatedRow)
+            fileEntity.updateOne(state.entities, {
+                id: updatedRow.id,
+                changes: updatedRow
+            })
         },
-        deleteRow: (state, action) => {
-            state.fileList = state.fileList.filter(
-                (row) => row.id !== action.payload
-            )
+        deleteRow: (state, action: PayloadAction<string>) => {
+            fileEntity.removeOne(state.entities, action.payload)
         }
     },
     extraReducers: (builder) => {
@@ -95,11 +90,16 @@ export const fileListSlice = createSlice({
     }
 })
 
-export const selectfileList = (state: RootState) => state.fileList.fileList
-export const selectUnusedFileTypes = (state: RootState) => {
-    const usedFileTypes = state.fileList.fileList.map((row) => row.docType.slug)
-    return DOCUMENT_TYPES.filter((type) => !usedFileTypes.includes(type.slug))
+export type FileListSlice = {
+    [fileListSlice.name]: ReturnType<(typeof fileListSlice)['reducer']>
 }
+
+export const fileSelectors = fileEntity.getSelectors<RootState>(
+    (state) => state.fileList.entities
+)
+
+export const selectfileList = (state: RootState) =>
+    state.fileList.entities.entities
 
 export const { addFileRow, updateFileRow } = fileListSlice.actions
 
