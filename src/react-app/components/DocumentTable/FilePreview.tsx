@@ -13,9 +13,7 @@ interface FilePreviewsProps {
     fileIds: string[]
 }
 
-export function FilePreviews({
-    fileIds
-}: FilePreviewsProps): React.JSX.Element {
+export function FilePreviews({ fileIds }: FilePreviewsProps) {
     if (!fileIds) {
         return <>None</>
     }

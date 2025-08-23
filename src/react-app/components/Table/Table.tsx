@@ -6,7 +6,7 @@ export interface TableProps {
     children: ReactNode
 }
 
-export function Table({ rowNames, children }: TableProps): React.JSX.Element {
+export function Table({ rowNames, children }: TableProps) {
     return (
         <table className='table-auto w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400'>
             <Header>

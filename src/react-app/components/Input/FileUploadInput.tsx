@@ -44,9 +44,7 @@ const processOnedriveFileSelected = async (
     return files
 }
 
-export function FileUploadInput({
-    onSaved
-}: FileUploadInputProps): React.JSX.Element {
+export function FileUploadInput({ onSaved }: FileUploadInputProps) {
     const { instance } = useMsal()
 
     const isLoggedIn = instance.getAllAccounts().length > 0

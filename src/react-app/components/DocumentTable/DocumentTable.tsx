@@ -20,7 +20,7 @@ const rowNames = [
 /**
  * Outermost parent for the spreadsheet-like document table
  */
-export function DocumentTable(): React.JSX.Element {
+export function DocumentTable() {
     const rowIds = useAppSelector(selectRowIds)
 
     const dispatch = useAppDispatch()
