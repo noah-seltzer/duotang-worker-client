@@ -3,13 +3,15 @@ import { DOCUMENT_TYPES } from '../../data/document-list'
 import { FilePreviews } from './FilePreview'
 import { classNames } from '../../lib/tw'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { selectRowById, updateFileRow } from '../../store/fileListSlice'
+import { addRow, selectRowById, updateFileRow } from '../../store/fileListSlice'
 import { FileTypeSelector } from './FileTypeSelector'
 import { getDocumentRowType } from '../../lib/files'
 import { FileUploadInput } from '../Input/FileUploadInput'
 import { StatusBar } from './StatusBar'
-import { addFilesToRow } from '../../store/fileListThunks'
+import { addFilesToRow, deleteRows } from '../../store/fileListThunks'
 import { FileNamePreviews } from './FileNamePreview'
+import { Button } from '../Skeleton/Button'
+import { MinusCircledIcon } from '@radix-ui/react-icons'
 
 export interface FileRowProps {
     index: number
@@ -40,12 +42,15 @@ export function FileRow({ rowId }: FileRowProps) {
             rowId
         }))
 
-        dispatch(addFilesToRow({ files: newFiles }))
+        dispatch(addFilesToRow(newFiles))
     }
     return (
         <TableRow>
             {/* Status */}
-            <TableCell className='p-6 space-y-0'>
+            <TableCell className='p-6 flex flex-row items-center gap-4 space-y-0'>
+                <Button onClick={() => dispatch(deleteRows([rowId]))}>
+                    <MinusCircledIcon></MinusCircledIcon>
+                </Button>
                 <span
                     className={classNames(
                         'flex w-10 h-6 rounded-full',

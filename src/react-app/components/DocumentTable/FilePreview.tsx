@@ -54,9 +54,7 @@ function FilePreview({ fileId }: FilePreviewProps) {
             <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>
                 <FileLoader fileId={fileId} filePromise={promise} />
                 <DeleteButton
-                    onClick={() =>
-                        dispatch(deleteFilesFromRow({ files: [fileMeta] }))
-                    }
+                    onClick={() => dispatch(deleteFilesFromRow([fileMeta]))}
                 />
             </Suspense>
         </div>

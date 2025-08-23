@@ -8,7 +8,7 @@ import {
 } from '@reduxjs/toolkit'
 import { DOCUMENT_TYPES } from '../data/document-list'
 import { CachedFile } from '../types/CachedFile'
-import { addFilesToRow, deleteFilesFromRow } from './fileListThunks'
+import { addFilesToRow, deleteFilesFromRow, deleteRows } from './fileListThunks'
 import { DocumentRowType } from '../types/DocumentRowType'
 import { RootState } from '.'
 import { ListRow } from '../types/ListRow'
@@ -90,6 +90,13 @@ export const fileListSlice = createSlice({
                 changes: row
             })
         })
+        builder.addCase(deleteRows.fulfilled, (state, action) => {
+            const { payload } = action
+            const ids = payload.map((p) => p.id)
+            const fileIds = payload.map((p) => p.fileIds).flat()
+            fileEntity.removeMany(state.files, fileIds)
+            rowEntity.removeMany(state.rows, ids)
+        })
     }
 })
 
@@ -109,6 +116,9 @@ export const selectRowById = (state: RootState, id: string) =>
     rowSelectors.selectById(state, id)
 export const selectRowIds = (state: RootState) => rowSelectors.selectIds(state)
 export const selectAllRows = (state: RootState) => rowSelectors.selectAll(state)
+export const selectRowsByIds = (state: RootState, ids: string[]) =>
+    ids.map((id) => state.fileList.rows.entities[id])
+
 
 export const selectFileById = (state: RootState, id: string) =>
     fileSelectors.selectById(state, id)

@@ -6,6 +6,7 @@ import { useAppDispatch, useAppSelector } from '../../store'
 import { addRow, selectRowIds } from '../../store/fileListSlice'
 import { Button } from '../Skeleton/Button'
 import { ExportButton } from '../Input/ExportButton'
+import { deleteRows } from '../../store/fileListThunks'
 
 const rowNames = [
     'Status',
@@ -41,6 +42,9 @@ export function DocumentTable(): React.JSX.Element {
             <div className='flex justify-between mt-2 w-full'>
                 <ExportButton />
                 <Button onClick={() => dispatch(addRow())}>Add Row</Button>
+                <Button onClick={() => dispatch(deleteRows(rowIds))}>
+                    Delete All Rows
+                </Button>
             </div>
         </div>
     )
