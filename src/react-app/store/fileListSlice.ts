@@ -120,5 +120,3 @@ export const selectAllFiles = (state: RootState) =>
 export const { updateFileRow, addRow } = fileListSlice.actions
 
 export default fileListSlice.reducer
-
-

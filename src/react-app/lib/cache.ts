@@ -4,7 +4,6 @@ export async function loadFromLocalCache(fileId: string): Promise<File | null> {
     return localforage.getItem(fileId)
 }
 
-
 const cache = new Map()
 
 export function fetchFromLocalForage(key: string) {

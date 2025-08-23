@@ -8,4 +8,4 @@ export interface CachedFile {
     rowId: string
 }
 
-export type CachedFileInput = Omit<CachedFile, 'id'> & { file: File}
+export type CachedFileInput = Omit<CachedFile, 'id'> & { file: File }
