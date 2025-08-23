@@ -1,7 +1,7 @@
 import { DEFAULT_DOCUMENT_TYPE, DOCUMENT_TYPES } from '../data/document-list'
 import type { ClientInfo } from '../types/ClientInfo'
 import type { DocumentRowType } from '../types/DocumentRowType'
-import type { FileInfo } from '../types/FileInfo'
+import type { ListRow } from '../types/ListRow'
 
 export const ALPHABETICAL_INDEXES = [
     'a',
@@ -44,7 +44,7 @@ export const createClientNameString = (clientInfo: ClientInfo) =>
     }`
 
 export const createFileNamePreviews = (
-    fileInfo: FileInfo,
+    fileInfo: ListRow,
     clientInfo: ClientInfo,
     index: number
 ): string[] => {

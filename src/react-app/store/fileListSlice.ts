@@ -1,4 +1,3 @@
-import { file } from 'jszip'
 import { IDLE, LOADING_STATE } from './../constants/state'
 import {
     createEntityAdapter,
@@ -7,22 +6,23 @@ import {
     nanoid,
     PayloadAction
 } from '@reduxjs/toolkit'
-import type { FileInfo } from '../types/FileInfo'
 import { DOCUMENT_TYPES } from '../data/document-list'
-import { FileCacheData } from '../types/FileCacheData'
-import { addFileToCache, deleteFileFromCache } from './fileListThunks'
+import { CachedFile } from '../types/CachedFile'
+import { addFilesToRow, deleteFilesFromRow } from './fileListThunks'
 import { DocumentRowType } from '../types/DocumentRowType'
 import { RootState } from '.'
+import { ListRow } from '../types/ListRow'
 
 export interface FileListState {
-    fileList: FileInfo[]
     loadingState: LOADING_STATE
-    entities: EntityState<FileInfo, string>
+    rows: EntityState<ListRow, string>
+    files: EntityState<CachedFile, string>
 }
 
-const fileEntity = createEntityAdapter<FileInfo>()
+const rowEntity = createEntityAdapter<ListRow>()
+const fileEntity = createEntityAdapter<CachedFile>()
 
-export const createBlankRow = (typeSlug?: string): FileInfo => {
+export const createBlankRow = (typeSlug?: string): ListRow => {
     const docType = !!typeSlug
         ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentRowType)
         : DOCUMENT_TYPES[0]
@@ -34,58 +34,61 @@ export const createBlankRow = (typeSlug?: string): FileInfo => {
 }
 
 const initialState: FileListState = {
-    fileList: [createBlankRow()],
-    entities: fileEntity.getInitialState(),
+    rows: rowEntity.getInitialState(),
+    files: fileEntity.getInitialState(),
     loadingState: IDLE
-}
-
-function updateFileListItem(state: FileListState, newRow: FileInfo) {
-    state.fileList = state.fileList.map((row) =>
-        row.id === newRow.id ? newRow : row
-    )
-}
-
-function updateRowFiles(row: FileInfo, newFiles: FileCacheData[]): FileInfo {
-    return {
-        ...row,
-        fileIds: newFiles
-    }
 }
 
 export const fileListSlice = createSlice({
     name: 'fileRow',
     initialState,
     reducers: {
-        addFileRow: (state, action: PayloadAction<string | undefined>) => {
-            fileEntity.addOne(state.entities, createBlankRow(action.payload))
+        addRow: (state) => {
+            const newRow = createBlankRow()
+            rowEntity.addOne(state.rows, newRow)
         },
-        updateFileRow: (state, action: PayloadAction<FileInfo>) => {
+        updateFileRow: (state, action: PayloadAction<ListRow>) => {
             const updatedRow = action.payload
-            fileEntity.updateOne(state.entities, {
+            rowEntity.updateOne(state.rows, {
                 id: updatedRow.id,
                 changes: updatedRow
             })
         },
         deleteRow: (state, action: PayloadAction<string>) => {
-            fileEntity.removeOne(state.entities, action.payload)
+            const row = state.rows.entities[action.payload]
+            fileEntity.removeMany(state.files, row.fileIds)
+            rowEntity.removeOne(state.rows, row.id)
         }
     },
     extraReducers: (builder) => {
-        builder.addCase(deleteFileFromCache.fulfilled, (state, action) => {
-            const { row, fileId } = action.meta.arg
+        builder.addCase(addFilesToRow.fulfilled, (state, action) => {
+            const { payload } = action
+            fileEntity.addMany(state.files, payload)
 
-            const newFiles = row.fileIds.filter((file) => file.id !== fileId)
-            const newRow = updateRowFiles(row, newFiles)
+            const { rowId } = payload[0]
+            const row = state.rows.entities[rowId]
 
-            updateFileListItem(state, newRow)
+            const ids = payload.map((p) => p.id)
+            row.fileIds.concat(ids)
+
+            rowEntity.updateOne(state.rows, {
+                id: rowId,
+                changes: row
+            })
         })
-        builder.addCase(addFileToCache.fulfilled, (state, action) => {
-            const { row, fileCacheData } = action.meta.arg
+        builder.addCase(deleteFilesFromRow.fulfilled, (state, action) => {
+            const { payload } = action
+            const ids = payload.map((p) => p.id)
+            fileEntity.removeMany(state.files, ids)
 
-            const newFiles = [...row.fileIds, fileCacheData]
-            const newRow = updateRowFiles(row, newFiles)
+            const { rowId } = payload[0]
+            const row = state.rows.entities[payload[0].rowId]
 
-            updateFileListItem(state, newRow)
+            row.fileIds = row.fileIds.filter((fileId) => !ids.includes(fileId))
+            rowEntity.updateOne(state.rows, {
+                id: rowId,
+                changes: row
+            })
         })
     }
 })
@@ -95,12 +98,16 @@ export type FileListSlice = {
 }
 
 export const fileSelectors = fileEntity.getSelectors<RootState>(
-    (state) => state.fileList.entities
+    (state) => state.fileList.files
+)
+
+export const rowSelectors = rowEntity.getSelectors<RootState>(
+    (state) => state.fileList.rows
 )
 
 export const selectfileList = (state: RootState) =>
-    state.fileList.entities.entities
+    state.fileList.files.entities
 
-export const { addFileRow, updateFileRow } = fileListSlice.actions
+export const { updateFileRow, addRow } = fileListSlice.actions
 
 export default fileListSlice.reducer

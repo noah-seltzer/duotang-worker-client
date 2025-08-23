@@ -1,6 +1,6 @@
 import { createFileNamePreviews } from '../../lib/files'
 import type { ClientInfo } from '../../types/ClientInfo'
-import type { FileInfo } from '../../types/FileInfo'
+import type { ListRow } from '../../types/ListRow'
 import { HoverCard } from '../Skeleton/HoverCard'
 
 export function DisplayName({ name }: { name: string }) {
@@ -19,7 +19,7 @@ export function DisplayName({ name }: { name: string }) {
 }
 
 interface FileNamePreviewProps {
-    fileInfo: FileInfo
+    fileInfo: ListRow
     clientInfo: ClientInfo
     index: number
 }

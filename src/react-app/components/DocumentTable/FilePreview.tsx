@@ -1,42 +1,37 @@
 'use client'
 import { Suspense, use } from 'react'
-import type { FileInfo } from '../../types/FileInfo'
 import { getFileExtensionFromName } from '../../lib/files'
 import { HoverCard } from '../Skeleton/HoverCard'
 import { FileFrame } from './FileFrame'
 import { DeleteButton } from '../Input/DeleteButton'
-import { useAppDispatch } from '../../store'
+import { useAppDispatch, useAppSelector } from '../../store'
 import { loadFromLocalCache } from '../../lib/cache'
-import { deleteFileFromCache } from '../../store/fileListThunks'
+import { fileSelectors } from '../../store/fileListSlice'
+import localforage from 'localforage'
 
 interface FilePreviewsProps {
-    row: FileInfo
+    fileIds: string[]
 }
 
-export function FilePreviews({ row }: FilePreviewsProps): React.JSX.Element {
-    const fileIds = [...(row?.fileIds?.map((f) => f.id) || [])]
-    const dispatch = useAppDispatch()
+export function FilePreviews({
+    fileIds
+}: FilePreviewsProps): React.JSX.Element {
+    if (!fileIds) {
+        return <>None</>
+    }
 
     if (fileIds.length === 0) return <>None</>
 
-    function deleteFile(fileId: string) {
-        dispatch(deleteFileFromCache({ fileId: fileId, row }))
-    }
     return (
         <div className='flex flex-row gap-2'>
             <div className='flex flex-col gap-2'>
-                {fileIds.map((file) => (
-                    <div
-                        key={file}
-                        className='flex flex-row items-center gap-2'
-                    >
-                        <Suspense fallback={<div>Loading...</div>}>
-                            <FilePreview
-                                filePromise={loadFromLocalCache(file)}
-                                key={file}
-                            />
-                            <DeleteButton onClick={() => deleteFile(file)} />
-                        </Suspense>
+                {fileIds.map((id) => (
+                    <div key={id} className='flex flex-row items-center gap-2'>
+                        <FilePreview fileId={id} />
+                        {/* <DeleteButton onClick={() => deleteFile(id)} /> */}
+                        <DeleteButton
+                            onClick={() => console.log('deleting file')}
+                        />
                     </div>
                 ))}
             </div>
@@ -45,33 +40,44 @@ export function FilePreviews({ row }: FilePreviewsProps): React.JSX.Element {
 }
 
 interface FilePreviewProps {
-    filePromise: Promise<File | null>
+    fileId: string
 }
 
-function FilePreview({ filePromise }: FilePreviewProps) {
-    const file = use(filePromise)
-    if (!file) return <div>No File</div>
-
-    const ext = getFileExtensionFromName(file.name)
+function FilePreview({ fileId }: FilePreviewProps) {
+    const fileMeta = useAppSelector((state) =>
+        fileSelectors.selectById(state, fileId)
+    )
+    const ext = getFileExtensionFromName(fileMeta.name)
     if (ext !== 'pdf' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'png')
         return 'Cannot Display'
 
-    const url = URL.createObjectURL(file)
+    return (
+        <div className='flex flex-row items-center gap-2'>
+            <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>
+                <FileLoader fileId={fileId} />
+            </Suspense>
+        </div>
+    )
+}
+
+function FileLoader({ fileId }: { fileId: string }) {
+    const fileMeta = useAppSelector((state) =>
+        fileSelectors.selectById(state, fileId)
+    )
+    const file = use(localforage.getItem(fileId))
+    const url = URL.createObjectURL(file as File)
 
     const trigger = (
         <div className='h-8 overflow-hidden'>
             <FileFrame url={url} />
         </div>
     )
-
     return (
-        <div className='flex flex-row items-center gap-2'>
-            <HoverCard trigger={trigger}>
-                <div className='bg-black p-2 flex flex-col items-center gap-2 rounded-md'>
-                    <FileFrame url={url} width={200} height={200} />
-                    {file.name}
-                </div>
-            </HoverCard>
-        </div>
+        <HoverCard trigger={trigger}>
+            <div className='bg-black p-2 flex flex-col items-center gap-2 rounded-md'>
+                <FileFrame url={url} width={200} height={200} />
+                {fileMeta.name}
+            </div>
+        </HoverCard>
     )
 }

@@ -1,21 +1,11 @@
 import { ClientInput } from '../ClientInput/ClientInput'
 import { FileRow } from './FileRow'
 import { Table } from '../Table/Table'
-import { DOCUMENT_TYPES } from '../../data/document-list'
 import { LoginOutButtons } from '../Auth/LoginOutButtons'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { addFileRow, fileSelectors } from '../../store/fileListSlice'
+import { addRow, rowSelectors } from '../../store/fileListSlice'
 import { Button } from '../Skeleton/Button'
 import { ExportButton } from '../Input/ExportButton'
-
-export const createBlankRow = (index: number = 0) => {
-    return {
-        id: index + 1,
-        docType: DOCUMENT_TYPES[0],
-        file: null,
-        maradFile: null
-    }
-}
 
 const rowNames = [
     'Status',
@@ -30,17 +20,10 @@ const rowNames = [
  * Outermost parent for the spreadsheet-like document table
  */
 export function DocumentTable(): React.JSX.Element {
-    const rows = useAppSelector(fileSelectors.selectAll)
+    const rowIds = useAppSelector(rowSelectors.selectIds)
 
     const dispatch = useAppDispatch()
 
-    const addRow = () => {
-        dispatch(addFileRow())
-    }
-
-    const rowElements = rows.map((r, i) => (
-        <FileRow index={i + 1} key={r.id} row={r} />
-    ))
     return (
         <div>
             <div className='flex justify-left gap-2 mb-2'>
@@ -48,12 +31,16 @@ export function DocumentTable(): React.JSX.Element {
                 <ClientInput />
             </div>
             <div className='relative'>
-                <Table rowNames={rowNames} rows={rowElements} />
+                <Table rowNames={rowNames}>
+                    {rowIds.map((r, i) => (
+                        <FileRow index={i + 1} key={r} rowId={r} />
+                    ))}
+                </Table>
             </div>
             <div className='w-full flex justify-left mt-2'></div>
             <div className='flex justify-between mt-2 w-full'>
                 <ExportButton />
-                <Button onClick={() => addRow()}>Add Row</Button>
+                <Button onClick={() => dispatch(addRow())}>Add Row</Button>
             </div>
         </div>
     )
