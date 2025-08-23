@@ -1,26 +1,24 @@
 import { TableCell, TableRow } from '../Table/TableComponents'
 import { DOCUMENT_TYPES } from '../../data/document-list'
-import { FileNamePreview } from './FileNamePreview'
 import { FilePreviews } from './FilePreview'
 import { classNames } from '../../lib/tw'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { rowSelectors, updateFileRow } from '../../store/fileListSlice'
-import { selectClientInfo } from '../../store/clientInfoSlice'
+import { selectRowById, updateFileRow } from '../../store/fileListSlice'
 import { FileTypeSelector } from './FileTypeSelector'
 import { getDocumentRowType } from '../../lib/files'
 import { FileUploadInput } from '../Input/FileUploadInput'
 import { StatusBar } from './StatusBar'
 import { addFilesToRow } from '../../store/fileListThunks'
+import { FileNamePreviews } from './FileNamePreview'
 
 export interface FileRowProps {
     index: number
     rowId: string
 }
 
-export function FileRow({ rowId, index }: FileRowProps) {
+export function FileRow({ rowId }: FileRowProps) {
     const dispatch = useAppDispatch()
-    const clientInfo = useAppSelector(selectClientInfo)
-    const row = useAppSelector((state) => rowSelectors.selectById(state, rowId))
+    const row = useAppSelector((state) => selectRowById(state, rowId))
 
     const { fileIds, docType } = row
     const { slug, label } = docType
@@ -44,7 +42,6 @@ export function FileRow({ rowId, index }: FileRowProps) {
 
         dispatch(addFilesToRow({ files: newFiles }))
     }
-
     return (
         <TableRow>
             {/* Status */}
@@ -95,11 +92,7 @@ export function FileRow({ rowId, index }: FileRowProps) {
             </TableCell>
             {/* Filename Preview */}
             <TableCell>
-                <FileNamePreview
-                    index={index}
-                    fileInfo={row}
-                    clientInfo={clientInfo}
-                />
+                <FileNamePreviews rowId={rowId} />
             </TableCell>
             {/* File Preview */}
             <TableCell>

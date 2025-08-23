@@ -1,7 +1,8 @@
 import { DEFAULT_DOCUMENT_TYPE, DOCUMENT_TYPES } from '../data/document-list'
+import { CachedFile } from '../types/CachedFile'
 import type { ClientInfo } from '../types/ClientInfo'
 import type { DocumentRowType } from '../types/DocumentRowType'
-import type { ListRow } from '../types/ListRow'
+import { ListRow } from '../types/ListRow'
 
 export const ALPHABETICAL_INDEXES = [
     'a',
@@ -23,53 +24,30 @@ export const getFileExtensionFromName = (fileName: string) =>
     fileName.split('.').pop()
 
 export const createFileName = (
-    fileName: string,
-    slug: string,
-    index: number,
-    subIndex: number,
-    clientFullName: string,
-    hasMultipleFiles: boolean = false,
-    maradString?: string
+    row: ListRow,
+    clientInfo: ClientInfo,
+    file: CachedFile,
+    index: number
 ) => {
-    const ext = getFileExtensionFromName(fileName)
+    const ext = getFileExtensionFromName(file.name)
+    const hasMultipleFiles = row.fileIds.length > 0
+
+    const subIndex = row.fileIds.indexOf(file.id)
     const subIndexChar = hasMultipleFiles ? ALPHABETICAL_INDEXES[subIndex] : ''
-    return `${index}${subIndexChar}_${slug}_${
-        maradString || ''
-    }${clientFullName}.${ext}`
+
+    const clientFullName = createClientNameString(clientInfo)
+
+    const maradString = file.isMarad ? MARAD_STRING : ''
+
+    return `${index + 1}${subIndexChar}_${
+        row.docType.slug
+    }_${maradString}${clientFullName}.${ext}`
 }
 
 export const createClientNameString = (clientInfo: ClientInfo) =>
     `${clientInfo.firstName || DEFAULT_FIRSTNAME}_${
         clientInfo.lastName || DEFAULT_LASTNAME
     }`
-
-export const createFileNamePreviews = (
-    fileInfo: ListRow,
-    clientInfo: ClientInfo,
-    index: number
-): string[] => {
-    const { fileIds = [], docType } = fileInfo
-    const { slug } = docType
-    if (fileIds.length === 0) return ['None']
-
-    const clientFullName = createClientNameString(clientInfo)
-
-    const hasMultipleFiles = fileIds.length > 1
-
-    const fileNames = fileIds.map((file, i) =>
-        createFileName(
-            file.name,
-            slug,
-            index,
-            i,
-            clientFullName,
-            hasMultipleFiles,
-            file.isMarad ? MARAD_STRING : undefined
-        )
-    )
-
-    return fileNames
-}
 
 export const getDocumentRowType = (slug: string): DocumentRowType => {
     return (

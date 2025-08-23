@@ -1,9 +1,15 @@
-import { createFileNamePreviews } from '../../lib/files'
-import type { ClientInfo } from '../../types/ClientInfo'
-import type { ListRow } from '../../types/ListRow'
+import { useGetFileInfo } from '../../hooks/useGenerateNewFileName'
+import { useAppSelector } from '../../store'
+import { selectRowById } from '../../store/fileListSlice'
 import { HoverCard } from '../Skeleton/HoverCard'
 
-export function DisplayName({ name }: { name: string }) {
+interface FileNamePreviewProps {
+    fileId: string
+}
+
+export function DisplayName({ fileId }: FileNamePreviewProps) {
+    const { name } = useGetFileInfo(fileId)
+
     const isOverflow = name.length > 20
     const displayName = isOverflow ? `${name.slice(0, 20)}...` : name
 
@@ -18,26 +24,24 @@ export function DisplayName({ name }: { name: string }) {
     )
 }
 
-interface FileNamePreviewProps {
-    fileInfo: ListRow
-    clientInfo: ClientInfo
-    index: number
+interface FileNamePreviewsProps {
+    rowId: string
 }
 
 /**
  * Displays the computed filenames the system will use on export of a file
  */
-export function FileNamePreview({
-    fileInfo,
-    clientInfo,
-    index
-}: FileNamePreviewProps) {
-    if (!fileInfo || !clientInfo) return 'None'
-    const filenames = createFileNamePreviews(fileInfo, clientInfo, index)
+export function FileNamePreviews({ rowId }: FileNamePreviewsProps) {
+    const row = useAppSelector((state) => selectRowById(state, rowId))
+
+    if (row.fileIds.length === 0) {
+        return <>None</>
+    }
+
     return (
         <div className='flex flex-col gap-1'>
-            {filenames.map((name) => (
-                <DisplayName key={name} name={name} />
+            {row.fileIds.map((id) => (
+                <DisplayName key={id} fileId={id} />
             ))}
         </div>
     )

@@ -1,6 +1,3 @@
-import localforage from 'localforage'
-import { v4 as uuidv4 } from 'uuid'
-import type { CachedFile } from '../../types/CachedFile'
 import { OneDriveIcon } from '../Icon/OneDriveIcon'
 import { Picker } from '../OneDrive/Picker'
 import { useMsal } from '@azure/msal-react'
@@ -20,16 +17,6 @@ interface FileUploadInputProps {
     onSaved: (fileIds: File[]) => void
     title?: string
 }
-
-// async function storeAllFiles(files: File[]) {
-//     const promises = files.map(async (file) => {
-//         const uuid = uuidv4()
-//         await localforage.setItem(uuid, file)
-//         return { id: uuid, name: file.name }
-//     })
-
-//     return Promise.all(promises)
-// }
 
 const processOnedriveFileSelected = async (
     instance: IPublicClientApplication,

@@ -1,16 +1,15 @@
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
-import { selectfileList } from '../../store/fileListSlice'
+import { selectAllFiles, selectAllRows } from '../../store/fileListSlice'
 
 import { useAppSelector } from '../../store'
 import { selectClientInfo } from '../../store/clientInfoSlice'
 import localforage from 'localforage'
-import {
-    createClientNameString,
-    createFileName,
-    MARAD_STRING
-} from '../../lib/files'
+import { createClientNameString, createFileName } from '../../lib/files'
 import { Button } from '../Skeleton/Button'
+import { CachedFile } from '../../types/CachedFile'
+import { ListRow } from '../../types/ListRow'
+import { ClientInfo } from '../../types/ClientInfo'
 
 interface ExportFileData {
     name: string
@@ -18,32 +17,22 @@ interface ExportFileData {
 }
 
 export const processFile = async (
-    id: string,
-    rowIndex: number,
-    subIndex: number,
-    slug: string,
-    clientFullName: string,
-    hasMultipleFiles: boolean,
-    maradString?: string
+    file: CachedFile,
+    row: ListRow,
+    clientInfo: ClientInfo,
+    index: number
 ) => {
-    const file = (await localforage.getItem(id)) as File
-    const name = createFileName(
-        file.name,
-        slug,
-        rowIndex,
-        subIndex,
-        clientFullName,
-        hasMultipleFiles,
-        maradString
-    )
+    const fileBinary = (await localforage.getItem(file.id)) as File
+    const name = createFileName(row, clientInfo, file, index)
     return {
-        file,
+        file: fileBinary,
         name
     }
 }
 
 export function ExportButton() {
-    const rows = useAppSelector(selectfileList)
+    const rows = useAppSelector(selectAllRows)
+    const cachedFiles = useAppSelector(selectAllFiles)
     const clientInfo = useAppSelector(selectClientInfo)
     const clientFullName = createClientNameString(clientInfo)
 
@@ -53,18 +42,14 @@ export function ExportButton() {
         for (let i = 0; i < rowsWithFiles.length; i++) {
             const row = rows[i]
             const { fileIds } = row
-            const hasMultipleFiles = fileIds.length > 1
 
             const newFiles = await Promise.all(
-                fileIds.map(async (file, subIndex) => {
+                fileIds.map(async (file) => {
                     return processFile(
-                        file.id,
-                        i + 1,
-                        subIndex,
-                        row.docType.slug,
-                        clientFullName,
-                        hasMultipleFiles,
-                        subIndex >= fileIds.length ? MARAD_STRING : undefined
+                        cachedFiles.find((f) => f.id === file) as CachedFile,
+                        row,
+                        clientInfo,
+                        i
                     )
                 })
             )

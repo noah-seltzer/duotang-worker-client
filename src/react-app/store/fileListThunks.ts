@@ -6,11 +6,15 @@ export const addFilesToRow = createAsyncThunk<
     CachedFile[],
     { files: CachedFileInput[] }
 >('fileRow/addFileCacheStatus', async ({ files }) => {
+    console.log('thunk', files)
     return Promise.all(
         files.map(async (file) => {
+            const { rowId, isMarad, name } = file
             const newFile: CachedFile = {
                 id: nanoid(),
-                ...file
+                name,
+                isMarad,
+                rowId
             }
             await localforage.setItem(newFile.id, file.file)
             return newFile

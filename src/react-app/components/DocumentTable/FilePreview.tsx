@@ -5,9 +5,9 @@ import { HoverCard } from '../Skeleton/HoverCard'
 import { FileFrame } from './FileFrame'
 import { DeleteButton } from '../Input/DeleteButton'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { loadFromLocalCache } from '../../lib/cache'
-import { fileSelectors } from '../../store/fileListSlice'
+import { fileSelectors, selectFileById } from '../../store/fileListSlice'
 import localforage from 'localforage'
+import { deleteFilesFromRow } from '../../store/fileListThunks'
 
 interface FilePreviewsProps {
     fileIds: string[]
@@ -28,10 +28,6 @@ export function FilePreviews({
                 {fileIds.map((id) => (
                     <div key={id} className='flex flex-row items-center gap-2'>
                         <FilePreview fileId={id} />
-                        {/* <DeleteButton onClick={() => deleteFile(id)} /> */}
-                        <DeleteButton
-                            onClick={() => console.log('deleting file')}
-                        />
                     </div>
                 ))}
             </div>
@@ -44,27 +40,42 @@ interface FilePreviewProps {
 }
 
 function FilePreview({ fileId }: FilePreviewProps) {
-    const fileMeta = useAppSelector((state) =>
-        fileSelectors.selectById(state, fileId)
-    )
+    const fileMeta = useAppSelector((state) => selectFileById(state, fileId))
+    const dispatch = useAppDispatch()
     const ext = getFileExtensionFromName(fileMeta.name)
+
     if (ext !== 'pdf' && ext !== 'jpeg' && ext !== 'jpg' && ext !== 'png')
         return 'Cannot Display'
+
+    const promise = localforage.getItem(fileId) as Promise<File>
 
     return (
         <div className='flex flex-row items-center gap-2'>
             <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>
-                <FileLoader fileId={fileId} />
+                <FileLoader fileId={fileId} filePromise={promise} />
+                <DeleteButton
+                    onClick={() =>
+                        dispatch(deleteFilesFromRow({ files: [fileMeta] }))
+                    }
+                />
             </Suspense>
         </div>
     )
 }
 
-function FileLoader({ fileId }: { fileId: string }) {
+function FileLoader({
+    filePromise,
+    fileId
+}: {
+    filePromise: Promise<File>
+    fileId: string
+}) {
     const fileMeta = useAppSelector((state) =>
         fileSelectors.selectById(state, fileId)
     )
-    const file = use(localforage.getItem(fileId))
+
+    const file = use(filePromise)
+
     const url = URL.createObjectURL(file as File)
 
     const trigger = (

@@ -3,7 +3,7 @@ import { FileRow } from './FileRow'
 import { Table } from '../Table/Table'
 import { LoginOutButtons } from '../Auth/LoginOutButtons'
 import { useAppDispatch, useAppSelector } from '../../store'
-import { addRow, rowSelectors } from '../../store/fileListSlice'
+import { addRow, selectRowIds } from '../../store/fileListSlice'
 import { Button } from '../Skeleton/Button'
 import { ExportButton } from '../Input/ExportButton'
 
@@ -20,7 +20,7 @@ const rowNames = [
  * Outermost parent for the spreadsheet-like document table
  */
 export function DocumentTable(): React.JSX.Element {
-    const rowIds = useAppSelector(rowSelectors.selectIds)
+    const rowIds = useAppSelector(selectRowIds)
 
     const dispatch = useAppDispatch()
 

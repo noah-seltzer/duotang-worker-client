@@ -69,7 +69,7 @@ export const fileListSlice = createSlice({
             const row = state.rows.entities[rowId]
 
             const ids = payload.map((p) => p.id)
-            row.fileIds.concat(ids)
+            row.fileIds = row.fileIds.concat(ids)
 
             rowEntity.updateOne(state.rows, {
                 id: rowId,
@@ -105,9 +105,20 @@ export const rowSelectors = rowEntity.getSelectors<RootState>(
     (state) => state.fileList.rows
 )
 
-export const selectfileList = (state: RootState) =>
-    state.fileList.files.entities
+export const selectRowById = (state: RootState, id: string) =>
+    rowSelectors.selectById(state, id)
+export const selectRowIds = (state: RootState) => rowSelectors.selectIds(state)
+export const selectAllRows = (state: RootState) => rowSelectors.selectAll(state)
+
+export const selectFileById = (state: RootState, id: string) =>
+    fileSelectors.selectById(state, id)
+export const selectFileIds = (state: RootState) =>
+    fileSelectors.selectIds(state)
+export const selectAllFiles = (state: RootState) =>
+    fileSelectors.selectAll(state)
 
 export const { updateFileRow, addRow } = fileListSlice.actions
 
 export default fileListSlice.reducer
+
+
