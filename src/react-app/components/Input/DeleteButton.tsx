@@ -1,47 +1,54 @@
 import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
-import { MouseEventHandler, useState } from 'react'
-import { IconButton } from '../Skeleton/IconButton'
+import { MouseEventHandler } from 'react'
 
+import {
+    FloatingModalTrigger,
+    FloatingModalContent,
+    FloatingModalRoot,
+    FloatingModalClose,
+    FloatingModalTitle
+} from '../Skeleton/FloatingModal'
+
+import { Button, NakedButton } from '../Skeleton/Button'
 interface DeleteButtonProps {
-    onClick: MouseEventHandler<HTMLDivElement>
+    onClick: MouseEventHandler<HTMLButtonElement>
+    confirmMessage?: string
 }
 
-const UNCLICKED = 'UNCLICKED'
-const TOCONFIRM = 'TOCONFIRM'
-const LOADING = 'LOADING'
-
-type ButtonState = typeof UNCLICKED | typeof TOCONFIRM | typeof LOADING
-
-export function DeleteButton({ onClick }: DeleteButtonProps) {
-    const [buttonState, setButtonState] = useState<ButtonState>(UNCLICKED)
-
+export function DeleteButton({ confirmMessage, onClick }: DeleteButtonProps) {
     return (
         <>
-            {buttonState === UNCLICKED && (
-                <IconButton onClick={() => setButtonState(TOCONFIRM)}>
-                    <Cross1Icon />
-                </IconButton>
-            )}
-            {buttonState === TOCONFIRM && (
-                <div className='flex flex-col gap-1 items-center justify-center'>
-                    <div>Delete File?</div>
-                    <div className='flex flex-row gap-1'>
-                        <IconButton onClick={() => setButtonState(UNCLICKED)}>
-                            <Cross1Icon />
-                        </IconButton>
-                        <IconButton
-                            className='hover:bg-green-500'
-                            onClick={(e) => {
-                                setButtonState(LOADING)
-                                onClick(e)
-                            }}
-                        >
-                            <CheckIcon />
-                        </IconButton>
+            <FloatingModalRoot>
+                <FloatingModalTrigger asChild={true}>
+                    <NakedButton>
+                        <Cross1Icon />
+                    </NakedButton>
+                </FloatingModalTrigger>
+                <FloatingModalContent>
+                    <div className=' min-w-64 flex flex-col gap-3 items-center justify-center border-1 rounded-lg fixed px-6 py-2'>
+                        <FloatingModalTitle className='text-2xl'>
+                            <div>{confirmMessage || 'Are you sure?'}</div>
+                        </FloatingModalTitle>
+                        <div className='inline-flex rounded-md shadow-xs gap-6'>
+                            <FloatingModalClose asChild={true}>
+                                <Button className='bg-red-500'>
+                                    <Cross1Icon className='text-stone-100' />
+                                </Button>
+                            </FloatingModalClose>
+                            <FloatingModalClose asChild={true}>
+                                <Button
+                                    onClick={(e) => {
+                                        onClick(e)
+                                    }}
+                                    className='bg-green-500'
+                                >
+                                    <CheckIcon className='text-stone-100' />
+                                </Button>
+                            </FloatingModalClose>
+                        </div>
                     </div>
-                </div>
-            )}
-            {buttonState === LOADING && <>Loading...</>}
+                </FloatingModalContent>
+            </FloatingModalRoot>
         </>
     )
 }

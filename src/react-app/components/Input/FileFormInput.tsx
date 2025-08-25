@@ -12,7 +12,8 @@ import { fileDownloadRequest } from '../../data/auth-config'
 import { FileInput } from './FileInput'
 import { IPublicClientApplication } from '@azure/msal-browser'
 import { ChangeEvent } from 'react'
-interface FileUploadInputProps {
+import { Button } from '../Skeleton/Button'
+interface FileFormInputProps {
     onChange?: (files: FileList | null) => void
     onSaved: (fileIds: File[]) => void
     title?: string
@@ -44,7 +45,7 @@ const processOnedriveFileSelected = async (
     return files
 }
 
-export function FileUploadInput({ onSaved }: FileUploadInputProps) {
+export function FileFormInput({ onSaved }: FileFormInputProps) {
     const { instance } = useMsal()
 
     const isLoggedIn = instance.getAllAccounts().length > 0
@@ -63,13 +64,16 @@ export function FileUploadInput({ onSaved }: FileUploadInputProps) {
     }
 
     return (
+        <>
         <div className='flex flex-row items-center gap-1'>
             <FileInput onChange={onFileSaved} />
             {isLoggedIn ? (
                 <>
                     <DialogRoot>
-                        <DialogTrigger>
-                            <OneDriveIcon />
+                        <DialogTrigger asChild={true}>
+                            <Button>
+                                <OneDriveIcon />
+                            </Button>
                         </DialogTrigger>
                         <DialogPortal>
                             <Picker onPick={onFilePicked} />
@@ -77,8 +81,13 @@ export function FileUploadInput({ onSaved }: FileUploadInputProps) {
                     </DialogRoot>
                 </>
             ) : (
-                <Login />
+                <Login>
+                    <Button>
+                        <OneDriveIcon />
+                    </Button>
+                </Login>
             )}
         </div>
+            </>
     )
 }

@@ -7,7 +7,7 @@ export interface GenericComponentProps {
 
 export function HeaderCell({ children }: PropsWithChildren) {
     return (
-        <th scope='col' className='px-6 py-3'>
+        <th scope='col' className='px-auto py-3 text-center'>
             {children}
         </th>
     )

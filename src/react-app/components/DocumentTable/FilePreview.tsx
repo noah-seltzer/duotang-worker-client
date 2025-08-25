@@ -52,6 +52,7 @@ function FilePreview({ fileId }: FilePreviewProps) {
             <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>
                 <FileLoader fileId={fileId} filePromise={promise} />
                 <DeleteButton
+                    confirmMessage='Delete File? This cannot be undone.'
                     onClick={() => dispatch(deleteFilesFromRow([fileMeta]))}
                 />
             </Suspense>
