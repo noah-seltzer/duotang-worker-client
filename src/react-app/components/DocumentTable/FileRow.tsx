@@ -75,7 +75,7 @@ export function FileRow({ rowId }: FileRowProps) {
             </TableCell>
             {/* Assigned File */}
             <TableCell>
-                <FloatingModalRoot>
+                {/* <FloatingModalRoot>
                     <FloatingModalTrigger asChild={true}>
                         <Button>Add Files</Button>
                     </FloatingModalTrigger>
@@ -86,17 +86,17 @@ export function FileRow({ rowId }: FileRowProps) {
                             />
                         </FormRoot>
                     </FloatingModalContent>
-                </FloatingModalRoot>
-                {/* <div className='flex flex-row items-center gap-2'>
+                </FloatingModalRoot> */}
+                <div className='flex flex-row items-center gap-2'>
                     <div className='flex flex-col gap-2'>
                         <FileFormInput onSaved={addFiles} />
                         <StatusBar
                             status={fileIds.length > 0 ? 'success' : 'error'}
                         />
                     </div>
-                </div> */}
+                </div>
             </TableCell>
-            {/* <TableCell>
+            <TableCell>
                 {docType.marad ? (
                     <div className='flex flex-col items-center gap-2'>
                         <FileFormInput
@@ -110,15 +110,15 @@ export function FileRow({ rowId }: FileRowProps) {
                 ) : (
                     'No Marad Required'
                 )}
-            </TableCell> */}
+            </TableCell>
             {/* Filename Preview */}
-            {/* <TableCell>
+            <TableCell>
                 <FileNamePreviews rowId={rowId} />
-            </TableCell> */}
+            </TableCell>
             {/* File Preview */}
-            {/* <TableCell>
+            <TableCell>
                 <FilePreviews fileIds={row.fileIds} />
-            </TableCell> */}
+            </TableCell>
         </TableRow>
     )
 }
