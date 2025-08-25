@@ -1,14 +1,11 @@
 import { TableCell, TableRow } from '../Table/TableComponents'
-import { FilePreviews } from './FilePreview'
 import { classNames } from '../../lib/tw'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { selectRowById, updateFileRow } from '../../store/fileListSlice'
-import { FileTypeSelector } from './FileTypeSelector'
-import { StatusBar } from './StatusBar'
-import { addFilesToRow, deleteRows } from '../../store/fileListThunks'
-import { FileNamePreviews } from './FileNamePreview'
+import { FileTypeSelector } from '../Files/FileTypeSelector'
+import { deleteRows } from '../../store/fileListThunks'
 import { DeleteButton } from '../Input/DeleteButton'
-import { FileFormInput } from '../Input/FileFormInput'
+import { AddFileModal } from '../Files/AddFileModal'
 
 export interface FileRowProps {
     index: number
@@ -22,17 +19,6 @@ export function FileRow({ rowId }: FileRowProps) {
     const { fileIds, docType } = row
 
     const isComplete = fileIds.length > 0
-
-    const addFiles = (files: File[], isMarad: boolean = false) => {
-        const newFiles = files.map((file) => ({
-            file,
-            name: file.name,
-            isMarad,
-            rowId
-        }))
-
-        dispatch(addFilesToRow(newFiles))
-    }
     return (
         <TableRow>
             <TableCell>
@@ -45,9 +31,9 @@ export function FileRow({ rowId }: FileRowProps) {
             </TableCell>
             {/* Status */}
             <TableCell>
-                <div className='p-6 flex flex-row items-center gap-4 space-y-0 h-full'>
+                <div className='flex flex-row items-center gap-4 space-y-0 h-full'>
                     <DeleteButton
-                        confirmMessage='Are you sure you want to delete this row? Associated files will be deleted'
+                        confirmMessage='Files associated with this row will be deleted.'
                         onClick={() => dispatch(deleteRows([rowId]))}
                     />
                 </div>
@@ -63,49 +49,7 @@ export function FileRow({ rowId }: FileRowProps) {
             </TableCell>
             {/* Assigned File */}
             <TableCell>
-                {/* <FloatingModalRoot>
-                    <FloatingModalTrigger asChild={true}>
-                        <Button>Add Files</Button>
-                    </FloatingModalTrigger>
-                    <FloatingModalContent>
-                        <FormRoot>
-                            <FormTextInput
-                                // onSaved={(files) => addFiles(files)}
-                            />
-                        </FormRoot>
-                    </FloatingModalContent>
-                </FloatingModalRoot> */}
-                <div className='flex flex-row items-center gap-2'>
-                    <div className='flex flex-col gap-2'>
-                        <FileFormInput onSaved={addFiles} />
-                        <StatusBar
-                            status={fileIds.length > 0 ? 'success' : 'error'}
-                        />
-                    </div>
-                </div>
-            </TableCell>
-            <TableCell>
-                {docType.marad ? (
-                    <div className='flex flex-col items-center gap-2'>
-                        <FileFormInput
-                            title='Add Marad File'
-                            onSaved={(files) => addFiles(files, true)}
-                        />
-                        <StatusBar
-                            status={fileIds.length > 0 ? 'success' : 'error'}
-                        />
-                    </div>
-                ) : (
-                    'No Marad Required'
-                )}
-            </TableCell>
-            {/* Filename Preview */}
-            <TableCell>
-                <FileNamePreviews rowId={rowId} />
-            </TableCell>
-            {/* File Preview */}
-            <TableCell>
-                <FilePreviews fileIds={row.fileIds} />
+                <AddFileModal rowId={rowId} />
             </TableCell>
         </TableRow>
     )

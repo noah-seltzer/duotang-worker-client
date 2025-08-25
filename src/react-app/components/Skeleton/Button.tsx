@@ -6,8 +6,9 @@ export function Button(props: ButtonProps) {
     const { className, ...rest } = props
     return (
         <button
+            type='button'
             className={classNames(
-                'bg-stone-500 hover:bg-stone-700 font-bold py-2 px-4 rounded text-stone-800',
+                'rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20',
                 className
             )}
             {...rest}

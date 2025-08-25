@@ -9,13 +9,13 @@ import { ExportButton } from '../Input/ExportButton'
 import { deleteRows } from '../../store/fileListThunks'
 
 const rowNames = [
-    // 'Delete',
     'Status',
+    'Delete',
     'Document',
-    'File',
-    'Marad File',
-    'Filename',
     'File'
+    // 'Marad File',
+    // 'Filename',
+    // 'File'
 ]
 
 /**
