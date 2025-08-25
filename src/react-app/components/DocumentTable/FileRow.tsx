@@ -1,23 +1,14 @@
 import { TableCell, TableRow } from '../Table/TableComponents'
-import { DOCUMENT_TYPES } from '../../data/document-list'
 import { FilePreviews } from './FilePreview'
 import { classNames } from '../../lib/tw'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { selectRowById, updateFileRow } from '../../store/fileListSlice'
 import { FileTypeSelector } from './FileTypeSelector'
-import { getDocumentRowType } from '../../lib/files'
 import { StatusBar } from './StatusBar'
 import { addFilesToRow, deleteRows } from '../../store/fileListThunks'
 import { FileNamePreviews } from './FileNamePreview'
 import { DeleteButton } from '../Input/DeleteButton'
 import { FileFormInput } from '../Input/FileFormInput'
-import {
-    FloatingModalContent,
-    FloatingModalRoot,
-    FloatingModalTrigger
-} from '../Skeleton/FloatingModal'
-import { Button } from '../Skeleton/Button'
-import { FormRoot, FormTextInput } from '../Form/Form'
 
 export interface FileRowProps {
     index: number
@@ -29,11 +20,8 @@ export function FileRow({ rowId }: FileRowProps) {
     const row = useAppSelector((state) => selectRowById(state, rowId))
 
     const { fileIds, docType } = row
-    const { slug, label } = docType
 
     const isComplete = fileIds.length > 0
-
-    const currentOption = { value: slug, label: label }
 
     const addFiles = (files: File[], isMarad: boolean = false) => {
         const newFiles = files.map((file) => ({

@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { ListRow } from '../types/ListRow'
-
 export interface SavedList {
     name: string
     id: string
