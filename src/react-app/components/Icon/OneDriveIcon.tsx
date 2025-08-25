@@ -1,5 +1,3 @@
-// import { SOFT_BLACK_HEX } from '../../constants/color'
-
 export function OneDriveIcon() {
     return (
         <svg
