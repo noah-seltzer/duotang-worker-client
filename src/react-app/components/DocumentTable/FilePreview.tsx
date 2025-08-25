@@ -13,9 +13,7 @@ interface FilePreviewsProps {
     fileIds: string[]
 }
 
-export function FilePreviews({
-    fileIds
-}: FilePreviewsProps): React.JSX.Element {
+export function FilePreviews({ fileIds }: FilePreviewsProps) {
     if (!fileIds) {
         return <>None</>
     }
@@ -54,6 +52,7 @@ function FilePreview({ fileId }: FilePreviewProps) {
             <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>
                 <FileLoader fileId={fileId} filePromise={promise} />
                 <DeleteButton
+                    confirmMessage='Delete File? This cannot be undone.'
                     onClick={() => dispatch(deleteFilesFromRow([fileMeta]))}
                 />
             </Suspense>

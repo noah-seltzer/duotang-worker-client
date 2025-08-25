@@ -1,18 +1,34 @@
 @import 'tailwindcss';
+/* @plugin 'flowbite-react/plugin/tailwindcss';
+@source '../../.flowbite-react/class-list.json'; */
+
+/* @config './lib/tailwind' */
 
 :root {
     font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-    line-height: 1.5;
-    font-weight: 400;
-
-    color-scheme: light dark;
-    color: rgba(255, 255, 255, 0.87);
     background-color: #242424;
-
+    /* line-height: 1.5; */
+    font-weight: 400;
+    color-scheme: light dark;
+    /* color: rgba(255, 255, 255, 0.87); */
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+
+}
+@theme {
+    --color-text-primary: oklch(0.1843 0.0102 325.98);
+    --custom-palette-text: oklch(18.43% 0.010 325.98);
+    --custom-palette-background: oklch(97.82% 0.003 325.60);
+    --custom-palette-primary: oklch(59.82% 0.115 319.07);
+    --custom-palette-secondary: oklch(78.17% 0.019 356.58);
+    --custom-palette-accent: oklch(69.82% 0.025 17.77);
+
+}
+/* :root {
+
+
 }
 
 a {
@@ -67,4 +83,4 @@ button:focus-visible {
     button {
         background-color: #f9f9f9;
     }
-}
+} */

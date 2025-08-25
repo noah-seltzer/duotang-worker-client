@@ -1,14 +1,11 @@
-import { SOFT_BLACK_HEX } from '../../constants/color'
-
-export function FolderIcon({ color }: { color?: string }) {
+export function FolderIcon() {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'
             strokeWidth={1.5}
-            stroke={color || SOFT_BLACK_HEX}
-            className='size-6'
+            className='size-6 stroke-stone-800'
         >
             <path
                 strokeLinecap='round'

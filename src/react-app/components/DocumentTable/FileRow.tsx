@@ -6,12 +6,18 @@ import { useAppDispatch, useAppSelector } from '../../store'
 import { selectRowById, updateFileRow } from '../../store/fileListSlice'
 import { FileTypeSelector } from './FileTypeSelector'
 import { getDocumentRowType } from '../../lib/files'
-import { FileUploadInput } from '../Input/FileUploadInput'
 import { StatusBar } from './StatusBar'
 import { addFilesToRow, deleteRows } from '../../store/fileListThunks'
 import { FileNamePreviews } from './FileNamePreview'
+import { DeleteButton } from '../Input/DeleteButton'
+import { FileFormInput } from '../Input/FileFormInput'
+import {
+    FloatingModalContent,
+    FloatingModalRoot,
+    FloatingModalTrigger
+} from '../Skeleton/FloatingModal'
 import { Button } from '../Skeleton/Button'
-import { MinusCircledIcon } from '@radix-ui/react-icons'
+import { FormRoot, FormTextInput } from '../Form/Form'
 
 export interface FileRowProps {
     index: number
@@ -27,11 +33,6 @@ export function FileRow({ rowId }: FileRowProps) {
 
     const isComplete = fileIds.length > 0
 
-    const options = DOCUMENT_TYPES.map((docType) => ({
-        value: docType.slug,
-        label: docType.label
-    }))
-
     const currentOption = { value: slug, label: label }
 
     const addFiles = (files: File[], isMarad: boolean = false) => {
@@ -46,11 +47,7 @@ export function FileRow({ rowId }: FileRowProps) {
     }
     return (
         <TableRow>
-            {/* Status */}
-            <TableCell className='p-6 flex flex-row items-center gap-4 space-y-0'>
-                <Button onClick={() => dispatch(deleteRows([rowId]))}>
-                    <MinusCircledIcon></MinusCircledIcon>
-                </Button>
+            <TableCell>
                 <span
                     className={classNames(
                         'flex w-10 h-6 rounded-full',
@@ -58,22 +55,41 @@ export function FileRow({ rowId }: FileRowProps) {
                     )}
                 ></span>
             </TableCell>
+            {/* Status */}
+            <TableCell>
+                <div className='p-6 flex flex-row items-center gap-4 space-y-0 h-full'>
+                    <DeleteButton
+                        confirmMessage='Are you sure you want to delete this row? Associated files will be deleted'
+                        onClick={() => dispatch(deleteRows([rowId]))}
+                    />
+                </div>
+            </TableCell>
             {/* Document Type */}
             <TableCell>
                 <FileTypeSelector
-                    options={options}
-                    currentOption={currentOption}
+                    currentOption={docType}
                     onChange={(value) => {
-                        const newDocType = getDocumentRowType(value.value)
-                        dispatch(updateFileRow({ ...row, docType: newDocType }))
+                        dispatch(updateFileRow({ ...row, docType: value }))
                     }}
                 />
             </TableCell>
             {/* Assigned File */}
             <TableCell>
+                {/* <FloatingModalRoot>
+                    <FloatingModalTrigger asChild={true}>
+                        <Button>Add Files</Button>
+                    </FloatingModalTrigger>
+                    <FloatingModalContent>
+                        <FormRoot>
+                            <FormTextInput
+                                // onSaved={(files) => addFiles(files)}
+                            />
+                        </FormRoot>
+                    </FloatingModalContent>
+                </FloatingModalRoot> */}
                 <div className='flex flex-row items-center gap-2'>
                     <div className='flex flex-col gap-2'>
-                        <FileUploadInput onSaved={addFiles} />
+                        <FileFormInput onSaved={addFiles} />
                         <StatusBar
                             status={fileIds.length > 0 ? 'success' : 'error'}
                         />
@@ -83,7 +99,7 @@ export function FileRow({ rowId }: FileRowProps) {
             <TableCell>
                 {docType.marad ? (
                     <div className='flex flex-col items-center gap-2'>
-                        <FileUploadInput
+                        <FileFormInput
                             title='Add Marad File'
                             onSaved={(files) => addFiles(files, true)}
                         />

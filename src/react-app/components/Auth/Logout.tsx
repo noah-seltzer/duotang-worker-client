@@ -1,7 +1,7 @@
 import { useMsal } from '@azure/msal-react'
 import { Button } from '../Skeleton/Button'
 
-export function Logout(): React.JSX.Element {
+export function Logout() {
     const { instance } = useMsal()
 
     const handleLogin = () => {

@@ -1,10 +1,6 @@
 import { classNames } from '../../lib/tw'
 
-export function Checkmark({
-    checked
-}: {
-    checked: boolean
-}): React.JSX.Element {
+export function Checkmark({ checked }: { checked: boolean }) {
     const uncheckedColorStyle = 'text-gray-500 dark:text-gray-400'
     const checkedColorStyle = 'text-green-500 dark:text-green-400'
 

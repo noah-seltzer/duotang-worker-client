@@ -18,7 +18,7 @@ export default defineConfig({
         sentryVitePlugin({
             org: 'noah-seltzer',
             project: 'duotang-worker-client',
-            authToken: process.env.SENTRY_AUTH_TOKEN,
+            authToken: process.env.SENTRY_AUTH_TOKEN
         })
     ],
 

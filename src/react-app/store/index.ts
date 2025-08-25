@@ -21,10 +21,12 @@ import {
 import fileListSlice from './fileListSlice'
 import clientInfoSlice from './clientInfoSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import savedListSlice from './savedListSlice'
 
 const rootReducer = combineReducers({
     fileList: fileListSlice,
-    clientInfo: clientInfoSlice
+    clientInfo: clientInfoSlice,
+    savedLists: savedListSlice
 })
 
 const persistConfig = {

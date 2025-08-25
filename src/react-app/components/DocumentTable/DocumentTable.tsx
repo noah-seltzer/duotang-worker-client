@@ -9,6 +9,7 @@ import { ExportButton } from '../Input/ExportButton'
 import { deleteRows } from '../../store/fileListThunks'
 
 const rowNames = [
+    // 'Delete',
     'Status',
     'Document',
     'File',
@@ -20,7 +21,7 @@ const rowNames = [
 /**
  * Outermost parent for the spreadsheet-like document table
  */
-export function DocumentTable(): React.JSX.Element {
+export function DocumentTable() {
     const rowIds = useAppSelector(selectRowIds)
 
     const dispatch = useAppDispatch()
@@ -31,7 +32,7 @@ export function DocumentTable(): React.JSX.Element {
                 <LoginOutButtons />
                 <ClientInput />
             </div>
-            <div className='relative'>
+            <div className='relative overflow-x-auto overflow-y-visible'>
                 <Table rowNames={rowNames}>
                     {rowIds.map((r, i) => (
                         <FileRow index={i + 1} key={r} rowId={r} />
@@ -40,11 +41,16 @@ export function DocumentTable(): React.JSX.Element {
             </div>
             <div className='w-full flex justify-left mt-2'></div>
             <div className='flex justify-between mt-2 w-full'>
-                <ExportButton />
-                <Button onClick={() => dispatch(addRow())}>Add Row</Button>
-                <Button onClick={() => dispatch(deleteRows(rowIds))}>
-                    Delete All Rows
-                </Button>
+                <div
+                    className='inline-flex rounded-md shadow-xs gap-2'
+                    role='group'
+                >
+                    <ExportButton />
+                    <Button onClick={() => dispatch(addRow())}>Add Row</Button>
+                    <Button onClick={() => dispatch(deleteRows(rowIds))}>
+                        Delete All Rows
+                    </Button>
+                </div>
             </div>
         </div>
     )
