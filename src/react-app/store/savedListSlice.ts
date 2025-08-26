@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-export interface SavedList {
+export interface DocumentList {
     name: string
     id: string
     description: string
@@ -8,8 +8,8 @@ export interface SavedList {
     // dateModified: Date
 }
 
-export interface SavedListState {
-    lists: SavedList[]
+export interface DocumentListState {
+    lists: DocumentList[]
 }
 
 const initialState = {
@@ -27,10 +27,10 @@ const initialState = {
     ]
 }
 
-export const savedListSlice = createSlice({
-    name: 'savedLists',
+export const documentListSlice = createSlice({
+    name: 'documentLists',
     initialState: initialState,
     reducers: {}
 })
 
-export default savedListSlice.reducer
+export default documentListSlice.reducer

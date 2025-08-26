@@ -3,4 +3,5 @@ export interface ListRow {
     id: string
     docType: DocumentRowType
     fileIds: string[]
+    listId: string
 }

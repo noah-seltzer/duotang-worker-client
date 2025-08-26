@@ -4,7 +4,6 @@ import {
     FloatingModalTrigger
 } from '../Skeleton/FloatingModal'
 import { FormHeading } from '../Form/FormHeading'
-import { FormRoot } from '../Form/Form'
 import { FileFormInput, FileInput } from '../Input/FileFormInput'
 import { addFilesToRow } from '../../store/fileListThunks'
 import { useAppDispatch, useAppSelector } from '../../store'
@@ -42,15 +41,13 @@ export function AddFileModal({ rowId }: AddFileModalProps) {
                     heading={`Add File for ${row.docType.label}`}
                     subHeading='This will not overwrite existing files'
                 />
-                <FormRoot>
-                    <FileFormInput
-                        onSaved={(files) => {
-                            addFiles(files)
-                        }}
-                        onCancel={() => setOpen(false)}
-                    />
-                    <hr />
-                </FormRoot>
+                <FileFormInput
+                    onSaved={(files) => {
+                        addFiles(files)
+                    }}
+                    onCancel={() => setOpen(false)}
+                />
+                <hr />
             </FloatingModalContent>
         </FloatingModalRoot>
     )

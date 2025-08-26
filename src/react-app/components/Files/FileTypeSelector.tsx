@@ -41,7 +41,7 @@ export function FileTypeSelector({
         <div>
             <SelectRoot onValueChange={onSelect}>
                 <SelectTrigger asChild={true}>
-                    <div className='grid w-full cursor-default grid-cols-1 rounded-md bg-gray-800/50 py-1.5 pr-2 pl-3 text-left text-white outline-1 -outline-offset-1 outline-white/10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-500 sm:text-sm/6'>
+                    <div className='grid w-full cursor-pointer grid-cols-1 rounded-md bg-gray-800/50 py-1.5 pr-2 pl-3 text-left text-white outline-1 -outline-offset-1 outline-white/10 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-indigo-500 sm:text-sm/6'>
                         <span className='col-start-1 row-start-1 flex items-center gap-3 pr-6'>
                             <span className='block truncate'>
                                 {currentOption.label}
@@ -61,7 +61,7 @@ export function FileTypeSelector({
                                     <SelectItem
                                         key={option.value}
                                         value={option.value}
-                                        className='group relative cursor-default py-2 pr-9 pl-3 text-white select-none data-focus:bg-indigo-500 data-focus:outline-hidden'
+                                        className='group relative cursor-pointer py-2 pr-9 pl-3 text-white select-none data-focus:bg-indigo-500 data-focus:outline-hidden hover:bg-gray-500'
                                     >
                                         <div className='flex items-center'>
                                             <span className='ml-3 block truncate font-normal group-data-selected:font-semibold'>

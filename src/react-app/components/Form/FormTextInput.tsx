@@ -1,5 +1,12 @@
-import { DetailedHTMLProps, InputHTMLAttributes, useId } from "react"
-import { classNames } from "../../lib/tw"
+import {
+    ChangeEventHandler,
+    DetailedHTMLProps,
+    FocusEventHandler,
+    InputHTMLAttributes,
+    useId
+} from 'react'
+import { classNames } from '../../lib/tw'
+import { useField } from 'formik'
 export interface FormInputProps
     extends DetailedHTMLProps<
         InputHTMLAttributes<HTMLInputElement>,
@@ -10,7 +17,6 @@ interface FormTextInputProps extends FormInputProps {
     label?: string
     labelClassNames?: string
     prefix?: string
-    formName?: string
     placeHolder?: string
 }
 
@@ -20,11 +26,33 @@ export function FormTextInput(props: FormTextInputProps) {
         labelClassNames = undefined,
         prefix = undefined,
         placeHolder = '',
-        formName = undefined,
         className = undefined,
+        onChange = () => {},
+        onBlur = () => {},
+        name,
+        value,
         ...rest
     } = props
-    const id = useId() + !!formName ? `-${formName}` : ''
+
+    const id = useId() + !!name ? `-${name}` : ''
+
+    const [field, meta] = useField(name)
+    const {
+        onBlur: formikOnBlur,
+        onChange: formikOnChange,
+        value: formikValue
+    } = field
+
+    const onInputBlur: FocusEventHandler<HTMLInputElement> = (e) => {
+        formikOnBlur(e)
+        onBlur(e)
+    }
+
+    const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        formikOnChange(e)
+        onChange(e)
+    }
+
     return (
         <div className='grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'>
             <div className='sm:col-span-4'>
@@ -45,15 +73,23 @@ export function FormTextInput(props: FormTextInputProps) {
                         )}
                         <input
                             id={id}
-                            name={formName || id}
+                            name={name}
                             type='text'
                             placeholder={placeHolder}
                             className={classNames(
                                 'block min-w-0 grow bg-transparent py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6',
                                 className
                             )}
+                            onBlur={onInputBlur}
+                            onChange={onInputChange}
+                            value={value || formikValue}
                             {...rest}
                         />
+                        {meta.touched && meta.error ? (
+                            <div className='text-red-500 text-xs'>
+                                {meta.error}
+                            </div>
+                        ) : null}
                     </div>
                 </div>
             </div>

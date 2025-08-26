@@ -1,6 +1,6 @@
 import { classNames } from '../../lib/tw'
 
-interface ButtonProps extends React.ComponentProps<'button'> {}
+export interface ButtonProps extends React.ComponentProps<'button'> {}
 
 export function Button(props: ButtonProps) {
     const { className, ...rest } = props
@@ -8,7 +8,7 @@ export function Button(props: ButtonProps) {
         <button
             type='button'
             className={classNames(
-                'rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20',
+                'cursor-pointer rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white inset-ring inset-ring-white/5 hover:bg-white/20',
                 className
             )}
             {...rest}

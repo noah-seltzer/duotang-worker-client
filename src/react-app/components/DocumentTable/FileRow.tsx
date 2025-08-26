@@ -58,23 +58,28 @@ export function FileRow({ rowId }: FileRowProps) {
             <TableCell>
                 <AddFileModal rowId={rowId} />
             </TableCell>
-            <TableCell className='flex flex-col gap-1'>
-                <ScrollAreaRoot className='h-16 overflow-hidden'>
+            <TableCell>
+                <ScrollAreaRoot
+                    type={fileIds.length > 0 ? 'always' : undefined}
+                    className='h-16 overflow-hidden flex flex-col gap-16'
+                >
                     <ScrollAreaViewport>
-                        {fileIds.map((id) => (
-                            <div
-                                key={id}
-                                className='flex flex-row items-center gap-1'
-                            >
-                                <FilePreview fileId={id} />
-                            </div>
-                        ))}
+                        <div className='flex flex-col gap-2'>
+                            {fileIds.map((id) => (
+                                <div
+                                    key={id}
+                                    className='flex flex-row items-center gap-1'
+                                >
+                                    <FilePreview fileId={id} />
+                                </div>
+                            ))}
+                        </div>
                     </ScrollAreaViewport>
                     <ScrollAreaScrollbar
-                        className='flex touch-none select-none bg-blackA3 p-0.5 transition-colors duration-[160ms] ease-out hover:bg-blackA5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col'
+                        className='flex touch-none select-none bg-gray-50 rounded-[20px] p-0.5 transition-colors duration-[160ms] ease-out hover:bg-blackA5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col'
                         orientation='vertical'
                     >
-                        <ScrollAreaThumb className='relative flex-1 rounded-[10px] bg-mauve10 before:absolute before:left-1/2 before:top-1/2 before:size-full before:min-h-11 before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2' />
+                        <ScrollAreaThumb className='relative flex-1 rounded-[10px] bg-gray-500 before:absolute before:left-1/2 before:top-1/2 before:size-full before:min-h-11 before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2' />
                     </ScrollAreaScrollbar>
                 </ScrollAreaRoot>
             </TableCell>

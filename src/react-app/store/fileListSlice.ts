@@ -12,6 +12,7 @@ import { addFilesToRow, deleteFilesFromRow, deleteRows } from './fileListThunks'
 import { DocumentRowType } from '../types/DocumentRowType'
 import { RootState } from '.'
 import { ListRow } from '../types/ListRow'
+import { updateOneEntity } from './actionHelpers'
 
 export interface FileListState {
     loadingState: LOADING_STATE
@@ -22,14 +23,15 @@ export interface FileListState {
 const rowEntity = createEntityAdapter<ListRow>()
 const fileEntity = createEntityAdapter<CachedFile>()
 
-export const createBlankRow = (typeSlug?: string): ListRow => {
+export const createBlankRow = (listId: string, typeSlug?: string): ListRow => {
     const docType = !!typeSlug
         ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentRowType)
         : DOCUMENT_TYPES[0]
     return {
         id: nanoid(),
         docType,
-        fileIds: []
+        fileIds: [],
+        listId
     }
 }
 
@@ -39,20 +41,15 @@ const initialState: FileListState = {
     loadingState: IDLE
 }
 
-export const fileListSlice = createSlice({
+const fileListSlice = createSlice({
     name: 'fileRow',
     initialState,
     reducers: {
-        addRow: (state) => {
-            const newRow = createBlankRow()
-            rowEntity.addOne(state.rows, newRow)
+        addRow: (state, action: PayloadAction<ListRow>) => {
+            rowEntity.addOne(state.rows, action.payload)
         },
         updateFileRow: (state, action: PayloadAction<ListRow>) => {
-            const updatedRow = action.payload
-            rowEntity.updateOne(state.rows, {
-                id: updatedRow.id,
-                changes: updatedRow
-            })
+            updateOneEntity(rowEntity, state.rows, action.payload)
         },
         deleteRow: (state, action: PayloadAction<string>) => {
             const row = state.rows.entities[action.payload]
@@ -111,6 +108,7 @@ export const fileSelectors = fileEntity.getSelectors<RootState>(
 export const rowSelectors = rowEntity.getSelectors<RootState>(
     (state) => state.fileList.rows
 )
+
 
 export const selectRowById = (state: RootState, id: string) =>
     rowSelectors.selectById(state, id)

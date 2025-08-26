@@ -10,30 +10,6 @@ import localforage from 'localforage'
 import { deleteFilesFromRow } from '../../store/fileListThunks'
 import { DisplayName } from './FileNamePreview'
 
-interface FilePreviewsProps {
-    fileIds: string[]
-}
-
-export function FilePreviews({ fileIds }: FilePreviewsProps) {
-    if (!fileIds) {
-        return <>None</>
-    }
-
-    if (fileIds.length === 0) return <>None</>
-
-    return (
-        <div className='flex flex-row gap-2'>
-            <div className='flex flex-col gap-2'>
-                {fileIds.map((id) => (
-                    <div key={id} className='flex flex-row items-center gap-2'>
-                        <FilePreview fileId={id} />
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
-}
-
 interface FilePreviewProps {
     fileId: string
 }

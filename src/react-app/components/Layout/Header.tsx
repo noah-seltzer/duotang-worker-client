@@ -15,15 +15,13 @@ import {
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Logo } from '../Files/Logo'
-import { SavedListItem } from '../SavedLists/SavedListItem'
-import { RootState, useAppSelector } from '../../store'
 import { Login } from '../Auth/Login'
 
 export function Header() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-    const savedLists = useAppSelector(
-        (state: RootState) => state.savedLists.lists
-    ) 
+    // const savedLists = useAppSelector(
+    //     (state: RootState) => state.savedLists.lists
+    // )
     return (
         <header className='bg-gray-900'>
             <nav
@@ -60,9 +58,9 @@ export function Header() {
                                 className='absolute left-1/2 z-10 mt-3 w-64 max-w-sm -translate-x-1/2 overflow-hidden rounded-3xl bg-gray-800 outline-1 -outline-offset-1 outline-white/10 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in'
                             >
                                 <div className='p-4 flex flex-col gap-2'>
-                                    {savedLists.map((item) => (
+                                    {/* {savedLists.map((item) => (
                                         <SavedListItem item={item} />
-                                    ))}
+                                    ))} */}
                                 </div>
                             </PopoverPanel>
                         </Popover>
@@ -109,7 +107,7 @@ export function Header() {
                                         />
                                     </DisclosureButton>
                                     <DisclosurePanel className='mt-2 space-y-2'>
-                                        {savedLists.map((item) => (
+                                        {/* {savedLists.map((item) => (
                                             <DisclosureButton
                                                 onClick={() =>
                                                     setMobileMenuOpen(false)
@@ -119,7 +117,7 @@ export function Header() {
                                             >
                                                 {item.name}
                                             </DisclosureButton>
-                                        ))}
+                                        ))} */}
                                     </DisclosurePanel>
                                 </Disclosure>
                             </div>
