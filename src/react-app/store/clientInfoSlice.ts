@@ -1,4 +1,3 @@
-import { DocumentList } from './../types/DocumentList'
 import { ClientInfo, ClientInfoInput } from '../types/ClientInfo'
 import {
     createEntityAdapter,

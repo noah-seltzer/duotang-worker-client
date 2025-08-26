@@ -22,7 +22,7 @@ export function Header({ children }: PropsWithChildren) {
     )
 }
 
-export function TableRow({ children, className }: GenericComponentProps) {
+export function TableRow({ children }: GenericComponentProps) {
     return (
         <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200'>
             {children}

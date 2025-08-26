@@ -1,7 +1,6 @@
 import { useDocumentListState } from "../../hooks/useDocumentListState"
-import { useAppDispatch, useAppSelector } from "../../store"
-import { selectDocumentListById } from "../../store/clientInfoSlice"
-import { addRow } from "../../store/fileListSlice"
+import { useAppSelector } from '../../store'
+import { selectDocumentListById } from '../../store/clientInfoSlice'
 import { ExportButton } from "../Input/ExportButton"
 import { Button } from "../Skeleton/Button"
 import { Table } from "../Table/Table"
