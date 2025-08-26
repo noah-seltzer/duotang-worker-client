@@ -1,13 +1,17 @@
-import { TextInput } from '../Input/TextInput'
-import {
-    selectClientInfo,
-    updateFirstName,
-    updateJobTitle,
-    updateLastName
-} from '../../store/clientInfoSlice'
+import { selectNewClient, addClient } from '../../store/clientInfoSlice'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { Button } from '../Skeleton/Button'
-import { Popover } from '../Skeleton/Popover'
+import {
+    FloatingModalClose,
+    FloatingModalContent,
+    FloatingModalRoot,
+    FloatingModalTitle,
+    FloatingModalTrigger
+} from '../Skeleton/FloatingModal'
+import { FormTextInput } from '../Form/FormTextInput'
+import { FormContextProvider } from '../Form/FormContextProvider'
+import { FormSubmitButton } from '../Form/FormSubmitButton'
+import { ClientInfoInput } from '../../types/ClientInfo'
 
 /**
  * Form for information about the client who the documents are for
@@ -15,42 +19,50 @@ import { Popover } from '../Skeleton/Popover'
  * @param handleClientInfoChange react state setter for client info
  */
 export function ClientInput() {
-    const { firstName, lastName, jobTitle } = useAppSelector(selectClientInfo)
+    const newClient = useAppSelector(selectNewClient)
     const dispatch = useAppDispatch()
-    const trigger = <Button>Edit Client Info</Button>
     return (
         <>
-            <Popover trigger={trigger}>
-                <div className='w-72 flex flex-col gap-3'>
-                    <TextInput
-                        label='First Name'
-                        name='firstName'
-                        placeholder='Client First Name'
-                        value={firstName}
-                        onChange={(event) => {
-                            dispatch(updateFirstName(event.target.value))
-                        }}
-                    />
-                    <TextInput
-                        label='Last Name'
-                        name='lastName'
-                        placeholder='Client Last Name'
-                        value={lastName}
-                        onChange={(event) => {
-                            dispatch(updateLastName(event.target.value))
-                        }}
-                    />
-                    <TextInput
-                        name='Client Job Title'
-                        label='Job Title'
-                        placeholder='Client Job Title'
-                        value={jobTitle}
-                        onChange={(event) => {
-                            dispatch(updateJobTitle(event.target.value))
-                        }}
-                    />
-                </div>
-            </Popover>
+            <FloatingModalRoot>
+                <FloatingModalTrigger asChild={true}>
+                    <Button>Create New Client</Button>
+                </FloatingModalTrigger>
+                <FloatingModalContent>
+                    <FloatingModalTitle>Create New User</FloatingModalTitle>
+                    <div className='w-72 flex flex-col gap-3'>
+                        <FormContextProvider
+                            initialValues={newClient}
+                            onSubmit={(value) => {
+                                dispatch(addClient(value as ClientInfoInput))
+                            }}
+                        >
+                            <FormTextInput
+                                label='First Name'
+                                name='firstName'
+                                placeholder='Client First Name'
+                            />
+                            <FormTextInput
+                                label='Last Name'
+                                name='lastName'
+                                placeholder='Client First Name'
+                            />
+                            <FormTextInput
+                                label='Job Title'
+                                name='jobTitle'
+                                placeholder='Client Job jobTitle'
+                            />
+                            <div className='flex flex-row gap-3'>
+                                <FloatingModalClose asChild={true}>
+                                    <FormSubmitButton className='mt-3' />
+                                </FloatingModalClose>
+                                <FloatingModalClose asChild={true}>
+                                    <Button className='mt-3'>Cancel</Button>
+                                </FloatingModalClose>
+                            </div>
+                        </FormContextProvider>
+                    </div>
+                </FloatingModalContent>
+            </FloatingModalRoot>
         </>
     )
 }

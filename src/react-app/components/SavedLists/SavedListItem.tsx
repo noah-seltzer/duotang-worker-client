@@ -1,6 +1,6 @@
-import { SavedList } from '../../store/savedListSlice'
+import { DocumentList } from '../../store/savedListSlice'
 
-export function SavedListItem({ item }: { item: SavedList }) {
+export function SavedListItem({ item }: { item: DocumentList }) {
     return (
         <div
             key={item.name}

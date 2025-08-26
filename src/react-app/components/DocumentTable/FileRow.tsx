@@ -1,15 +1,18 @@
 import { TableCell, TableRow } from '../Table/TableComponents'
-import { FilePreviews } from './FilePreview'
 import { classNames } from '../../lib/tw'
 import { useAppDispatch, useAppSelector } from '../../store'
 import { selectRowById, updateFileRow } from '../../store/fileListSlice'
-import { FileTypeSelector } from './FileTypeSelector'
-import { StatusBar } from './StatusBar'
-import { addFilesToRow, deleteRows } from '../../store/fileListThunks'
-import { FileNamePreviews } from './FileNamePreview'
+import { FileTypeSelector } from '../Files/FileTypeSelector'
+import { deleteRows } from '../../store/fileListThunks'
 import { DeleteButton } from '../Input/DeleteButton'
-import { FileFormInput } from '../Input/FileFormInput'
-
+import { AddFileModal } from '../Files/AddFileModal'
+import { FilePreview } from '../Files/FilePreview'
+import {
+    Root as ScrollAreaRoot,
+    Viewport as ScrollAreaViewport,
+    ScrollAreaScrollbar,
+    ScrollAreaThumb
+} from '@radix-ui/react-scroll-area'
 export interface FileRowProps {
     index: number
     rowId: string
@@ -23,16 +26,6 @@ export function FileRow({ rowId }: FileRowProps) {
 
     const isComplete = fileIds.length > 0
 
-    const addFiles = (files: File[], isMarad: boolean = false) => {
-        const newFiles = files.map((file) => ({
-            file,
-            name: file.name,
-            isMarad,
-            rowId
-        }))
-
-        dispatch(addFilesToRow(newFiles))
-    }
     return (
         <TableRow>
             <TableCell>
@@ -45,9 +38,9 @@ export function FileRow({ rowId }: FileRowProps) {
             </TableCell>
             {/* Status */}
             <TableCell>
-                <div className='p-6 flex flex-row items-center gap-4 space-y-0 h-full'>
+                <div className='flex flex-row items-center gap-4 space-y-0 h-full'>
                     <DeleteButton
-                        confirmMessage='Are you sure you want to delete this row? Associated files will be deleted'
+                        confirmMessage='Files associated with this row will be deleted.'
                         onClick={() => dispatch(deleteRows([rowId]))}
                     />
                 </div>
@@ -63,49 +56,32 @@ export function FileRow({ rowId }: FileRowProps) {
             </TableCell>
             {/* Assigned File */}
             <TableCell>
-                {/* <FloatingModalRoot>
-                    <FloatingModalTrigger asChild={true}>
-                        <Button>Add Files</Button>
-                    </FloatingModalTrigger>
-                    <FloatingModalContent>
-                        <FormRoot>
-                            <FormTextInput
-                                // onSaved={(files) => addFiles(files)}
-                            />
-                        </FormRoot>
-                    </FloatingModalContent>
-                </FloatingModalRoot> */}
-                <div className='flex flex-row items-center gap-2'>
-                    <div className='flex flex-col gap-2'>
-                        <FileFormInput onSaved={addFiles} />
-                        <StatusBar
-                            status={fileIds.length > 0 ? 'success' : 'error'}
-                        />
-                    </div>
-                </div>
+                <AddFileModal rowId={rowId} />
             </TableCell>
             <TableCell>
-                {docType.marad ? (
-                    <div className='flex flex-col items-center gap-2'>
-                        <FileFormInput
-                            title='Add Marad File'
-                            onSaved={(files) => addFiles(files, true)}
-                        />
-                        <StatusBar
-                            status={fileIds.length > 0 ? 'success' : 'error'}
-                        />
-                    </div>
-                ) : (
-                    'No Marad Required'
-                )}
-            </TableCell>
-            {/* Filename Preview */}
-            <TableCell>
-                <FileNamePreviews rowId={rowId} />
-            </TableCell>
-            {/* File Preview */}
-            <TableCell>
-                <FilePreviews fileIds={row.fileIds} />
+                <ScrollAreaRoot
+                    type={fileIds.length > 0 ? 'always' : undefined}
+                    className='h-16 overflow-hidden flex flex-col gap-16'
+                >
+                    <ScrollAreaViewport>
+                        <div className='flex flex-col gap-2'>
+                            {fileIds.map((id) => (
+                                <div
+                                    key={id}
+                                    className='flex flex-row items-center gap-1'
+                                >
+                                    <FilePreview fileId={id} />
+                                </div>
+                            ))}
+                        </div>
+                    </ScrollAreaViewport>
+                    <ScrollAreaScrollbar
+                        className='flex touch-none select-none bg-gray-50 rounded-[20px] p-0.5 transition-colors duration-[160ms] ease-out hover:bg-blackA5 data-[orientation=horizontal]:h-2.5 data-[orientation=vertical]:w-2.5 data-[orientation=horizontal]:flex-col'
+                        orientation='vertical'
+                    >
+                        <ScrollAreaThumb className='relative flex-1 rounded-[10px] bg-gray-500 before:absolute before:left-1/2 before:top-1/2 before:size-full before:min-h-11 before:min-w-11 before:-translate-x-1/2 before:-translate-y-1/2' />
+                    </ScrollAreaScrollbar>
+                </ScrollAreaRoot>
             </TableCell>
         </TableRow>
     )

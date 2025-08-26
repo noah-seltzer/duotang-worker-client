@@ -1,13 +1,14 @@
-import { type PropsWithChildren } from 'react'
+import { ReactNode, type PropsWithChildren } from 'react'
 import { classNames } from '../../lib/tw'
 
 export interface GenericComponentProps {
     className?: string
+    children?: ReactNode
 }
 
 export function HeaderCell({ children }: PropsWithChildren) {
     return (
-        <th scope='col' className='px-auto py-3 text-center'>
+        <th scope='col' className='px-auto py-3 px-6'>
             {children}
         </th>
     )
@@ -21,7 +22,7 @@ export function Header({ children }: PropsWithChildren) {
     )
 }
 
-export function TableRow({ children }: PropsWithChildren) {
+export function TableRow({ children }: GenericComponentProps) {
     return (
         <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 border-gray-200'>
             {children}
@@ -33,9 +34,5 @@ export function TableCell({
     children,
     className
 }: PropsWithChildren<GenericComponentProps>) {
-    return (
-        <td className={classNames('px-6 py-4 space-y-2', className)}>
-            {children}
-        </td>
-    )
+    return <td className={classNames('px-6 py-3', className)}>{children}</td>
 }

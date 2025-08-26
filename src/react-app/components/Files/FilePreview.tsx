@@ -8,36 +8,13 @@ import { useAppDispatch, useAppSelector } from '../../store'
 import { fileSelectors, selectFileById } from '../../store/fileListSlice'
 import localforage from 'localforage'
 import { deleteFilesFromRow } from '../../store/fileListThunks'
-
-interface FilePreviewsProps {
-    fileIds: string[]
-}
-
-export function FilePreviews({ fileIds }: FilePreviewsProps) {
-    if (!fileIds) {
-        return <>None</>
-    }
-
-    if (fileIds.length === 0) return <>None</>
-
-    return (
-        <div className='flex flex-row gap-2'>
-            <div className='flex flex-col gap-2'>
-                {fileIds.map((id) => (
-                    <div key={id} className='flex flex-row items-center gap-2'>
-                        <FilePreview fileId={id} />
-                    </div>
-                ))}
-            </div>
-        </div>
-    )
-}
+import { DisplayName } from './FileNamePreview'
 
 interface FilePreviewProps {
     fileId: string
 }
 
-function FilePreview({ fileId }: FilePreviewProps) {
+export function FilePreview({ fileId }: FilePreviewProps) {
     const fileMeta = useAppSelector((state) => selectFileById(state, fileId))
     const dispatch = useAppDispatch()
     const ext = getFileExtensionFromName(fileMeta.name)
@@ -51,6 +28,7 @@ function FilePreview({ fileId }: FilePreviewProps) {
         <div className='flex flex-row items-center gap-2'>
             <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>
                 <FileLoader fileId={fileId} filePromise={promise} />
+                <DisplayName fileId={fileId} />
                 <DeleteButton
                     confirmMessage='Delete File? This cannot be undone.'
                     onClick={() => dispatch(deleteFilesFromRow([fileMeta]))}

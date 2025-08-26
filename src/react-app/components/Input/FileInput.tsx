@@ -13,9 +13,12 @@ export function FileInput({ onChange, title, folder = false }: FileInputProps) {
 
     return (
         <>
-            <Button onClick={() => fileInputRef.current?.click()}>
-                {title ?? ''}
+            <Button
+                className='flex flex-row gap-2 items-center'
+                onClick={() => fileInputRef.current?.click()}
+            >
                 <FolderIcon />
+                {title ?? ''}
             </Button>
             <input
                 type='file'

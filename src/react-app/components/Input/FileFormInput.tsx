@@ -11,11 +11,13 @@ import type { OneDrivePickedFileResult } from '../../types/OneDrivePickedFileRes
 import { fileDownloadRequest } from '../../data/auth-config'
 import { FileInput } from './FileInput'
 import { IPublicClientApplication } from '@azure/msal-browser'
-import { ChangeEvent } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { Button } from '../Skeleton/Button'
+import { FileDetailsList } from '../Files/Filedetails'
 interface FileFormInputProps {
     onChange?: (files: FileList | null) => void
-    onSaved: (fileIds: File[]) => void
+    onSaved: (fileIds: FileInput[]) => void
+    onCancel?: () => void
     title?: string
 }
 
@@ -45,49 +47,87 @@ const processOnedriveFileSelected = async (
     return files
 }
 
-export function FileFormInput({ onSaved }: FileFormInputProps) {
+export interface FileInput {
+    file: File
+    isMarad: boolean
+}
+
+export function FileFormInput({ onSaved, onCancel }: FileFormInputProps) {
     const { instance } = useMsal()
+
+    const [currentFiles, setCurrentFiles] = useState<FileInput[]>([])
+
+    const addToCurrentFiles = (files: File[]) => {
+        setCurrentFiles([
+            ...currentFiles,
+            ...files.map((file) => ({ file, isMarad: false }))
+        ])
+    }
+
+    const removeFromCurrentFiles = (index: number) => {
+        if (currentFiles.length === 1) {
+            setCurrentFiles([])
+        } else {
+            setCurrentFiles(currentFiles.splice(index, 1))
+        }
+    }
+    const changeMaradValue = (index: number, value: boolean) => {
+        const fileShallowCopy = { ...currentFiles[index] }
+        fileShallowCopy.isMarad = value
+        currentFiles[index] = fileShallowCopy
+        setCurrentFiles([...currentFiles])
+    }
 
     const isLoggedIn = instance.getAllAccounts().length > 0
 
-    // TODO this cannot be inside a component lmao
-    // also any type is bad
-    const onFilePicked = async (command: any) => {
+    const onOnedriveFileSelected = async (command: any) => {
         const files = await processOnedriveFileSelected(instance, command)
-        onSaved(files)
+        addToCurrentFiles(files)
     }
 
-    const onFileSaved = (e: ChangeEvent<HTMLInputElement>) => {
+    const onLocalFilesSelected = (e: ChangeEvent<HTMLInputElement>) => {
         const { files } = e.target
         if (!files) return
-        onSaved(Array.from(files))
+        addToCurrentFiles(Array.from(files))
     }
 
     return (
         <>
-        <div className='flex flex-row items-center gap-1'>
-            <FileInput onChange={onFileSaved} />
-            {isLoggedIn ? (
-                <>
-                    <DialogRoot>
-                        <DialogTrigger asChild={true}>
-                            <Button>
-                                <OneDriveIcon />
-                            </Button>
-                        </DialogTrigger>
-                        <DialogPortal>
-                            <Picker onPick={onFilePicked} />
-                        </DialogPortal>
-                    </DialogRoot>
-                </>
-            ) : (
-                <Login>
-                    <Button>
-                        <OneDriveIcon />
-                    </Button>
-                </Login>
-            )}
-        </div>
-            </>
+            <div className='flex flex-row items-center gap-2'>
+                <FileInput
+                    title={'Select from local files'}
+                    onChange={onLocalFilesSelected}
+                />
+                {isLoggedIn ? (
+                    <>
+                        <DialogRoot>
+                            <DialogTrigger asChild={true}>
+                                <Button>
+                                    <OneDriveIcon /> Select from Onedrive
+                                </Button>
+                            </DialogTrigger>
+                            <DialogPortal>
+                                <Picker onPick={onOnedriveFileSelected} />
+                            </DialogPortal>
+                        </DialogRoot>
+                    </>
+                ) : (
+                    <Login>
+                        <Button className='flex flex-row items-center gap-2'>
+                            <OneDriveIcon /> Login to select from Onedrive
+                        </Button>
+                    </Login>
+                )}
+            </div>
+            <FileDetailsList
+                onCheckboxChange={changeMaradValue}
+                onClick={removeFromCurrentFiles}
+                files={currentFiles}
+            />
+            <div className='flex flex-row gap-2'>
+                <Button onClick={() => onSaved(currentFiles)}>Save</Button>
+                <Button onClick={() => onCancel && onCancel()}>Cancel</Button>
+            </div>
+        </>
     )
 }
