@@ -14,7 +14,7 @@ import {
 } from '@headlessui/react'
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
-import { Logo } from '../Singletons/Logo'
+import { Logo } from '../Files/Logo'
 import { SavedListItem } from '../SavedLists/SavedListItem'
 import { RootState, useAppSelector } from '../../store'
 import { Login } from '../Auth/Login'

@@ -12,8 +12,8 @@ const rowNames = [
     'Status',
     'Delete',
     'Document',
-    'File'
-    // 'Marad File',
+    'File',
+    'Preview'
     // 'Filename',
     // 'File'
 ]

@@ -1,11 +1,17 @@
+import { ClientInfo } from '../types/ClientInfo'
 import { createSlice } from '@reduxjs/toolkit'
-import type { ClientInfo } from '../types/ClientInfo'
 import type { RootState } from '.'
 
-const initialState: ClientInfo = {
-    firstName: 'Noah',
-    lastName: 'Seltzer',
-    jobTitle: 'Second Engineer'
+interface ClientInfoState {
+    newClient: ClientInfo
+}
+
+const initialState: ClientInfoState = {
+    newClient: {
+        firstName: 'Noah',
+        lastName: 'Seltzer',
+        jobTitle: 'Second Engineer'
+    }
 }
 
 export const clientInfoSlice = createSlice({
@@ -13,18 +19,18 @@ export const clientInfoSlice = createSlice({
     initialState,
     reducers: {
         updateFirstName: (state, action) => {
-            state.firstName = action.payload
+            state.newClient.firstName = action.payload
         },
         updateLastName: (state, action) => {
-            state.lastName = action.payload
+            state.newClient.lastName = action.payload
         },
         updateJobTitle: (state, action) => {
-            state.jobTitle = action.payload
+            state.newClient.jobTitle = action.payload
         }
     }
 })
 
-export const selectClientInfo = (state: RootState) => state.clientInfo
+export const selectClientInfo = (state: RootState) => state.clientInfo.newClient
 
 export const { updateFirstName, updateLastName, updateJobTitle } =
     clientInfoSlice.actions
