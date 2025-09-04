@@ -22,11 +22,23 @@ import fileListSlice from './fileListSlice'
 import clientInfoSlice from './clientInfoSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import documentListSlice from './savedListSlice'
+import clientSlice from './services/client/slice'
+import fileSlice from './services/file/slice'
+import submissionSlice from './services/submission/slice'
+import submissionItemSlice from './services/submissionItem/slice'
+import submissionItemListSlice from './services/submissionItemList/slice'
+import submissionListSlice from './services/submissionList/slice'
 
 const rootReducer = combineReducers({
     fileList: fileListSlice,
     clientInfo: clientInfoSlice,
-    documentList: documentListSlice
+    documentList: documentListSlice,
+    client: clientSlice,
+    file: fileSlice,
+    submission: submissionSlice,
+    submissionItem: submissionItemSlice,
+    submissionItemList: submissionItemListSlice,
+    submissionList: submissionListSlice
 })
 
 const persistConfig = {

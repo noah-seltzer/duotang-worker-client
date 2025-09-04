@@ -1,5 +1,6 @@
 import { IDLE, LOADING_STATE } from './../constants/state'
 import {
+    ActionReducerMapBuilder,
     createEntityAdapter,
     createSlice,
     EntityState,
@@ -41,6 +42,47 @@ const initialState: FileListState = {
     loadingState: IDLE
 }
 
+export const fileListExtraReducers = (
+    builder: ActionReducerMapBuilder<FileListState>
+) => {
+    builder.addCase(addFilesToRow.fulfilled, (state, action) => {
+        const { payload } = action
+        fileEntity.addMany(state.files, payload)
+
+        const { rowId } = payload[0]
+        const row = state.rows.entities[rowId]
+
+        const ids = payload.map((p) => p.id)
+        row.fileIds = row.fileIds.concat(ids)
+
+        rowEntity.updateOne(state.rows, {
+            id: rowId,
+            changes: row
+        })
+    })
+    builder.addCase(deleteFilesFromRow.fulfilled, (state, action) => {
+        const { payload } = action
+        const ids = payload.map((p) => p.id)
+        fileEntity.removeMany(state.files, ids)
+
+        const { rowId } = payload[0]
+        const row = state.rows.entities[payload[0].rowId]
+
+        row.fileIds = row.fileIds.filter((fileId) => !ids.includes(fileId))
+        rowEntity.updateOne(state.rows, {
+            id: rowId,
+            changes: row
+        })
+    })
+    builder.addCase(deleteRows.fulfilled, (state, action) => {
+        const { payload } = action
+        const ids = payload.map((p) => p.id)
+        const fileIds = payload.map((p) => p.fileIds).flat()
+        fileEntity.removeMany(state.files, fileIds)
+        rowEntity.removeMany(state.rows, ids)
+    })
+}
+
 const fileListSlice = createSlice({
     name: 'fileRow',
     initialState,
@@ -57,44 +99,7 @@ const fileListSlice = createSlice({
             rowEntity.removeOne(state.rows, row.id)
         }
     },
-    extraReducers: (builder) => {
-        builder.addCase(addFilesToRow.fulfilled, (state, action) => {
-            const { payload } = action
-            fileEntity.addMany(state.files, payload)
-
-            const { rowId } = payload[0]
-            const row = state.rows.entities[rowId]
-
-            const ids = payload.map((p) => p.id)
-            row.fileIds = row.fileIds.concat(ids)
-
-            rowEntity.updateOne(state.rows, {
-                id: rowId,
-                changes: row
-            })
-        })
-        builder.addCase(deleteFilesFromRow.fulfilled, (state, action) => {
-            const { payload } = action
-            const ids = payload.map((p) => p.id)
-            fileEntity.removeMany(state.files, ids)
-
-            const { rowId } = payload[0]
-            const row = state.rows.entities[payload[0].rowId]
-
-            row.fileIds = row.fileIds.filter((fileId) => !ids.includes(fileId))
-            rowEntity.updateOne(state.rows, {
-                id: rowId,
-                changes: row
-            })
-        })
-        builder.addCase(deleteRows.fulfilled, (state, action) => {
-            const { payload } = action
-            const ids = payload.map((p) => p.id)
-            const fileIds = payload.map((p) => p.fileIds).flat()
-            fileEntity.removeMany(state.files, fileIds)
-            rowEntity.removeMany(state.rows, ids)
-        })
-    }
+    extraReducers: fileListExtraReducers
 })
 
 export type FileListSlice = {

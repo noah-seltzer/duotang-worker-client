@@ -1,5 +1,3 @@
-import { selectNewClient, addClient } from '../../store/clientInfoSlice'
-import { useAppDispatch, useAppSelector } from '../../store'
 import { Button } from '../Skeleton/Button'
 import {
     FloatingModalClose,
@@ -11,16 +9,17 @@ import {
 import { FormTextInput } from '../Form/FormTextInput'
 import { FormContextProvider } from '../Form/FormContextProvider'
 import { FormSubmitButton } from '../Form/FormSubmitButton'
-import { ClientInfoInput } from '../../types/ClientInfo'
+import { useClientState } from '../../hooks/useClientState'
+import { ClientInput } from '../../store/services/client/slice'
 
 /**
  * Form for information about the client who the documents are for
  * @param clientInfo react state for client info
  * @param handleClientInfoChange react state setter for client info
  */
-export function ClientInput() {
-    const newClient = useAppSelector(selectNewClient)
-    const dispatch = useAppDispatch()
+export function ClientInputForm() {
+    const { createClient, newClient } = useClientState()
+
     return (
         <>
             <FloatingModalRoot>
@@ -33,7 +32,7 @@ export function ClientInput() {
                         <FormContextProvider
                             initialValues={newClient}
                             onSubmit={(value) => {
-                                dispatch(addClient(value as ClientInfoInput))
+                                createClient(value as ClientInput)
                             }}
                         >
                             <FormTextInput

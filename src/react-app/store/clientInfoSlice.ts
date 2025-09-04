@@ -89,6 +89,7 @@ export const selectDocumentListById = (state: RootState, id: string) =>
     documentListSelectors.selectById(state, id)
 
 export const selectNewClient = (state: RootState) => state.clientInfo.newClient
+
 export const selectCurrentClientId = (state: RootState) =>
     state.clientInfo.currentClientId
 
