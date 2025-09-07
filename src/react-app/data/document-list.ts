@@ -24,19 +24,19 @@ export const DOCUMENT_TYPES: DocumentRowType[] = [
     },
     {
         label: 'Basic Safety',
-        fileLabel: 'Basic Safety (STCW A-VI/1)',
+        fileLabel: 'Basic Safety (STCW A-VI 1)',
         slug: 'stcw-basic-safety',
         marad: false
     },
     {
         label: 'Advanced Firefighting',
-        fileLabel: 'Advanced Firefighting (STCW A-VI/3)',
+        fileLabel: 'Advanced Firefighting (STCW A-VI 3)',
         slug: 'aff',
         marad: true
     },
     {
         label: 'Survival Craft',
-        fileLabel: 'Survival Craft (STCW A-VI/2-1)',
+        fileLabel: 'Survival Craft (STCW A-VI 2-1)',
         slug: 'survival-craft',
         marad: true
     },
