@@ -54,7 +54,7 @@ export function FileTypeSelector({
                     </div>
                 </SelectTrigger>
                 <SelectContent>
-                    <SelectViewport className='backdrop-blur-2xl'>
+                    <SelectViewport className='backdrop-blur-2xl z-100 w-max'>
                         <SelectGroup>
                             {options.map((option) => {
                                 return (

@@ -1,4 +1,5 @@
 import { useGetFileInfo } from '../../hooks/useGenerateNewFileName'
+import { classNames } from '../../lib/tw'
 import { useAppSelector } from '../../store'
 import { selectRowById } from '../../store/fileListSlice'
 import { HoverCard } from '../Skeleton/HoverCard'
@@ -14,12 +15,12 @@ export function DisplayName({ fileId }: FileNamePreviewProps) {
     const displayName = isOverflow ? `${name.slice(0, 20)}...` : name
 
     const trigger = (
-        <span className={isOverflow ? 'overflow' : ''}>{displayName}</span>
+        <span className={classNames('underline', isOverflow ? 'overflow' : '')}>{'New: ' + displayName}</span>
     )
 
     return (
         <HoverCard closeOnHover={true} trigger={trigger}>
-            <div className='bg-black rounded-md py-2 px-4'>{name}</div>
+            <div className='bg-black rounded-md py-2 px-4 z-100'>{name}</div>
         </HoverCard>
     )
 }

@@ -16,8 +16,12 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Logo } from '../Files/Logo'
 import { Login } from '../Auth/Login'
+import { useMsal } from '@azure/msal-react'
 
 export function Header() {
+    const { instance } = useMsal()
+
+    const isLoggedIn = instance.getAllAccounts().length > 0
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     return (
         <header className='bg-gray-900'>
@@ -28,7 +32,7 @@ export function Header() {
                 {/* Logo */}
                 <Logo />
                 {/* Mobile Nav */}
-                <div className='flex lg:hidden'>
+                {/* <div className='flex lg:hidden'>
                     <button
                         type='button'
                         onClick={() => setMobileMenuOpen(true)}
@@ -37,13 +41,13 @@ export function Header() {
                         <span className='sr-only'>Menu</span>
                         <Bars3Icon aria-hidden='true' className='size-6' />
                     </button>
-                </div>
+                </div> */}
                 {/* Desktop Nav */}
                 <div className='hidden lg:flex lg:flex-1 lg:justify-end lg:gap-6'>
-                    <PopoverGroup className='lg:gap-x-12'>
+                    {/* <PopoverGroup className='lg:gap-x-12'>
                         <Popover className='relative'>
                             <PopoverButton className='flex items-center gap-x-1 text-sm/6 font-semibold text-white'>
-                                Saved Lists
+                                Select Client
                                 <ChevronDownIcon
                                     aria-hidden='true'
                                     className='size-5 flex-none text-gray-500'
@@ -59,20 +63,23 @@ export function Header() {
                                 </div>
                             </PopoverPanel>
                         </Popover>
-                    </PopoverGroup>
-                    <div>
-                        <Login>
-                            <a
-                                href='#'
-                                className='text-sm/6 font-semibold text-white'
-                            >
-                                Log in <span aria-hidden='true'>&rarr;</span>
-                            </a>
-                        </Login>
-                    </div>
+                    </PopoverGroup> */}
+                    {!isLoggedIn && (
+                        <div>
+                            <Login>
+                                <a
+                                    href='#'
+                                    className='text-sm/6 font-semibold text-white'
+                                >
+                                    Log in{' '}
+                                    <span aria-hidden='true'>&rarr;</span>
+                                </a>
+                            </Login>
+                        </div>
+                    )}
                 </div>
             </nav>
-            <Dialog
+            {/* <Dialog
                 open={mobileMenuOpen}
                 onClose={setMobileMenuOpen}
                 className='lg:hidden'
@@ -95,7 +102,7 @@ export function Header() {
                             <div className='space-y-2 py-6'>
                                 <Disclosure as='div' className='-mx-3'>
                                     <DisclosureButton className='group flex w-full items-center justify-between rounded-lg py-2 pr-3.5 pl-3 text-base/7 font-semibold text-white hover:bg-white/5'>
-                                        Saved Lists
+                                        Select Client
                                         <ChevronDownIcon
                                             aria-hidden='true'
                                             className='size-5 flex-none group-data-open:rotate-180'
@@ -119,7 +126,7 @@ export function Header() {
                         </div>
                     </div>
                 </DialogPanel>
-            </Dialog>
+            </Dialog> */}
         </header>
     )
 }

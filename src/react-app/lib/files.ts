@@ -35,7 +35,7 @@ export const createFileName = (
 }
 
 export const createClientNameString = (clientInfo: ClientInfo) =>
-    `${clientInfo.firstName || DEFAULT_FIRSTNAME}_${
+    `${clientInfo.firstName || DEFAULT_FIRSTNAME} ${
         clientInfo.lastName || DEFAULT_LASTNAME
     }`
 

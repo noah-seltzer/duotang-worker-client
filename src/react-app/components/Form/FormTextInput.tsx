@@ -85,12 +85,12 @@ export function FormTextInput(props: FormTextInputProps) {
                             value={value || formikValue}
                             {...rest}
                         />
-                        {meta.touched && meta.error ? (
-                            <div className='text-red-500 text-xs'>
-                                {meta.error}
-                            </div>
-                        ) : null}
                     </div>
+                    {meta.touched && meta.error ? (
+                        <div className='text-red-500 text-xs mt-2 mb-1'>
+                            {meta.error}
+                        </div>
+                    ) : null}
                 </div>
             </div>
         </div>

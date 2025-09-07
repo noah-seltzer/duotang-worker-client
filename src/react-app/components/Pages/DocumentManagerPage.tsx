@@ -1,7 +1,5 @@
 import { useAppSelector } from '../../store'
-import {
-    selectCurrentClientId
-} from '../../store/clientInfoSlice'
+import { selectCurrentClientId } from '../../store/clientInfoSlice'
 import { LoginOutButtons } from '../Auth/LoginOutButtons'
 import { ClientInput } from '../ClientInput/ClientInput'
 import { ClientTableList } from '../DocumentTable/ClientTableList'
@@ -13,10 +11,16 @@ export function DocumentManagementPage() {
         <>
             <div className='flex justify-left gap-2 mb-2'>
                 <LoginOutButtons />
-                <ClientInput />
             </div>
-            {currentClientId && <ClientTableList currentClientId={currentClientId} />}
-            {!currentClientId && <div>Create a Client First!</div>}
+            {currentClientId && (
+                <ClientTableList currentClientId={currentClientId} />
+            )}
+            {!currentClientId && (
+                <div className='flex flex-row items-center gap-4'>
+                    Please create a new Client
+                    <ClientInput />
+                </div>
+            )}
         </>
     )
 }

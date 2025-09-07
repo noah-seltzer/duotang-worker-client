@@ -2,7 +2,8 @@ import { useAppSelector } from '../store'
 import {
     selectFileById,
     selectRowById,
-    selectRowIds
+    selectRowIds,
+    selectRowsByIds
 } from '../store/fileListSlice'
 import {
     selectClientById,
@@ -20,7 +21,10 @@ export function useGetFileInfo(fileId: string) {
         selectClientById(state, document.clientId)
     )
 
-    const rowIds = useAppSelector(selectRowIds)
+    const rows = useAppSelector((state) =>
+        selectRowsByIds(state, document.rows)
+    )
+    const rowIds = rows.map((row) => row.id)
     const index = rowIds.indexOf(row.id)
 
     const name = createFileName(row, clientInfo, file, index)

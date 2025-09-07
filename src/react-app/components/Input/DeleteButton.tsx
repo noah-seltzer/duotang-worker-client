@@ -1,5 +1,5 @@
 import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
-import { MouseEventHandler } from 'react'
+import { HTMLProps, MouseEventHandler } from 'react'
 
 import {
     FloatingModalTrigger,
@@ -11,7 +11,7 @@ import {
 
 import { Button, NakedButton } from '../Skeleton/Button'
 import { FormHeading } from '../Form/FormHeading'
-interface DeleteButtonProps {
+interface DeleteButtonProps extends HTMLProps<HTMLButtonElement> {
     onClick: MouseEventHandler<HTMLButtonElement>
     confirmTitle?: string
     confirmMessage?: string
@@ -20,18 +20,22 @@ interface DeleteButtonProps {
 export function DeleteButton({
     confirmTitle = 'Are you sure?',
     confirmMessage = undefined,
-    onClick
+    onClick,
+    children,
+    ...props
 }: DeleteButtonProps) {
     return (
         <>
             <FloatingModalRoot>
                 <FloatingModalTrigger asChild={true}>
-                    <NakedButton>
-                        <Cross1Icon />
-                    </NakedButton>
+                    {children || (
+                        <NakedButton>
+                            <Cross1Icon />
+                        </NakedButton>
+                    )}
                 </FloatingModalTrigger>
                 <FloatingModalContent>
-                    <div className=' min-w-64 flex flex-col gap-3 items-center justify-center border-1 rounded-lg fixed px-6 py-2'>
+                    <div className='min-w-64 flex flex-col bg-gray-700 gap-3 items-center justify-center border-1 rounded-lg fixed px-6 py-2'>
                         <FloatingModalTitle className='text-2xl'>
                             <FormHeading
                                 heading={confirmTitle}

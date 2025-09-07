@@ -5,7 +5,17 @@ interface FormSubmitButtonProps extends ButtonProps {}
 
 export function FormSubmitButton(props: FormSubmitButtonProps) {
     const { submitForm } = useFormikContext()
-    return <Button {...props} onClick={submitForm}>
-        Submit
-    </Button>
+    const { onClick, ...rest } = props
+
+    return (
+        <Button
+            {...rest}
+            onClick={(e) => {
+                submitForm()
+                if (onClick) onClick(e)
+            }}
+        >
+            Submit
+        </Button>
+    )
 }

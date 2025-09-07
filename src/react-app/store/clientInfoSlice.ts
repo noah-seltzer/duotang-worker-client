@@ -33,20 +33,27 @@ const initialState: ClientInfoState = {
     lists: documentListEntity.getInitialState()
 }
 
+const addDocumentList = (
+    state: ClientInfoState,
+    payload: DocumentListInput
+) => {
+    const id = nanoid()
+    documentListEntity.addOne(state.lists, {
+        ...payload,
+        id
+    })
+    const client = state.clients.entities[payload.clientId]
+    client.documentListIds = client.documentListIds.concat(id)
+
+    updateOneEntity(clientInfoEntity, state.clients, client)
+}
+
 const clientInfoSlice = createSlice({
     name: 'clientInfo',
     initialState,
     reducers: {
         addList: (state, action: PayloadAction<DocumentListInput>) => {
-            const id = nanoid()
-            documentListEntity.addOne(state.lists, {
-                ...action.payload,
-                id
-            })
-            const client = state.clients.entities[action.payload.clientId]
-            client.documentListIds = client.documentListIds.concat(id)
-
-            updateOneEntity(clientInfoEntity, state.clients, client)
+            addDocumentList(state, action.payload)
         },
         updateList: (state, action: PayloadAction<DocumentList>) => {
             updateOneEntity(documentListEntity, state.lists, action.payload)
@@ -73,6 +80,11 @@ const clientInfoSlice = createSlice({
             }
             clientInfoEntity.addOne(state.clients, newClient)
             state.currentClientId = newClient.id
+            addDocumentList(state, {
+                name: 'newList',
+                rows: [],
+                clientId: newClient.id
+            })
         }
     }
 })
@@ -94,6 +106,9 @@ export const selectCurrentClientId = (state: RootState) =>
 
 export const selectClientById = (state: RootState, id: string) =>
     clientInfoSelectors.selectById(state, id)
+
+export const selectAllClients = (state: RootState) =>
+    clientInfoSelectors.selectAll(state)
 
 export const {
     updateFirstName,
