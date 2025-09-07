@@ -20,7 +20,6 @@ import { FormSubmitButton } from '../Form/FormSubmitButton'
 import { ClientInfoInput } from '../../types/ClientInfo'
 import { userSchema } from '../../lib/validators/user-schema'
 import { Selector, SelectorContent, SelectorItem } from '../Select/Select'
-import { FormToggleInput } from '../Form/FormToggle'
 /**
  * Form for information about the client who the documents are for
  * @param clientInfo react state for client info
