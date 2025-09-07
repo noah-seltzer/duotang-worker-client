@@ -29,8 +29,10 @@ export const createFileName = (
 
     const maradString = file.isMarad ? MARAD_STRING : ''
 
+    const { fileLabel, label } = row.docType
+
     return `${index + 1}${subIndexChar}_${
-        row.docType.slug
+        fileLabel || label
     }_${maradString}${clientFullName}.${ext}`
 }
 

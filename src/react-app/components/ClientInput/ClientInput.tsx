@@ -20,6 +20,7 @@ import { FormSubmitButton } from '../Form/FormSubmitButton'
 import { ClientInfoInput } from '../../types/ClientInfo'
 import { userSchema } from '../../lib/validators/user-schema'
 import { Selector, SelectorContent, SelectorItem } from '../Select/Select'
+import { FormToggleInput } from '../Form/FormToggle'
 /**
  * Form for information about the client who the documents are for
  * @param clientInfo react state for client info
@@ -93,6 +94,11 @@ export function ClientInput() {
                                 name='jobTitle'
                                 placeholder='Client Job jobTitle'
                             />
+                            {/* <FormToggleInput
+                                name='nationality'
+                            >
+                                Is this Client Ukrainian?
+                            </FormToggleInput> */}
                             <div className='flex flex-row gap-3'>
                                 <FloatingModalClose asChild={true}>
                                     <FormSubmitButton className='mt-3' />

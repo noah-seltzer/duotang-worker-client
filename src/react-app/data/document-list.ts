@@ -8,64 +8,77 @@ export const DEFAULT_DOCUMENT_TYPE: DocumentRowType = {
 
 export const DOCUMENT_TYPES: DocumentRowType[] = [
     {
-        label: 'Confirmation of Competency',
-        slug: 'CoC',
+        label: 'Certificate of Competency',
+        slug: 'coc',
         marad: true
     },
     {
-        label: 'Endorsement',
-        slug: 'Endorsement',
+        label: 'Confirmation of Competency Endorsement',
+        slug: 'coc-endorsement',
         marad: true
     },
     {
-        label: 'Basic Safety',
-        slug: 'Basic Safety',
+        label: 'Certificate of Proficiency',
+        slug: 'cop',
         marad: false
     },
     {
-        label: 'AFF',
-        slug: 'AFF',
+        label: 'Basic Safety',
+        fileLabel: 'Basic Safety (STCW A-VI/1)',
+        slug: 'stcw-basic-safety',
+        marad: false
+    },
+    {
+        label: 'Advanced Firefighting',
+        fileLabel: 'Advanced Firefighting (STCW A-VI/3)',
+        slug: 'aff',
         marad: true
     },
     {
         label: 'Survival Craft',
-        slug: 'Survival Craft',
+        fileLabel: 'Survival Craft (STCW A-VI/2-1)',
+        slug: 'survival-craft',
         marad: true
     },
     {
         label: 'Marine Medical Certificate',
-        slug: 'Marine Medical Certificate',
+        slug: 'marine-medical-certificate',
         marad: false
     },
     {
         label: 'Seafarer Application',
-        slug: 'E_Seafarer Application',
+        slug: 'seafarer-application',
         marad: false
     },
     {
-        label: 'AR Application',
-        slug: 'Seafarer Application',
+        label: 'Authorized Representative Application',
+        slug: 'ar-application',
         marad: false
     },
     {
         label: 'Familiarization',
-        slug: 'Familiarization',
+        slug: 'familiarization',
         marad: false
     },
     {
         label: 'Photo Front',
-        slug: 'Photo Front',
+        slug: 'photo-front',
         marad: false
     },
     {
         label: 'Photo Back',
-        slug: 'Photo Back',
+        slug: 'photo-back',
         marad: false
     },
     {
         label: 'Work Permit',
-        slug: 'Work Permit',
+        slug: 'work-permit',
         marad: false,
         add_year: true
+    },
+    {
+        label: 'English-French Qualifications',
+        slug: 'english-french-qualifications',
+        marad: false
     }
 ]
