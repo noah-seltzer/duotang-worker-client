@@ -1,19 +1,19 @@
 'use client'
 
-import { useState } from 'react'
-import {
-    Dialog,
-    DialogPanel,
-    Disclosure,
-    DisclosureButton,
-    DisclosurePanel,
-    Popover,
-    PopoverButton,
-    PopoverGroup,
-    PopoverPanel
-} from '@headlessui/react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { ChevronDownIcon } from '@heroicons/react/20/solid'
+// import { useState } from 'react'
+// import {
+//     Dialog,
+//     DialogPanel,
+//     Disclosure,
+//     DisclosureButton,
+//     DisclosurePanel,
+//     Popover,
+//     PopoverButton,
+//     PopoverGroup,
+//     PopoverPanel
+// } from '@headlessui/react'
+// import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
+// import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Logo } from '../Files/Logo'
 import { Login } from '../Auth/Login'
 import { useMsal } from '@azure/msal-react'
@@ -22,7 +22,7 @@ export function Header() {
     const { instance } = useMsal()
 
     const isLoggedIn = instance.getAllAccounts().length > 0
-    const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+    // const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     return (
         <header className='bg-gray-900'>
             <nav

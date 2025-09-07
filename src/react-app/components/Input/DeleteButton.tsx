@@ -21,8 +21,7 @@ export function DeleteButton({
     confirmTitle = 'Are you sure?',
     confirmMessage = undefined,
     onClick,
-    children,
-    ...props
+    children
 }: DeleteButtonProps) {
     return (
         <>

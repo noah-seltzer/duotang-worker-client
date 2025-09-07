@@ -1,6 +1,6 @@
 // import { div as MotionDiv } from 'motion/react-client'
-import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
-import { HTMLProps, useState } from 'react'
+import { motion } from 'motion/react'
+import { HTMLProps } from 'react'
 import { Button } from '../Skeleton/Button'
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
 import { useTestHook } from '../../hooks/useTestHook'

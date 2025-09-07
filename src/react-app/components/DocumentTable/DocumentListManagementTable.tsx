@@ -8,9 +8,6 @@ import { ListCompletionTracker } from './ListCompletionTracker'
 import { Table } from '../Table/Table'
 import { FileRow } from './FileRow'
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
-import { useState } from 'react'
-import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
-import { useTestHook } from '../../hooks/useTestHook'
 import { SlideAnimation } from '../Animation/SlideLeftEnter'
 
 const rowNames = ['Status', 'Delete', 'Document', 'File', 'Preview']

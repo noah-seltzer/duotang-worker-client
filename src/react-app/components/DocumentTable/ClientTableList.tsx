@@ -1,9 +1,5 @@
 import { useAppSelector } from '../../store'
-import {
-    selectClientById,
-    selectCurrentClientId
-} from '../../store/clientInfoSlice'
-import { ClientInput } from '../ClientInput/ClientInput'
+import { selectClientById } from '../../store/clientInfoSlice'
 import { DocumentListManagementTable } from './DocumentListManagementTable'
 
 interface ClientTableListProps {
