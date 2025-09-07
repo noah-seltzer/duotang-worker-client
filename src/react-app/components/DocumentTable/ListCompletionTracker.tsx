@@ -23,22 +23,19 @@ export function ListCompletionTracker({ listId }: { listId: string }) {
     const shouldBeChecked = (label: string) => {
         const row = rows.find((r) => r.docType.label === label)
         return row ? row.fileIds.length > 0 : false
-
     }
     return (
         <div className='flex flex-col justify-start'>
             <ul
                 role='list'
-                className={'w-72 text-gray-300 space-y-3 text-sm/6'}
+                className={'w-86 text-gray-300 space-y-3 text-sm/6'}
             >
                 {DOCUMENT_TYPES.map((d) => {
                     return (
                         <ListCompletionTrackerItem
                             key={d.label}
                             label={d.label}
-                            checked={
-                                shouldBeChecked(d.label)
-                            }
+                            checked={shouldBeChecked(d.label)}
                         />
                     )
                 })}
@@ -52,7 +49,10 @@ export function ListCompletionTrackerItem({
     label
 }: UnorderedListItemProps) {
     return (
-        <li key={label} className='flex flex-row items-center gap-x-3'>
+        <li
+            key={label}
+            className='flex flex-row items-center gap-x-3 justify-start'
+        >
             <CheckIcon
                 aria-hidden='true'
                 className={classNames(
