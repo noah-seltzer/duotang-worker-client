@@ -1,18 +1,12 @@
 import {
-    ChangeEventHandler,
-    DetailedHTMLProps,
     FocusEventHandler,
-    InputHTMLAttributes,
+    FormEventHandler,
     useId
 } from 'react'
-import { classNames } from '../../lib/tw'
 import { useField } from 'formik'
-export interface FormInputProps
-    extends DetailedHTMLProps<
-        InputHTMLAttributes<HTMLInputElement>,
-        HTMLInputElement
-    > {}
-
+import { Input, InputProps } from '@/components/Skeleton/input'
+import { Label } from '@/components/Skeleton/Label'
+export interface FormInputProps extends InputProps {}
 interface FormTextInputProps extends FormInputProps {
     label?: string
     labelClassNames?: string
@@ -27,7 +21,7 @@ export function FormTextInput(props: FormTextInputProps) {
         prefix = undefined,
         placeHolder = '',
         className = undefined,
-        onChange = () => {},
+        onInput = () => {},
         onBlur = () => {},
         name,
         value,
@@ -48,44 +42,31 @@ export function FormTextInput(props: FormTextInputProps) {
         onBlur(e)
     }
 
-    const onInputChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const onInputChange: FormEventHandler<HTMLInputElement> = (e) => {
         formikOnChange(e)
-        onChange(e)
+        onInput(e)
     }
 
     return (
         <div className='grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6'>
             <div className='sm:col-span-4'>
-                {label && (
-                    <label
-                        htmlFor={id}
-                        className='block text-sm/6 font-medium text-white'
-                    >
-                        {label}
-                    </label>
-                )}
+                {label && <Label htmlFor={id}>{label}</Label>}
                 <div className='mt-2'>
-                    <div className='flex items-center rounded-md bg-white/5 pl-3 outline-1 -outline-offset-1 outline-white/10 focus-within:outline-2 focus-within:-outline-offset-2 focus-within:outline-indigo-500'>
-                        {prefix && (
-                            <div className='shrink-0 text-base text-gray-400 select-none sm:text-sm/6'>
-                                {prefix}
-                            </div>
-                        )}
-                        <input
-                            id={id}
-                            name={name}
-                            type='text'
-                            placeholder={placeHolder}
-                            className={classNames(
-                                'block min-w-0 grow bg-transparent py-1.5 pr-3 pl-1 text-base text-white placeholder:text-gray-500 focus:outline-none sm:text-sm/6',
-                                className
-                            )}
-                            onBlur={onInputBlur}
-                            onChange={onInputChange}
-                            value={value || formikValue}
-                            {...rest}
-                        />
-                    </div>
+                    {prefix && (
+                        <div className='shrink-0 text-base text-gray-400 select-none sm:text-sm/6'>
+                            {prefix}
+                        </div>
+                    )}
+                    <Input
+                        id={id}
+                        name={name}
+                        type='text'
+                        placeholder={placeHolder}
+                        onBlur={onInputBlur}
+                        onInput={onInputChange}
+                        value={value || formikValue}
+                        {...rest}
+                    />
                     {meta.touched && meta.error ? (
                         <div className='text-red-500 text-xs mt-2 mb-1'>
                             {meta.error}

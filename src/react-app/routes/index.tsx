@@ -1,14 +1,10 @@
 import { createFileRoute } from '@tanstack/react-router'
-import App from '../App.tsx'
+import { DocumentManagementPage } from '@/components/Pages/DocumentManagerPage'
 
 export const Route = createFileRoute('/')({
     component: Index
 })
 
 function Index() {
-    return (
-        <div>
-            <App />
-        </div>
-    )
+    return <DocumentManagementPage />
 }

@@ -1,11 +1,16 @@
-export function OneDriveIcon() {
+import { SVGProps } from 'react'
+
+export function OneDriveIcon({
+    strokeWidth = 1.5,
+    ...props
+}: SVGProps<SVGSVGElement>) {
     return (
         <svg
             xmlns='http://www.w3.org/2000/svg'
             fill='none'
             viewBox='0 0 24 24'
-            strokeWidth={1.5}
-            className='size-6 stroke-white'
+            strokeWidth={strokeWidth}
+            {...props}
         >
             <path
                 strokeLinecap='round'

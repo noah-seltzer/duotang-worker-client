@@ -1,7 +1,7 @@
-import type { DocumentRowType } from './DocumentRowType'
+import type { DocumentType } from './DocumentRowType'
 export interface ListRow {
     id: string
-    docType: DocumentRowType
+    docType: DocumentType
     fileIds: string[]
     listId: string
 }

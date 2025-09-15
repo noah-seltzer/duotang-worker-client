@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { combine, getToken } from '../../lib/onedrive'
+import { combine, getToken } from '@/lib/onedrive'
 import { useMsal } from '@azure/msal-react'
 import type { IPublicClientApplication } from '@azure/msal-browser'
 import { v4 as uuidv4 } from 'uuid'

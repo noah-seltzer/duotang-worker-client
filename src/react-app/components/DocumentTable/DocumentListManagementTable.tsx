@@ -1,16 +1,22 @@
-import { useAppDispatch, useAppSelector } from '../../store'
-import { selectDocumentListById, updateList } from '../../store/clientInfoSlice'
-import { addRow, createBlankRow } from '../../store/fileListSlice'
-import { ClientInput } from '../ClientInput/ClientInput'
-import { ExportButton } from '../Input/ExportButton'
-import { Button } from '../Skeleton/Button'
-import { ListCompletionTracker } from './ListCompletionTracker'
-import { Table } from '../Table/Table'
-import { FileRow } from './FileRow'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { selectDocumentListById, updateList } from '@/store/clientInfoSlice'
+import { addRow, createBlankRow } from '@/store/fileListSlice'
+import { ClientInput } from '@/components/ClientInput/ClientInput'
+import { ExportButton } from '@/components/Input/ExportButton'
+import { Button } from '@/components/Skeleton/Button'
+import { ListCompletionTracker } from '@/components/DocumentTable/ListCompletionTracker'
+import { FileRow } from '@/components/DocumentTable/FileRow'
 import { AnimatePresence, LayoutGroup, motion } from 'motion/react'
-import { SlideAnimation } from '../Animation/SlideLeftEnter'
+import { SlideAnimation } from '@/components/Animation/SlideLeftEnter'
+import {
+    Table,
+    TableBody,
+    TableHead,
+    TableHeader,
+    TableRow
+} from '@/components/Skeleton/Table'
 
-const rowNames = ['Status', 'Delete', 'Document', 'File', 'Preview']
+const rowNames = ['Status', 'File Type', 'Documents', 'Controls']
 
 interface DocumentListManagementTableProps {
     documentListId: string
@@ -53,10 +59,25 @@ export function DocumentListManagementTable({
                             key='table'
                         >
                             <ClientInput />
-                            <Table rowNames={rowNames}>
-                                {rows.map((r, i) => (
-                                    <FileRow index={i + 1} key={r} rowId={r} />
-                                ))}
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        {rowNames.map((name, index) => (
+                                            <TableHead key={index}>
+                                                {name}
+                                            </TableHead>
+                                        ))}
+                                    </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {rows.map((r, i) => (
+                                        <FileRow
+                                            index={i + 1}
+                                            key={r}
+                                            rowId={r}
+                                        />
+                                    ))}
+                                </TableBody>
                             </Table>
                             <div className='flex justify-between w-full'>
                                 <div

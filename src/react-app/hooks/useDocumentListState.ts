@@ -1,7 +1,7 @@
 import { useAppDispatch } from '../store'
 import { updateList } from '../store/clientInfoSlice'
 import { addRow, createBlankRow } from '../store/fileListSlice'
-import { DocumentList } from '../types/DocumentList'
+import { DocumentList } from '@/types/DocumentList'
 
 export function useDocumentListState(listId: string) {
     const dispatch = useAppDispatch()

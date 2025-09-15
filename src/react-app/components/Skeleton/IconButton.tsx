@@ -1,5 +1,5 @@
 import { MouseEventHandler } from 'react'
-import { classNames } from '../../lib/tw'
+import { cn } from '@/lib/utils'
 
 interface IconButtonProps {
     children: React.ReactNode
@@ -10,7 +10,7 @@ interface IconButtonProps {
 export function IconButton({ children, onClick, className }: IconButtonProps) {
     return (
         <div
-            className={classNames(
+            className={cn(
                 'hover:bg-red-500 p-1 rounded-md cursor-pointer',
                 className
             )}

@@ -1,7 +1,7 @@
 // import { div as MotionDiv } from 'motion/react-client'
 import { motion } from 'motion/react'
 import { HTMLProps } from 'react'
-import { Button } from '../Skeleton/Button'
+import { Button } from '@/components/Skeleton/Button'
 import { ChevronLeftIcon, ChevronRightIcon } from '@radix-ui/react-icons'
 import { useTestHook } from '../../hooks/useTestHook'
 

@@ -1,5 +1,5 @@
 import { useMsal } from '@azure/msal-react'
-import { loginRequest } from '../../data/auth-config.ts'
+import { loginRequest } from '@/data/auth-config.ts'
 import { PropsWithChildren } from 'react'
 
 export function Login({ children }: PropsWithChildren) {

@@ -1,14 +1,15 @@
 'use client'
 import { Suspense, use } from 'react'
-import { getFileExtensionFromName } from '../../lib/files'
-import { FileFrame } from './FileFrame'
-import { DeleteButton } from '../Input/DeleteButton'
-import { useAppDispatch, useAppSelector } from '../../store'
-import { fileSelectors, selectFileById } from '../../store/fileListSlice'
 import localforage from 'localforage'
-import { deleteFilesFromRow } from '../../store/fileListThunks'
-import { DisplayName } from './DisplayName'
-import { Button } from '../Skeleton/Button'
+import { Button } from '@/components/Skeleton/Button'
+import { DeleteButton } from '@/components/Input/DeleteButton'
+import { FileFrame } from '@/components/Files/FileFrame'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { fileSelectors, selectFileById } from '@/store/fileListSlice'
+import { deleteFilesFromRow } from '@/store/fileListThunks'
+import { getFileExtensionFromName } from '@/lib/files'
+import { HoverTruncatedText } from '@/components/Hover/HoverTruncatedText'
+import { useGetFileInfo } from '@/hooks/useGenerateNewFileName'
 
 interface FilePreviewProps {
     fileId: string
@@ -41,6 +42,8 @@ function FileLoader({
 }) {
     const dispatch = useAppDispatch()
 
+    const { name } = useGetFileInfo(fileId)
+
     const fileMeta = useAppSelector((state) =>
         fileSelectors.selectById(state, fileId)
     )
@@ -50,17 +53,19 @@ function FileLoader({
     const url = URL.createObjectURL(file as File)
 
     return (
-        <div className='p-2 inset-ring inset-ring-white/5 flex flex-col items-start gap-2 rounded-md'>
+        <div className='inset-ring inset-ring-white/5 flex flex-col items-center gap-2 rounded-md'>
             <FileFrame url={url} width={200} height={200} />
-            <div>Old: {fileMeta.name}</div>
-            <div>
-                <DisplayName fileId={fileId} />
-            </div>
+            <HoverTruncatedText
+                text={'Old: ' + fileMeta.name}
+                underline={false}
+            />
+            <HoverTruncatedText text={'New: ' + name} underline={true} />
+            <DisplayFileName fileId={fileId} />
             <DeleteButton
                 confirmMessage='Delete File? This cannot be undone.'
                 onClick={() => dispatch(deleteFilesFromRow([fileMeta]))}
             >
-                <Button>Delete File</Button>
+                <Button variant='destructive'>Delete File</Button>
             </DeleteButton>
         </div>
     )

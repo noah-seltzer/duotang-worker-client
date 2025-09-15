@@ -1,5 +1,5 @@
 import { useMsal } from '@azure/msal-react'
-import { Button } from '../Skeleton/Button'
+import { Button } from '@/components/Skeleton/Button'
 
 export function Logout() {
     const { instance } = useMsal()

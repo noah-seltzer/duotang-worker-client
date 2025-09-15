@@ -18,6 +18,7 @@ export function FileFrame({
             width={`${width}px`}
             height={`${height}px`}
             title='pdf-viewer'
+            className='rounded-t-md'
         />
     )
 }

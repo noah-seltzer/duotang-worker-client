@@ -1,4 +1,4 @@
-import { DocumentList } from '../../store/savedListSlice'
+import { DocumentList } from '@/store/savedListSlice'
 
 export function SavedListItem({ item }: { item: DocumentList }) {
     return (

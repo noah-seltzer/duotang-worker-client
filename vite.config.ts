@@ -4,7 +4,7 @@ import { cloudflare } from '@cloudflare/vite-plugin'
 import tailwindcss from '@tailwindcss/vite'
 import { tanstackRouter } from '@tanstack/router-plugin/vite'
 import { sentryVitePlugin } from '@sentry/vite-plugin'
-
+import path from 'path'
 export default defineConfig({
     plugins: [
         react(),
@@ -21,6 +21,11 @@ export default defineConfig({
             authToken: process.env.SENTRY_AUTH_TOKEN
         })
     ],
+    resolve: {
+        alias: {
+            '@': path.resolve(__dirname, './src/react-app')
+        }
+    },
 
     build: {
         sourcemap: true,

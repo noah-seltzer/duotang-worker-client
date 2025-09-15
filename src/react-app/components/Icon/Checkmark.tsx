@@ -1,4 +1,4 @@
-import { classNames } from '../../lib/tw'
+import { cn } from '@/lib/utils'
 
 export function Checkmark({ checked }: { checked: boolean }) {
     const uncheckedColorStyle = 'text-gray-500 dark:text-gray-400'
@@ -6,7 +6,7 @@ export function Checkmark({ checked }: { checked: boolean }) {
 
     return (
         <svg
-            className={classNames(
+            className={cn(
                 'w-3.5 h-3.5 me-2 shrink-0',
                 checked ? checkedColorStyle : uncheckedColorStyle
             )}

@@ -1,4 +1,4 @@
-import { classNames } from '../../lib/tw'
+import { cn } from '@/lib/utils'
 
 type StatusClass = 'success' | 'warning' | 'error'
 
@@ -15,8 +15,6 @@ const getStatusClass = (status: StatusClass) => {
 export function StatusBar({ status }: StatusBarProps) {
     const statusClass = getStatusClass(status)
     return (
-        <div
-            className={classNames('w-7/8 rounded-full h-1 m-auto', statusClass)}
-        ></div>
+        <div className={cn('w-7/8 rounded-full h-1 m-auto', statusClass)}></div>
     )
 }

@@ -7,10 +7,10 @@ import {
     FloatingModalRoot,
     FloatingModalClose,
     FloatingModalTitle
-} from '../Skeleton/FloatingModal'
+} from '@/components/Skeleton/FloatingModal'
 
-import { Button, NakedButton } from '../Skeleton/Button'
-import { FormHeading } from '../Form/FormHeading'
+import { Button } from '@/components/Skeleton/Button'
+import { FormHeading } from '@/components/Form/FormHeading'
 interface DeleteButtonProps extends HTMLProps<HTMLButtonElement> {
     onClick: MouseEventHandler<HTMLButtonElement>
     confirmTitle?: string
@@ -28,9 +28,9 @@ export function DeleteButton({
             <FloatingModalRoot>
                 <FloatingModalTrigger asChild={true}>
                     {children || (
-                        <NakedButton>
+                        <Button variant='destructive'>
                             <Cross1Icon />
-                        </NakedButton>
+                        </Button>
                     )}
                 </FloatingModalTrigger>
                 <FloatingModalContent>

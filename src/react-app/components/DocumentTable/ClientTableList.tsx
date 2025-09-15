@@ -1,6 +1,6 @@
-import { useAppSelector } from '../../store'
-import { selectClientById } from '../../store/clientInfoSlice'
-import { DocumentListManagementTable } from './DocumentListManagementTable'
+import { useAppSelector } from '@/store'
+import { selectClientById } from '@/store/clientInfoSlice'
+import { DocumentListManagementTable } from '@/components/DocumentTable/DocumentListManagementTable'
 
 interface ClientTableListProps {
     currentClientId: string

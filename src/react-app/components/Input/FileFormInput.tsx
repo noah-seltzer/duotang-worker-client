@@ -1,18 +1,18 @@
-import { OneDriveIcon } from '../Icon/OneDriveIcon'
-import { Picker } from '../OneDrive/Picker'
 import { useMsal } from '@azure/msal-react'
-import { Login } from '../Auth/Login'
+import { IPublicClientApplication } from '@azure/msal-browser'
 import {
     Root as DialogRoot,
     Trigger as DialogTrigger,
     Portal as DialogPortal
 } from '@radix-ui/react-dialog'
-import type { OneDrivePickedFileResult } from '../../types/OneDrivePickedFileResult'
-import { fileDownloadRequest } from '../../data/auth-config'
+import { OneDriveIcon } from '../Icon/OneDriveIcon'
+import { Picker } from '../OneDrive/Picker'
+import { Login } from '../Auth/Login'
+import type { OneDrivePickedFileResult } from '@/types/OneDrivePickedFileResult'
+import { fileDownloadRequest } from '@/data/auth-config'
 import { FileInput } from './FileInput'
-import { IPublicClientApplication } from '@azure/msal-browser'
 import { ChangeEvent, useState } from 'react'
-import { Button } from '../Skeleton/Button'
+import { Button } from '@/components/Skeleton/Button'
 import { FileDetailsList } from '../Files/Filedetails'
 interface FileFormInputProps {
     onChange?: (files: FileList | null) => void
@@ -102,8 +102,9 @@ export function FileFormInput({ onSaved, onCancel }: FileFormInputProps) {
                     <>
                         <DialogRoot>
                             <DialogTrigger asChild={true}>
-                                <Button>
-                                    <OneDriveIcon /> Select from Onedrive
+                                <Button variant='outline' size='sm'>
+                                    <OneDriveIcon className='stroke-primary-foreground size-5' />
+                                    Select from Onedrive
                                 </Button>
                             </DialogTrigger>
                             <DialogPortal>
@@ -114,7 +115,8 @@ export function FileFormInput({ onSaved, onCancel }: FileFormInputProps) {
                 ) : (
                     <Login>
                         <Button className='flex flex-row items-center gap-2'>
-                            <OneDriveIcon /> Login to select from Onedrive
+                            <OneDriveIcon className='stroke-primary-foreground size-5' />
+                            Login to select from Onedrive
                         </Button>
                     </Login>
                 )}

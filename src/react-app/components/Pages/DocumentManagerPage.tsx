@@ -1,5 +1,5 @@
-import { useAppSelector } from '../../store'
-import { selectCurrentClientId } from '../../store/clientInfoSlice'
+import { useAppSelector } from '@/store'
+import { selectCurrentClientId } from '@/store/clientInfoSlice'
 import { LoginOutButtons } from '../Auth/LoginOutButtons'
 import { ClientInput } from '../ClientInput/ClientInput'
 import { ClientTableList } from '../DocumentTable/ClientTableList'

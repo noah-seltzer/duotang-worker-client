@@ -1,12 +1,12 @@
-import { selectAllFiles, selectAllRows } from '../../store/fileListSlice'
+import { selectAllFiles, selectAllRows } from '@/store/fileListSlice'
 
-import { useAppSelector } from '../../store'
+import { useAppSelector } from '@/store'
 import {
     selectClientById,
     selectCurrentClientId
-} from '../../store/clientInfoSlice'
-import { Button } from '../Skeleton/Button'
-import { exportFiles } from '../../lib/export'
+} from '@/store/clientInfoSlice'
+import { Button } from '@/components/Skeleton/Button'
+import { exportFiles } from '@/lib/export'
 
 interface ExportButtonProps extends React.ComponentProps<'button'> {}
 

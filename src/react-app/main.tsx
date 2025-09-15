@@ -13,6 +13,7 @@ import { Provider } from 'react-redux'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import * as Sentry from '@sentry/react'
+import { ThemeProvider } from '@/components/Theme/ThemeProvider'
 
 // Create a new router instance
 const router = createRouter({ routeTree })
@@ -49,7 +50,12 @@ if (!rootElement.innerHTML) {
             <Provider store={store}>
                 <PersistGate loading={null} persistor={persistor}>
                     <MsalProvider instance={msalInstance}>
-                        <RouterProvider router={router} />
+                        <ThemeProvider
+                            defaultTheme='system'
+                            storageKey='duotang-theme'
+                        >
+                            <RouterProvider router={router} />
+                        </ThemeProvider>
                     </MsalProvider>
                 </PersistGate>
             </Provider>

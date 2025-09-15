@@ -1,5 +1,5 @@
 import { useFormikContext } from "formik";
-import { Button, ButtonProps } from "../Skeleton/Button";
+import { Button, ButtonProps } from '@/components/Skeleton/Button'
 
 interface FormSubmitButtonProps extends ButtonProps {}
 

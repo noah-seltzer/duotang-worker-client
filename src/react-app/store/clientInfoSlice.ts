@@ -1,4 +1,4 @@
-import { ClientInfo, ClientInfoInput } from '../types/ClientInfo'
+import { ClientInfo, ClientInfoInput } from '@/types/ClientInfo'
 import {
     createEntityAdapter,
     createSlice,
@@ -8,7 +8,7 @@ import {
 } from '@reduxjs/toolkit'
 import type { RootState } from '.'
 import { updateOneEntity } from './actionHelpers'
-import { DocumentList, DocumentListInput } from '../types/DocumentList'
+import { DocumentList, DocumentListInput } from '@/types/DocumentList'
 
 interface ClientInfoState {
     newClient: ClientInfoInput

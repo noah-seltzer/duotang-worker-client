@@ -3,9 +3,9 @@ import { saveAs } from 'file-saver'
 
 import localforage from 'localforage'
 import { createClientNameString, createFileName } from './files'
-import { ListRow } from '../types/ListRow'
-import { ClientInfo } from '../types/ClientInfo'
-import { CachedFile } from '../types/CachedFile'
+import { ListRow } from '@/types/ListRow'
+import { ClientInfo } from '@/types/ClientInfo'
+import { CachedFile } from '@/types/CachedFile'
 
 interface ExportFileData {
     name: string

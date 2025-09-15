@@ -1,15 +1,16 @@
+import { useState } from 'react'
 import {
     FloatingModalContent,
     FloatingModalRoot,
     FloatingModalTrigger
-} from '../Skeleton/FloatingModal'
-import { FormHeading } from '../Form/FormHeading'
-import { FileFormInput, FileInput } from '../Input/FileFormInput'
-import { addFilesToRow } from '../../store/fileListThunks'
-import { useAppDispatch, useAppSelector } from '../../store'
-import { selectRowById } from '../../store/fileListSlice'
-import { Button } from '../Skeleton/Button'
-import { useState } from 'react'
+} from '@/components/Skeleton/FloatingModal'
+import { FormHeading } from '@/components/Form/FormHeading'
+import { FileFormInput, FileInput } from '@/components/Input/FileFormInput'
+import { addFilesToRow } from '@/store/fileListThunks'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { selectRowById } from '@/store/fileListSlice'
+import { Button } from '@/components/Skeleton/Button'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 
 interface AddFileModalProps {
     rowId: string
@@ -34,7 +35,9 @@ export function AddFileModal({ rowId }: AddFileModalProps) {
     return (
         <FloatingModalRoot open={open}>
             <FloatingModalTrigger asChild={true}>
-                <Button onClick={() => setOpen(true)}>Add Files</Button>
+                <Button onClick={() => setOpen(true)} variant='ghost' size='sm'>
+                    <PlusCircledIcon /> Add Files
+                </Button>
             </FloatingModalTrigger>
             <FloatingModalContent className='flex flex-col gap-4'>
                 <FormHeading

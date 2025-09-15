@@ -1,4 +1,4 @@
-import { IDLE, LOADING_STATE } from './../constants/state'
+import { IDLE, LOADING_STATE } from '@/constants/state'
 import {
     createEntityAdapter,
     createSlice,
@@ -7,11 +7,11 @@ import {
     PayloadAction
 } from '@reduxjs/toolkit'
 import { DOCUMENT_TYPES } from '../data/document-list'
-import { CachedFile } from '../types/CachedFile'
+import { CachedFile } from '@/types/CachedFile'
 import { addFilesToRow, deleteFilesFromRow, deleteRows } from './fileListThunks'
-import { DocumentRowType } from '../types/DocumentRowType'
+import { DocumentType } from '@/types/DocumentRowType'
 import { RootState } from '.'
-import { ListRow } from '../types/ListRow'
+import { ListRow } from '@/types/ListRow'
 import { updateOneEntity } from './actionHelpers'
 
 export interface FileListState {
@@ -25,7 +25,7 @@ const fileEntity = createEntityAdapter<CachedFile>()
 
 export const createBlankRow = (listId: string, typeSlug?: string): ListRow => {
     const docType = !!typeSlug
-        ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentRowType)
+        ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentType)
         : DOCUMENT_TYPES[0]
     return {
         id: nanoid(),
@@ -109,14 +109,12 @@ export const rowSelectors = rowEntity.getSelectors<RootState>(
     (state) => state.fileList.rows
 )
 
-
 export const selectRowById = (state: RootState, id: string) =>
     rowSelectors.selectById(state, id)
 export const selectRowIds = (state: RootState) => rowSelectors.selectIds(state)
 export const selectAllRows = (state: RootState) => rowSelectors.selectAll(state)
 export const selectRowsByIds = (state: RootState, ids: string[]) =>
     ids.map((id) => state.fileList.rows.entities[id])
-
 
 export const selectFileById = (state: RootState, id: string) =>
     fileSelectors.selectById(state, id)

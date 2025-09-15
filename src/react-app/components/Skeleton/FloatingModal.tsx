@@ -9,7 +9,7 @@ import {
     DialogTitle
 } from '@radix-ui/react-dialog'
 import { forwardRef, HTMLProps } from 'react'
-import { classNames } from '../../lib/tw'
+import { cn } from '@/lib/utils'
 
 interface FloatingModalProps
     extends DialogContentProps,
@@ -22,7 +22,7 @@ export const FloatingModalContent = forwardRef<
     <DialogPortal>
         <DialogOverlay className='fixed inset-0 backdrop-blur-md bg-blackA6 data-[state=open]:animate-overlayShow' />
         <DialogContent
-            className={classNames(
+            className={cn(
                 className,
                 'fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md bg-gray1 p-[25px] shadow-[var(--shadow-6)] focus:outline-none data-[state=open]:animate-contentShow'
             )}

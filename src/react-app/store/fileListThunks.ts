@@ -1,7 +1,7 @@
 import { createAsyncThunk, nanoid } from '@reduxjs/toolkit'
 import localforage from 'localforage'
-import { CachedFile, CachedFileInput } from '../types/CachedFile'
-import { ListRow } from '../types/ListRow'
+import { CachedFile, CachedFileInput } from '@/types/CachedFile'
+import { ListRow } from '@/types/ListRow'
 import { RootState } from '.'
 import { selectRowsByIds } from './fileListSlice'
 

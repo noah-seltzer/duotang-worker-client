@@ -1,8 +1,8 @@
-import type { DocumentRowType } from './DocumentRowType'
+import type { DocumentType } from './DocumentRowType'
 
 // Defines the structure for a single document row in our state
 export interface DocumentRowState {
     id: number
-    docType: DocumentRowType
+    docType: DocumentType
     file: File | null
 }

@@ -1,30 +1,16 @@
 'use client'
-
-// import { useState } from 'react'
-// import {
-//     Dialog,
-//     DialogPanel,
-//     Disclosure,
-//     DisclosureButton,
-//     DisclosurePanel,
-//     Popover,
-//     PopoverButton,
-//     PopoverGroup,
-//     PopoverPanel
-// } from '@headlessui/react'
-// import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-// import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import { Logo } from '../Files/Logo'
 import { Login } from '../Auth/Login'
 import { useMsal } from '@azure/msal-react'
+import { ThemeSwitcher } from '../Theme/ThemeSwitcher'
+import { Link } from '@tanstack/react-router'
 
 export function Header() {
     const { instance } = useMsal()
 
     const isLoggedIn = instance.getAllAccounts().length > 0
-    // const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
     return (
-        <header className='bg-gray-900'>
+        <header className='bg-sidebar'>
             <nav
                 aria-label='Global'
                 className='mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8'
@@ -44,32 +30,13 @@ export function Header() {
                 </div> */}
                 {/* Desktop Nav */}
                 <div className='hidden lg:flex lg:flex-1 lg:justify-end lg:gap-6'>
-                    {/* <PopoverGroup className='lg:gap-x-12'>
-                        <Popover className='relative'>
-                            <PopoverButton className='flex items-center gap-x-1 text-sm/6 font-semibold text-white'>
-                                Select Client
-                                <ChevronDownIcon
-                                    aria-hidden='true'
-                                    className='size-5 flex-none text-gray-500'
-                                />
-                            </PopoverButton>
-
-                            <PopoverPanel
-                                transition
-                                className='absolute left-1/2 z-10 mt-3 w-64 max-w-sm -translate-x-1/2 overflow-hidden rounded-3xl bg-gray-800 outline-1 -outline-offset-1 outline-white/10 transition data-closed:translate-y-1 data-closed:opacity-0 data-enter:duration-200 data-enter:ease-out data-leave:duration-150 data-leave:ease-in'
-                            >
-                                <div className='p-4 flex flex-col gap-2'>
-                                    List of documents or clients go here
-                                </div>
-                            </PopoverPanel>
-                        </Popover>
-                    </PopoverGroup> */}
+                    <ThemeSwitcher />
                     {!isLoggedIn && (
                         <div>
                             <Login>
                                 <a
                                     href='#'
-                                    className='text-sm/6 font-semibold text-white'
+                                    className='text-sm/6 font-semibold text-sidebar-foreground'
                                 >
                                     Log in{' '}
                                     <span aria-hidden='true'>&rarr;</span>
@@ -77,6 +44,12 @@ export function Header() {
                             </Login>
                         </div>
                     )}
+                    <Link className='[&.active]:font-bold' to='/'>
+                        Home
+                    </Link>
+                    <Link className='[&.active]:font-bold' to='/list'>
+                        List Builder
+                    </Link>
                 </div>
             </nav>
             {/* <Dialog

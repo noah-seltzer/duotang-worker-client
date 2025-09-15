@@ -1,8 +1,8 @@
 import { DEFAULT_DOCUMENT_TYPE, DOCUMENT_TYPES } from '../data/document-list'
-import { CachedFile } from '../types/CachedFile'
-import type { ClientInfo } from '../types/ClientInfo'
-import type { DocumentRowType } from '../types/DocumentRowType'
-import { ListRow } from '../types/ListRow'
+import { CachedFile } from '@/types/CachedFile'
+import type { ClientInfo } from '@/types/ClientInfo'
+import type { DocumentType } from '@/types/DocumentRowType'
+import { ListRow } from '@/types/ListRow'
 
 export const DEFAULT_LASTNAME = 'LastName'
 export const DEFAULT_FIRSTNAME = 'FirstName'
@@ -41,7 +41,7 @@ export const createClientNameString = (clientInfo: ClientInfo) =>
         clientInfo.lastName || DEFAULT_LASTNAME
     }`
 
-export const getDocumentRowType = (slug: string): DocumentRowType => {
+export const getDocumentRowType = (slug: string): DocumentType => {
     return (
         DOCUMENT_TYPES.find((docType) => docType.slug === slug) ||
         DEFAULT_DOCUMENT_TYPE

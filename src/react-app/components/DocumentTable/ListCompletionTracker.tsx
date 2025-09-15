@@ -1,11 +1,11 @@
 import {
     CheckIcon,
 } from '@radix-ui/react-icons'
-import { classNames } from '../../lib/tw'
-import { useAppSelector } from '../../store'
-import { selectRowsByIds } from '../../store/fileListSlice'
-import { DOCUMENT_TYPES } from '../../data/document-list'
-import { selectDocumentListById } from '../../store/clientInfoSlice'
+import { useAppSelector } from '@/store'
+import { selectRowsByIds } from '@/store/fileListSlice'
+import { DOCUMENT_TYPES } from '@/data/document-list'
+import { selectDocumentListById } from '@/store/clientInfoSlice'
+import { cn } from '@/lib/utils'
 
 interface UnorderedListItemProps {
     checked: boolean
@@ -55,7 +55,7 @@ export function ListCompletionTrackerItem({
         >
             <CheckIcon
                 aria-hidden='true'
-                className={classNames(
+                className={cn(
                     checked ? 'text-indigo-400' : 'text-gray-700',
                     'h-6 w-5 flex-none'
                 )}

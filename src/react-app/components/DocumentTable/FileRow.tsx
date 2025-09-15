@@ -1,20 +1,25 @@
-import { TableCell, TableRow } from '../Table/TableComponents'
-import { classNames } from '../../lib/tw'
-import { useAppDispatch, useAppSelector } from '../../store'
-import { selectRowById, updateFileRow } from '../../store/fileListSlice'
-import { FileTypeSelector } from '../Files/FileTypeSelector'
-import { DeleteButton } from '../Input/DeleteButton'
-import { AddFileModal } from '../Files/AddFileModal'
-import { FilePreview } from '../Files/FilePreview'
+import { ChevronDownIcon, DotsVerticalIcon } from '@radix-ui/react-icons'
+import { useAppDispatch, useAppSelector } from '@/store'
+import { selectRowById, updateFileRow } from '@/store/fileListSlice'
+import { FileTypeSelector } from '@/components/Files/FileTypeSelector'
+import { AddFileModal } from '@/components/Files/AddFileModal'
+import { FilePreview } from '@/components/Files/FilePreview'
+import { Button } from '@/components/Skeleton/Button'
+import { useListState } from '@/hooks/useState'
+import { TableCell, TableRow } from '@/components/Skeleton/Table'
+import { Badge } from '@/components/Skeleton/Badge'
 import {
-    Root as AccordionRoot,
-    Trigger as AccordionTrigger,
-    Content as AccordionContent,
-    AccordionItem
-} from '@radix-ui/react-accordion'
-import { ChevronDownIcon } from '@radix-ui/react-icons'
-import { Button } from '../Skeleton/Button'
-import { useListState } from '../../hooks/useState'
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+    DropdownMenuItem
+} from '@/components/Skeleton/DropdownMenu'
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger
+} from '@/components/Skeleton/Popover'
+import { FileManager } from '@/components/Files/FileManager'
 export interface FileRowProps {
     index: number
     rowId: string
@@ -33,24 +38,11 @@ export function FileRow({ rowId }: FileRowProps) {
     return (
         <TableRow>
             <TableCell>
-                <span
-                    className={classNames(
-                        'flex w-10 h-6 rounded-full',
-                        isComplete ? 'bg-green-500' : 'bg-red-500'
-                    )}
-                ></span>
+                <Badge variant={isComplete ? 'secondary' : 'destructive'}>
+                    {isComplete ? 'Complete' : 'Incomplete'}
+                </Badge>
             </TableCell>
             {/* Status */}
-            <TableCell>
-                <div className='flex flex-row items-center gap-4 space-y-0 h-full'>
-                    <DeleteButton
-                        confirmMessage='Files associated with this row will be deleted.'
-                        onClick={() => deleteRowsFromList([rowId])}
-                    >
-                        <Button>Delete Row</Button>
-                    </DeleteButton>
-                </div>
-            </TableCell>
             {/* Document Type */}
             <TableCell>
                 <FileTypeSelector
@@ -61,52 +53,34 @@ export function FileRow({ rowId }: FileRowProps) {
                 />
             </TableCell>
             {/* Assigned File */}
+
+            <TableCell>
+                {fileIds.length > 0 && <FileManager fileIds={fileIds} />}
+            </TableCell>
             <TableCell>
                 <AddFileModal rowId={rowId} />
             </TableCell>
             <TableCell>
-                {fileIds.length > 0 && (
-                    <AccordionRoot
-                        className='rounded-md bg-mauve6 shadow-black/5'
-                        type='single'
-                        collapsible
-                    >
-                        <AccordionItem
-                            value='item-1'
-                            className='"mt-px first:mt-0 first:rounded-t last:rounded-b focus-within:relative focus-within:z-10 focus-within:shadow-mauve12"'
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button
+                            variant='ghost'
+                            className='data-[state=open]:bg-muted text-muted-foreground flex size-8'
+                            size='icon'
                         >
-                            <AccordionTrigger
-                                asChild={true}
-                                className='group flex h-16 flex-1 gap-4 cursor-default items-center justify-between bg-mauve1 px-5 text-[15px] leading-none text-violet11 shadow-mauve6 outline-none hover:bg-mauve2'
-                            >
-                                <Button className='flex flex-row gap-4 items-center h-12'>
-                                    <div className='group-data-[state=open]:hidden'>
-                                        Show Files
-                                    </div>
-                                    <div className='group-data-[state=closed]:hidden'>
-                                        Hide Files
-                                    </div>
-                                    <ChevronDownIcon
-                                        className='text-violet10 transition-transform duration-300 ease-[cubic-bezier(0.87,_0,_0.13,_1)] group-data-[state=open]:rotate-180'
-                                        aria-hidden
-                                    />
-                                </Button>
-                            </AccordionTrigger>
-                            <AccordionContent>
-                                <div className='flex flex-col gap-2 mt-2'>
-                                    {fileIds.map((id) => (
-                                        <div
-                                            key={id}
-                                            className='flex flex-row items-center gap-1'
-                                        >
-                                            <FilePreview fileId={id} />
-                                        </div>
-                                    ))}
-                                </div>
-                            </AccordionContent>
-                        </AccordionItem>
-                    </AccordionRoot>
-                )}
+                            <DotsVerticalIcon />
+                            <span className='sr-only'>Open menu</span>
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align='end' className='w-32'>
+                        <DropdownMenuItem
+                            variant='destructive'
+                            onClick={() => deleteRowsFromList([rowId])}
+                        >
+                            Delete Row
+                        </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
             </TableCell>
         </TableRow>
     )

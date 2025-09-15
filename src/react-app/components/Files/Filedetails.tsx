@@ -1,8 +1,8 @@
-import { MinusCircleIcon } from '@heroicons/react/16/solid'
-import { Button } from '../Skeleton/Button'
 import { ChangeEventHandler, MouseEventHandler } from 'react'
-import { FormCheckboxInput } from '../Form/FormCheckboxInput'
-import { FileInput } from '../Input/FileFormInput'
+import { MinusCircleIcon } from '@heroicons/react/16/solid'
+import { Button } from '@/components/Skeleton/Button'
+import { FormCheckboxInput } from '@/components/Form/FormCheckboxInput'
+import { FileInput } from '@/components/Input/FileFormInput'
 
 interface FileDetailsProps {
     file: FileInput
@@ -16,11 +16,13 @@ export function FileDetails({
 }: FileDetailsProps) {
     return (
         <div className='px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0 items-center'>
-            <dt className='text-sm/6 font-medium text-gray-100'>{file.file.name}</dt>
+            <dt className='text-sm/6 font-medium text-gray-100'>
+                {file.file.name}
+            </dt>
             <dd className='mt-1 text-sm/6 text-gray-400 sm:mt-0'>
                 <FormCheckboxInput
                     checked={file.isMarad}
-                    onChange={onCheckboxChange}
+                    onSelect={onCheckboxChange}
                     label='Is this file MARAD?'
                 />
             </dd>
@@ -33,7 +35,6 @@ export function FileDetails({
         </div>
     )
 }
-
 
 interface FileDetailListProps {
     files: FileInput[]

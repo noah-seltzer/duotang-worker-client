@@ -1,10 +1,10 @@
-import { classNames } from '../../lib/tw'
-import { FormInputProps } from './FormTextInput'
+import { FormInputProps } from '@/components/Form/FormTextInput'
+import { cn } from '@/lib/utils'
 
 export interface FormCheckboxInputProps extends FormInputProps {
     label: string
     subLabel?: string
-    checkedLabelStyles?:string
+    checkedLabelStyles?: string
 }
 
 export function FormCheckboxInput(props: FormCheckboxInputProps) {
@@ -45,12 +45,17 @@ export function FormCheckboxInput(props: FormCheckboxInputProps) {
                 </div>
             </div>
             <div className='text-sm/6'>
-                <label htmlFor='comments' className={classNames('font-medium text-white', checkedLabelStyles)}>
+                <label
+                    htmlFor='comments'
+                    className={cn('font-medium text-white', checkedLabelStyles)}
+                >
                     {label}
                 </label>
-                {subLabel && <p id='comments-description' className='text-gray-400'>
-                    {subLabel}
-                </p>}
+                {subLabel && (
+                    <p id='comments-description' className='text-gray-400'>
+                        {subLabel}
+                    </p>
+                )}
             </div>
         </div>
     )

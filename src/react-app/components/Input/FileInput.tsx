@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { FolderIcon } from '../Icon/FolderIcon'
-import { Button } from '../Skeleton/Button'
+import { Button } from '@/components/Skeleton/Button'
 
 interface FileInputProps {
     onChange: React.ChangeEventHandler<HTMLInputElement>
@@ -17,13 +17,13 @@ export function FileInput({ onChange, title, folder = false }: FileInputProps) {
                 className='flex flex-row gap-2 items-center'
                 onClick={() => fileInputRef.current?.click()}
             >
-                <FolderIcon />
+                <FolderIcon className='stroke-primary-foreground size-5' />
                 {title ?? ''}
             </Button>
             <input
                 type='file'
                 ref={fileInputRef}
-                onChange={onChange}
+                onSelect={onChange}
                 multiple={true}
                 hidden
                 directory={folder ? 'true' : undefined}

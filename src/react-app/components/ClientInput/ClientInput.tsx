@@ -4,22 +4,29 @@ import {
     selectCurrentClientId,
     selectAllClients,
     updateCurrentClient
-} from '../../store/clientInfoSlice'
-import { useAppDispatch, useAppSelector } from '../../store'
-import { Button } from '../Skeleton/Button'
+} from '@/store/clientInfoSlice'
+import { useAppDispatch, useAppSelector } from '@/store'
 import {
     FloatingModalClose,
     FloatingModalContent,
     FloatingModalRoot,
     FloatingModalTitle,
     FloatingModalTrigger
-} from '../Skeleton/FloatingModal'
-import { FormTextInput } from '../Form/FormTextInput'
-import { FormContextProvider } from '../Form/FormContextProvider'
-import { FormSubmitButton } from '../Form/FormSubmitButton'
-import { ClientInfoInput } from '../../types/ClientInfo'
-import { userSchema } from '../../lib/validators/user-schema'
-import { Selector, SelectorContent, SelectorItem } from '../Select/Select'
+} from '@/components/Skeleton/FloatingModal'
+import { FormTextInput } from '@/components/Form/FormTextInput'
+import { FormContextProvider } from '@/components/Form/FormContextProvider'
+import { FormSubmitButton } from '@/components/Form/FormSubmitButton'
+import { userSchema } from '@/lib/validators/user-schema'
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue
+} from '@/components/Skeleton/Select'
+import { ClientInfoInput } from '@/types/ClientInfo'
+import { Button } from '@/components/Skeleton/Button'
+
 /**
  * Form for information about the client who the documents are for
  * @param clientInfo react state for client info
@@ -34,23 +41,25 @@ export function ClientInput() {
     return (
         <div className='flex flex-row gap-4'>
             {clients.length > 0 && (
-                <Selector
+                <Select
                     onValueChange={(value) =>
                         dispatch(updateCurrentClient(value))
                     }
-                    className='w-72'
                     value={currentClientId}
                 >
-                    <SelectorContent defaultValue={currentClientId}>
+                    <SelectTrigger className='w-72'>
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent defaultValue={currentClientId}>
                         {clients.map((client) => {
                             return (
-                                <SelectorItem key={client.id} value={client.id}>
+                                <SelectItem key={client.id} value={client.id}>
                                     {client.firstName} {client.lastName}
-                                </SelectorItem>
+                                </SelectItem>
                             )
                         })}
-                    </SelectorContent>
-                </Selector>
+                    </SelectContent>
+                </Select>
             )}
             <FloatingModalRoot>
                 <FloatingModalTrigger asChild={true}>
