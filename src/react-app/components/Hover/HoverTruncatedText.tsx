@@ -11,11 +11,10 @@ interface HoverTruncatedTextProps {
 }
 
 export function HoverTruncatedText({ text, underline = false }: HoverTruncatedTextProps) {
-    const isOverflow = text.length > 20
-    const displayName = isOverflow ? `${text.slice(0, 20)}...` : text
-
+    const isOverflow = text.length > 40
+    const displayName = isOverflow ? `${text.slice(0, 40)}...` : text
     return (
-        <Tooltip>
+        <Tooltip open={isOverflow ? undefined : false}>
             <TooltipTrigger>
                 <span
                     className={cn(

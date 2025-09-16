@@ -9,15 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './react-app/routes/__root'
-import { Route as ListRouteImport } from './react-app/routes/list'
 import { Route as ColorRouteImport } from './react-app/routes/color'
 import { Route as IndexRouteImport } from './react-app/routes/index'
+import { Route as ListManagerRouteImport } from './react-app/routes/list/manager'
+import { Route as ListBuilderRouteImport } from './react-app/routes/list/builder'
 
-const ListRoute = ListRouteImport.update({
-  id: '/list',
-  path: '/list',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ColorRoute = ColorRouteImport.update({
   id: '/color',
   path: '/color',
@@ -28,46 +24,53 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ListManagerRoute = ListManagerRouteImport.update({
+  id: '/list/manager',
+  path: '/list/manager',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ListBuilderRoute = ListBuilderRouteImport.update({
+  id: '/list/builder',
+  path: '/list/builder',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/color': typeof ColorRoute
-  '/list': typeof ListRoute
+  '/list/builder': typeof ListBuilderRoute
+  '/list/manager': typeof ListManagerRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/color': typeof ColorRoute
-  '/list': typeof ListRoute
+  '/list/builder': typeof ListBuilderRoute
+  '/list/manager': typeof ListManagerRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/color': typeof ColorRoute
-  '/list': typeof ListRoute
+  '/list/builder': typeof ListBuilderRoute
+  '/list/manager': typeof ListManagerRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/color' | '/list'
+  fullPaths: '/' | '/color' | '/list/builder' | '/list/manager'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/color' | '/list'
-  id: '__root__' | '/' | '/color' | '/list'
+  to: '/' | '/color' | '/list/builder' | '/list/manager'
+  id: '__root__' | '/' | '/color' | '/list/builder' | '/list/manager'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ColorRoute: typeof ColorRoute
-  ListRoute: typeof ListRoute
+  ListBuilderRoute: typeof ListBuilderRoute
+  ListManagerRoute: typeof ListManagerRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/list': {
-      id: '/list'
-      path: '/list'
-      fullPath: '/list'
-      preLoaderRoute: typeof ListRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/color': {
       id: '/color'
       path: '/color'
@@ -82,13 +85,28 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/list/manager': {
+      id: '/list/manager'
+      path: '/list/manager'
+      fullPath: '/list/manager'
+      preLoaderRoute: typeof ListManagerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/list/builder': {
+      id: '/list/builder'
+      path: '/list/builder'
+      fullPath: '/list/builder'
+      preLoaderRoute: typeof ListBuilderRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ColorRoute: ColorRoute,
-  ListRoute: ListRoute,
+  ListBuilderRoute: ListBuilderRoute,
+  ListManagerRoute: ListManagerRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

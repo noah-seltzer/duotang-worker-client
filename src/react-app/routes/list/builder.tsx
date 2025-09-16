@@ -1,7 +1,7 @@
 import { ListBuilder } from '@/components/Pages/ListBuilder'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/list')({
+export const Route = createFileRoute('/list/builder')({
   component: RouteComponent,
 })
 

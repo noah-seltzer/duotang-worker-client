@@ -4,8 +4,13 @@ import {
 import { useAppSelector } from '@/store'
 import { selectRowsByIds } from '@/store/fileListSlice'
 import { UKRANIAN_MARINER_DOCUMENT_LIST } from '@/data/document-list'
-import { selectDocumentListById } from '@/store/clientInfoSlice'
+import {
+    selectCurrentClient,
+    selectDocumentListById
+} from '@/store/clientInfoSlice'
 import { cn } from '@/lib/utils'
+import { selectListById, selectListItemsByIds } from '@/store/listBuilderSlice'
+import { ClientInfo } from '@/types/ClientInfo'
 
 interface UnorderedListItemProps {
     checked: boolean
@@ -24,13 +29,34 @@ export function ListCompletionTracker({ listId }: { listId: string }) {
         const row = rows.find((r) => r.docType.label === label)
         return row ? row.fileIds.length > 0 : false
     }
+
+    const currentClient = useAppSelector(selectCurrentClient) as ClientInfo
+
+    const clientListType = useAppSelector((state) =>
+        selectListById(state, currentClient.listTypeId as string)
+    )
+
+    const listItems = useAppSelector((state) =>
+        selectListItemsByIds(state, clientListType?.listItemIds || [])
+    )
+
+    let items = UKRANIAN_MARINER_DOCUMENT_LIST
+
+    if (clientListType && listItems.length > 0) {
+        items = listItems.map((l) => ({
+            label: l.label,
+            slug: l.id,
+            tags: [],
+            marad: false
+        }))
+    }
     return (
         <div className='flex flex-col justify-start'>
             <ul
                 role='list'
                 className={'w-86 text-gray-300 space-y-3 text-sm/6'}
             >
-                {UKRANIAN_MARINER_DOCUMENT_LIST.map((d) => {
+                {items.map((d) => {
                     return (
                         <ListCompletionTrackerItem
                             key={d.label}
@@ -56,7 +82,7 @@ export function ListCompletionTrackerItem({
             <CheckIcon
                 aria-hidden='true'
                 className={cn(
-                    checked ? 'text-indigo-400' : 'text-gray-700',
+                    checked ? 'text-primary' : 'text-muted',
                     'h-6 w-5 flex-none'
                 )}
             />

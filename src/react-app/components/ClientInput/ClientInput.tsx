@@ -26,6 +26,8 @@ import {
 } from '@/components/Skeleton/Select'
 import { ClientInfoInput } from '@/types/ClientInfo'
 import { Button } from '@/components/Skeleton/Button'
+import { selectAllLists } from '@/store/listBuilderSlice'
+import { useState } from 'react'
 
 /**
  * Form for information about the client who the documents are for
@@ -37,7 +39,11 @@ export function ClientInput() {
     const currentClientId = useAppSelector(selectCurrentClientId)
 
     const clients = useAppSelector(selectAllClients)
+    const lists = useAppSelector(selectAllLists)
     const dispatch = useAppDispatch()
+
+    const [listId, setListId] = useState<string | undefined>(undefined)
+
     return (
         <div className='flex flex-row gap-4'>
             {clients.length > 0 && (
@@ -71,7 +77,12 @@ export function ClientInput() {
                         <FormContextProvider
                             initialValues={newClient}
                             onSubmit={async (value) => {
-                                dispatch(addClient(value as ClientInfoInput))
+                                dispatch(
+                                    addClient({
+                                        ...value,
+                                        listTypeId: listId
+                                    } as ClientInfoInput)
+                                )
                             }}
                             validationSchema={userSchema}
                             validate={(values) => {
@@ -87,26 +98,41 @@ export function ClientInput() {
                                 }
                             }}
                         >
-                            <FormTextInput
-                                label='First Name'
-                                name='firstName'
-                                placeholder='Client First Name'
-                            />
-                            <FormTextInput
-                                label='Last Name'
-                                name='lastName'
-                                placeholder='Client First Name'
-                            />
-                            <FormTextInput
-                                label='Job Title'
-                                name='jobTitle'
-                                placeholder='Client Job jobTitle'
-                            />
-                            {/* <FormToggleInput
-                                name='nationality'
-                            >
-                                Is this Client Ukrainian?
-                            </FormToggleInput> */}
+                            <div className='space-y-2'>
+                                <FormTextInput
+                                    label='First Name'
+                                    name='firstName'
+                                    placeholder='Client First Name'
+                                />
+                                <FormTextInput
+                                    label='Last Name'
+                                    name='lastName'
+                                    placeholder='Client First Name'
+                                />
+                                <FormTextInput
+                                    label='Job Title'
+                                    name='jobTitle'
+                                    placeholder='Client Job Title'
+                                />
+                                <Select onValueChange={setListId}>
+                                    <SelectTrigger>
+                                        <SelectValue placeholder='Select Client Type' />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        {lists.map((list) => {
+                                            return (
+                                                <SelectItem
+                                                    key={list.id}
+                                                    value={list.id}
+                                                >
+                                                    {list.name}
+                                                </SelectItem>
+                                            )
+                                        })}
+                                    </SelectContent>
+                                </Select>
+                            </div>
+
                             <div className='flex flex-row gap-3'>
                                 <FloatingModalClose asChild={true}>
                                     <FormSubmitButton className='mt-3' />

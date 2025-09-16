@@ -1,4 +1,4 @@
-import { DotsVerticalIcon, PlusCircledIcon } from '@radix-ui/react-icons'
+import { DotsVerticalIcon } from '@radix-ui/react-icons'
 import { useAppDispatch, useAppSelector } from '@/store'
 import {
     selectFileById,
@@ -18,16 +18,17 @@ import {
 } from '@/components/Skeleton/DropdownMenu'
 import { FormFileDropZone } from '@/components/Form/FormFileDropZone'
 import { ChangeEvent } from 'react'
-import { addFilesToRow, deleteFilesFromRow } from '@/store/fileListThunks'
-import { setListHoverIndex } from '@/store/appearanceSlice'
+import { addFilesToRow, updateFileAsync } from '@/store/fileListThunks'
 import {
     Popover,
     PopoverContent,
     PopoverTrigger
 } from '@/components/Skeleton/Popover'
 import { NewFilePreview } from '@/components/Files/NewFilePreview'
-import { useGetFileInfo } from '@/hooks/useGenerateNewFileName'
-import { replaceSpaceWithUnderscore } from '@/lib/string'
+import { FilePreview } from '@/components/Files/FilePreview'
+import { selectCurrentClient } from '@/store/clientInfoSlice'
+import { ClientInfo } from '@/types/ClientInfo'
+import { selectListById } from '@/store/listBuilderSlice'
 export interface FileRowProps {
     index: number
     rowId: string
@@ -39,31 +40,55 @@ export function FileRow({ rowId }: FileRowProps) {
     const rowFile = useAppSelector((state) =>
         selectFileById(state, row.fileIds[0])
     )
-    const { name } = useGetFileInfo(rowFile?.id)
+
+    const currentClient = useAppSelector(selectCurrentClient) as ClientInfo
+    const clientListType = useAppSelector((state) =>
+        selectListById(state, currentClient.listTypeId as string)
+    )
 
     const { deleteRowsFromList } = useListState(row.listId)
     const { fileIds, docType } = row
     const isComplete = fileIds.length > 0
 
-    const addFile = (e: ChangeEvent<HTMLInputElement>) => {
-        if (fileIds.length > 0) dispatch(deleteFilesFromRow([rowFile]))
+    const onAddFile = (
+        e: ChangeEvent<HTMLInputElement>,
+        isMarad: boolean = false
+    ) => {
         const { files } = e.target
         if (!files || files.length === 0) return
         const newFile = files[0]
         const input = {
             file: newFile,
             name: newFile.name,
-            isMarad: false,
+            isMarad,
             rowId
         }
         dispatch(addFilesToRow([input]))
     }
 
+    const onUpdateFile = (
+        e: ChangeEvent<HTMLInputElement>,
+        fileId: string,
+        isMarad: boolean = false
+    ) => {
+        const { files } = e.target
+        if (!files || files.length === 0) return
+        const newFile = files[0]
+        const input = {
+            file: newFile,
+            name: newFile.name,
+            isMarad,
+            rowId,
+            id: fileId
+        }
+        dispatch(updateFileAsync(input))
+    }
+
+    const otherFiles = fileIds.filter((id) => id !== rowFile?.id)
+
     return (
         <TableRow
             disableHover={false}
-            onMouseEnter={() => dispatch(setListHoverIndex(rowId))}
-            onMouseLeave={() => dispatch(setListHoverIndex(undefined))}
         >
             {/* Status */}
             <TableCell>
@@ -80,41 +105,66 @@ export function FileRow({ rowId }: FileRowProps) {
                         dispatch(updateFileRow({ ...row, docType: value }))
                     }}
                 />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button className='mt-2 py-1 px-2 h-6'>
-                            <PlusCircledIcon /> Add Related File
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent>
-                        <DropdownMenuItem>Add Marad</DropdownMenuItem>
-                        <DropdownMenuItem>Add Other</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
             </TableCell>
             <TableCell>
                 {rowFile && (
                     <Popover>
-                        <PopoverTrigger>Show File</PopoverTrigger>
+                        <PopoverTrigger>Show Files</PopoverTrigger>
                         <PopoverContent className='w-fit'>
                             <NewFilePreview fileId={rowFile.id} />
+                            {otherFiles.map((id) => (
+                                <div className='flex flex-col gap-2'>
+                                    <NewFilePreview fileId={id} />
+                                </div>
+                            ))}
                         </PopoverContent>
                     </Popover>
                 )}
             </TableCell>
 
             {/* Add File */}
-            <TableCell>
+            <TableCell className='space-y-2'>
                 <FormFileDropZone
                     linkMessage='Add file'
                     secondaryMessage={'or drag and drop'}
-                    onInput={addFile}
+                    onInput={(e) => {
+                        const event = e as ChangeEvent<HTMLInputElement>
+                        if (!rowFile) {
+                            onAddFile(event)
+                        } else {
+                            onUpdateFile(event, rowFile.id)
+                        }
+                    }}
                     fileName={rowFile?.name}
-                />
-                {rowFile && replaceSpaceWithUnderscore(name)}
+                >
+                    {rowFile && <FilePreview fileId={rowFile.id} />}
+                </FormFileDropZone>
+                {(!clientListType || clientListType.tags.includes('MARAD')) && (
+                    <div className='flex flex-row gap-2'>
+                        <FormFileDropZone
+                            linkMessage='Add Marad File'
+                            onInput={(e) =>
+                                onAddFile(
+                                    e as ChangeEvent<HTMLInputElement>,
+                                    true
+                                )
+                            }
+                        >
+                            {otherFiles.length > 0 && (
+                                <div className='space-y-2'>
+                                    {otherFiles.map((id) => (
+                                        <div key={id} className='flex flex-col'>
+                                            <FilePreview fileId={id} />
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </FormFileDropZone>
+                    </div>
+                )}
             </TableCell>
 
-            <TableCell>
+            <TableCell className='align-top'>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button

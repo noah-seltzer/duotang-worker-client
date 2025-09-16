@@ -7,9 +7,7 @@ interface FilePreviewProps {
 }
 
 export function NewFilePreview({ fileId }: FilePreviewProps) {
-    console.log('fileid', fileId)
     const promise = localforage.getItem(fileId) as Promise<File>
-    console.log('promies', promise)
     return (
         <div className='flex flex-row items-center gap-2'>
             <Suspense fallback={<div className='h-8 w-32'>Loading...</div>}>

@@ -6,6 +6,7 @@ import { createEntityAdapter, createSlice, EntityState } from '@reduxjs/toolkit'
 
 interface ListInput {
     name: string
+    tags: string[]
 }
 
 interface List extends ListInput {
@@ -43,7 +44,8 @@ const initialState: ListBuilderState = {
     lists: listEntity.getInitialState(),
     listItems: listItemEntity.getInitialState(),
     newList: {
-        name: ''
+        name: '',
+        tags: []
     },
     newListItemIds: []
 }
@@ -60,7 +62,6 @@ const listBuilderSlice = createSlice({
         },
         updateNewListItemIds: (state, action) => {
             state.newListItemIds = action.payload
-
         },
         addFileNameComponent: (state, action) => {
             fileNameComponentEntity.addOne(
@@ -88,6 +89,9 @@ const listBuilderSlice = createSlice({
         },
         removeListItem: (state, action) => {
             listItemEntity.removeOne(state.listItems, action.payload)
+        },
+        deleteList: (state, action) => {
+            listEntity.removeOne(state.lists, action.payload)
         }
     }
 })
@@ -108,7 +112,8 @@ export const listItemSelectors = listItemEntity.getSelectors<RootState>(
 )
 
 export const selectNewList = (state: RootState) => state.listBuilder.newList
-export const selectNewListItemIds = (state: RootState) => state.listBuilder.newListItemIds
+export const selectNewListItemIds = (state: RootState) =>
+    state.listBuilder.newListItemIds
 
 export const selectAllFileNameComponents = (state: RootState) =>
     fileNameComponentSelectors.selectAll(state)
@@ -121,6 +126,12 @@ export const selectListItemById = (state: RootState, id: string) =>
 export const selectListById = (state: RootState, id: string) =>
     listSelectors.selectById(state, id)
 
+export const selectAllLists = (state: RootState) =>
+    listSelectors.selectAll(state)
+
+export const selectListItemsByIds = (state: RootState, ids: string[]) => {
+    return ids.map((id) => state.listBuilder.listItems.entities[id])
+}
 export const {
     setNewListName,
     addFileNameComponent,
@@ -130,7 +141,8 @@ export const {
     addListItem,
     updateListItem,
     removeListItem,
-    setNewListItemIds
+    setNewListItemIds,
+    deleteList
 } = listBuilderSlice.actions
 
 export default listBuilderSlice.reducer

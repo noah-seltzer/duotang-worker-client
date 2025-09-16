@@ -21,6 +21,7 @@ const createDefaultClient = (): ClientInfoInput => ({
     firstName: 'Noah',
     lastName: 'Seltzer',
     jobTitle: 'Second Engineer',
+    listTypeId: '',
     documentListIds: []
 })
 const documentListEntity = createEntityAdapter<DocumentList>()
@@ -110,6 +111,13 @@ export const selectClientById = (state: RootState, id: string) =>
 export const selectAllClients = (state: RootState) =>
     clientInfoSelectors.selectAll(state)
 
+export const selectCurrentClient = (state: RootState) => {
+    if (!state.clientInfo.currentClientId) return undefined
+    return clientInfoSelectors.selectById(
+        state,
+        state.clientInfo.currentClientId
+    )
+}
 export const {
     updateFirstName,
     updateLastName,

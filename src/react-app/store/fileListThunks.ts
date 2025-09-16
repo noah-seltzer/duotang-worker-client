@@ -24,6 +24,17 @@ export const addFilesToRow = createAsyncThunk<CachedFile[], CachedFileInput[]>(
     }
 )
 
+export const updateFileAsync = createAsyncThunk<
+    CachedFile,
+    CachedFileInput & { id: string }
+>('fileRow/updateFileCacheStatus', async (file) => {
+    await localforage.setItem(file.id, file.file)
+    return {
+        ...file,
+        file: undefined
+    }
+})
+
 export const deleteRows = createAsyncThunk<ListRow[], string[]>(
     'fileRow/deleteRowsStatus',
     async (rowIds, thunkApi) => {

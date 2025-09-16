@@ -1,7 +1,4 @@
-import {
-    DEFAULT_DOCUMENT_TYPE,
-    UKRANIAN_MARINER_DOCUMENT_LIST
-} from '../data/document-list'
+import { DEFAULT_DOCUMENT_TYPE } from '../data/document-list'
 import { CachedFile } from '@/types/CachedFile'
 import type { ClientInfo } from '@/types/ClientInfo'
 import type { DocumentType } from '@/types/DocumentRowType'
@@ -44,10 +41,11 @@ export const createClientNameString = (clientInfo: ClientInfo) =>
         clientInfo.lastName || DEFAULT_LASTNAME
     }`
 
-export const getDocumentRowType = (slug: string): DocumentType => {
+export const getDocumentRowType = (
+    slug: string,
+    items: DocumentType[]
+): DocumentType => {
     return (
-        UKRANIAN_MARINER_DOCUMENT_LIST.find(
-            (docType) => docType.slug === slug
-        ) || DEFAULT_DOCUMENT_TYPE
+        items.find((docType) => docType.slug === slug) || DEFAULT_DOCUMENT_TYPE
     )
 }

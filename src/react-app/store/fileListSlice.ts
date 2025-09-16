@@ -8,7 +8,12 @@ import {
 } from '@reduxjs/toolkit'
 import { UKRANIAN_MARINER_DOCUMENT_LIST } from '../data/document-list'
 import { CachedFile } from '@/types/CachedFile'
-import { addFilesToRow, deleteFilesFromRow, deleteRows } from './fileListThunks'
+import {
+    addFilesToRow,
+    deleteFilesFromRow,
+    deleteRows,
+    updateFileAsync
+} from './fileListThunks'
 import { DocumentType } from '@/types/DocumentRowType'
 import { RootState } from '.'
 import { ListRow } from '@/types/ListRow'
@@ -95,6 +100,10 @@ const fileListSlice = createSlice({
             const fileIds = payload.map((p) => p.fileIds).flat()
             fileEntity.removeMany(state.files, fileIds)
             rowEntity.removeMany(state.rows, ids)
+        })
+        builder.addCase(updateFileAsync.fulfilled, (state, action) => {
+            const { payload } = action
+            updateOneEntity(fileEntity, state.files, payload)
         })
     }
 })

@@ -7,6 +7,7 @@ export interface ClientInfo {
     id: string
     documentListIds: string[]
     nationality?: Nationality
+    listTypeId?: string
 }
 
 export type ClientInfoInput = Omit<ClientInfo, 'id'>

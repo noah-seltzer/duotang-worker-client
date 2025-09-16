@@ -9,6 +9,10 @@ import {
     SelectTrigger
 } from '@/components/Skeleton/Select'
 import { CheckIcon } from '@radix-ui/react-icons'
+import { useAppSelector } from '@/store'
+import { selectCurrentClient } from '@/store/clientInfoSlice'
+import { selectListById, selectListItemsByIds } from '@/store/listBuilderSlice'
+import { ClientInfo } from '@/types/ClientInfo'
 
 export interface SelectOption {
     value: string
@@ -24,13 +28,34 @@ export function FileTypeSelector({
     currentOption,
     onChange
 }: FileTypeSelectorProps) {
-    const options = UKRANIAN_MARINER_DOCUMENT_LIST.map((docType) => ({
+    const currentClient = useAppSelector(selectCurrentClient) as ClientInfo
+
+    const clientListType = useAppSelector((state) =>
+        selectListById(state, currentClient.listTypeId as string)
+    )
+
+    const listItems = useAppSelector((state) =>
+        selectListItemsByIds(state, clientListType?.listItemIds || [])
+    )
+
+    let items = UKRANIAN_MARINER_DOCUMENT_LIST
+
+    if (clientListType && listItems.length > 0) {
+        items = listItems.map((l) => ({
+            label: l.label,
+            slug: l.id,
+            tags: [],
+            marad: false
+        }))
+    }
+
+    const options = items.map((docType) => ({
         value: docType.slug,
         label: docType.label
     }))
 
     const onSelect = (value: string) => {
-        const newDocType = getDocumentRowType(value)
+        const newDocType = getDocumentRowType(value, items)
         onChange(newDocType)
     }
     return (
@@ -62,8 +87,6 @@ export function FileTypeSelector({
                             )
                         })}
                     </div>
-                    {/* </SelectGroup>
-                    </SelectViewport> */}
                 </SelectContent>
             </Select>
         </div>

@@ -47,8 +47,11 @@ export function Header() {
                     <Link className='[&.active]:font-bold' to='/'>
                         Home
                     </Link>
-                    <Link className='[&.active]:font-bold' to='/list'>
+                    <Link className='[&.active]:font-bold' to='/list/builder'>
                         List Builder
+                    </Link>
+                    <Link className='[&.active]:font-bold' to='/list/manager'>
+                        List Manager
                     </Link>
                 </div>
             </nav>
