@@ -1,8 +1,8 @@
 import { ChangeEventHandler, MouseEventHandler } from 'react'
-import { MinusCircleIcon } from '@heroicons/react/16/solid'
 import { Button } from '@/components/Skeleton/Button'
 import { FormCheckboxInput } from '@/components/Form/FormCheckboxInput'
 import { FileInput } from '@/components/Input/FileFormInput'
+import { MinusCircledIcon } from '@radix-ui/react-icons'
 
 interface FileDetailsProps {
     file: FileInput
@@ -29,7 +29,7 @@ export function FileDetails({
 
             <dd className=''>
                 <Button className='p-2' onClick={onClick}>
-                    <MinusCircleIcon className='w-4 h-4' />
+                    <MinusCircledIcon className='w-4 h-4' />
                 </Button>
             </dd>
         </div>

@@ -11,6 +11,14 @@ import {
 import { createFileName } from '../lib/files'
 
 export function useGetFileInfo(fileId: string) {
+    if (!fileId) {
+        return {
+            name: '',
+            row: undefined,
+            clientInfo: undefined,
+            file: undefined
+        }
+    }
     const file = useAppSelector((state) => selectFileById(state, fileId))
     const row = useAppSelector((state) => selectRowById(state, file.rowId))
     const document = useAppSelector((state) =>

@@ -6,7 +6,7 @@ import {
     nanoid,
     PayloadAction
 } from '@reduxjs/toolkit'
-import { DOCUMENT_TYPES } from '../data/document-list'
+import { UKRANIAN_MARINER_DOCUMENT_LIST } from '../data/document-list'
 import { CachedFile } from '@/types/CachedFile'
 import { addFilesToRow, deleteFilesFromRow, deleteRows } from './fileListThunks'
 import { DocumentType } from '@/types/DocumentRowType'
@@ -25,8 +25,10 @@ const fileEntity = createEntityAdapter<CachedFile>()
 
 export const createBlankRow = (listId: string, typeSlug?: string): ListRow => {
     const docType = !!typeSlug
-        ? (DOCUMENT_TYPES.find((t) => t.slug === typeSlug) as DocumentType)
-        : DOCUMENT_TYPES[0]
+        ? (UKRANIAN_MARINER_DOCUMENT_LIST.find(
+              (t) => t.slug === typeSlug
+          ) as DocumentType)
+        : UKRANIAN_MARINER_DOCUMENT_LIST[0]
     return {
         id: nanoid(),
         docType,

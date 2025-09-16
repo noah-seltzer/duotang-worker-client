@@ -3,7 +3,7 @@ import {
 } from '@radix-ui/react-icons'
 import { useAppSelector } from '@/store'
 import { selectRowsByIds } from '@/store/fileListSlice'
-import { DOCUMENT_TYPES } from '@/data/document-list'
+import { UKRANIAN_MARINER_DOCUMENT_LIST } from '@/data/document-list'
 import { selectDocumentListById } from '@/store/clientInfoSlice'
 import { cn } from '@/lib/utils'
 
@@ -30,7 +30,7 @@ export function ListCompletionTracker({ listId }: { listId: string }) {
                 role='list'
                 className={'w-86 text-gray-300 space-y-3 text-sm/6'}
             >
-                {DOCUMENT_TYPES.map((d) => {
+                {UKRANIAN_MARINER_DOCUMENT_LIST.map((d) => {
                     return (
                         <ListCompletionTrackerItem
                             key={d.label}

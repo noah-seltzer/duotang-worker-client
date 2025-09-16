@@ -15,8 +15,9 @@ import {
     TableHeader,
     TableRow
 } from '@/components/Skeleton/Table'
+import { PlusCircledIcon } from '@radix-ui/react-icons'
 
-const rowNames = ['Status', 'File Type', 'Documents', 'Controls']
+const rowNames = ['Status', 'File Type', 'File']
 
 interface DocumentListManagementTableProps {
     documentListId: string
@@ -61,7 +62,7 @@ export function DocumentListManagementTable({
                             <ClientInput />
                             <Table>
                                 <TableHeader>
-                                    <TableRow>
+                                    <TableRow disableHover={true}>
                                         {rowNames.map((name, index) => (
                                             <TableHead key={index}>
                                                 {name}
@@ -86,11 +87,12 @@ export function DocumentListManagementTable({
                                 >
                                     <ExportButton />
                                     <Button onClick={() => createRowInList()}>
-                                        Add Row
+                                        <PlusCircledIcon /> Add Row
                                     </Button>
                                 </div>
                             </div>
                         </motion.div>
+                        {/* <FileThumbs listId={documentListId} /> */}
                     </AnimatePresence>
                 </LayoutGroup>
             </div>

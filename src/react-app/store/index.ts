@@ -8,6 +8,7 @@ import {
     TypedStartListening
 } from '@reduxjs/toolkit'
 import localForage from 'localforage'
+import { useDispatch, useSelector } from 'react-redux'
 import {
     FLUSH,
     REHYDRATE,
@@ -18,17 +19,18 @@ import {
     persistStore,
     persistReducer
 } from 'redux-persist'
-import fileListSlice from './fileListSlice'
-import clientInfoSlice from './clientInfoSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import documentListSlice from './savedListSlice'
-import listBuilderSlice from './listBuilderSlice'
+import fileListSlice from '@/store/fileListSlice'
+import clientInfoSlice from '@/store/clientInfoSlice'
+import documentListSlice from '@/store/savedListSlice'
+import listBuilderSlice from '@/store/listBuilderSlice'
+import appearanceSlice from '@/store/appearanceSlice'
 
 const rootReducer = combineReducers({
     fileList: fileListSlice,
     clientInfo: clientInfoSlice,
     documentList: documentListSlice,
-    listBuilder: listBuilderSlice
+    listBuilder: listBuilderSlice,
+    appearance: appearanceSlice
 })
 
 const persistConfig = {

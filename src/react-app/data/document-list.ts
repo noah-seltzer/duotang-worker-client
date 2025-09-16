@@ -3,21 +3,21 @@ import type { DocumentType } from '@/types/DocumentRowType'
 export const DEFAULT_DOCUMENT_TYPE: DocumentType = {
     label: 'Confirmation of Competency',
     slug: 'CoC',
-    marad: true,
+    marad: false,
     tags: []
 }
 
-export const DOCUMENT_TYPES: DocumentType[] = [
+export const UKRANIAN_MARINER_DOCUMENT_LIST: DocumentType[] = [
     {
         label: 'Certificate of Competency',
         slug: 'coc',
-        marad: true,
+        marad: false,
         tags: []
     },
     {
-        label: 'Confirmation of Competency Endorsement',
+        label: 'Confirmation of Competency MARAD Endorsement',
         slug: 'coc-endorsement',
-        marad: true,
+        marad: false,
         tags: []
     },
     {
@@ -37,14 +37,14 @@ export const DOCUMENT_TYPES: DocumentType[] = [
         label: 'Advanced Firefighting',
         fileLabel: 'Advanced Firefighting (STCW A-VI 3)',
         slug: 'aff',
-        marad: true,
+        marad: false,
         tags: []
     },
     {
         label: 'Survival Craft',
         fileLabel: 'Survival Craft (STCW A-VI 2-1)',
         slug: 'survival-craft',
-        marad: true,
+        marad: false,
         tags: []
     },
     {

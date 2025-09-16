@@ -10,6 +10,7 @@ import { deleteFilesFromRow } from '@/store/fileListThunks'
 import { getFileExtensionFromName } from '@/lib/files'
 import { HoverTruncatedText } from '@/components/Hover/HoverTruncatedText'
 import { useGetFileInfo } from '@/hooks/useGenerateNewFileName'
+import { replaceSpaceWithUnderscore } from '@/lib/string'
 
 interface FilePreviewProps {
     fileId: string
@@ -59,8 +60,10 @@ function FileLoader({
                 text={'Old: ' + fileMeta.name}
                 underline={false}
             />
-            <HoverTruncatedText text={'New: ' + name} underline={true} />
-            <DisplayFileName fileId={fileId} />
+            <HoverTruncatedText
+                text={'New: ' + replaceSpaceWithUnderscore(name)}
+                underline={true}
+            />
             <DeleteButton
                 confirmMessage='Delete File? This cannot be undone.'
                 onClick={() => dispatch(deleteFilesFromRow([fileMeta]))}

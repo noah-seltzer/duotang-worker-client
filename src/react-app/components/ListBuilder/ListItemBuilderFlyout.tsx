@@ -9,8 +9,7 @@ import {
 } from '@/components/Skeleton/Command'
 import { cn } from '@/lib/utils'
 import { FileNameComponent } from '@/types/FileNameComponent'
-import { Check } from 'lucide-react'
-
+import { CheckIcon } from '@radix-ui/react-icons'
 interface ListItemBuilderFlyout {
     fileNameComponents: FileNameComponent[]
     activeItems: string[]
@@ -49,7 +48,7 @@ export function ListItemBuilderFlyout({
                                     }
                                 }}
                             >
-                                <Check
+                                <CheckIcon
                                     className={cn(
                                         'mr-2 h-4 w-4',
                                         isSelected ? 'opacity-100' : 'opacity-0'
@@ -64,15 +63,11 @@ export function ListItemBuilderFlyout({
                     <>
                         <CommandSeparator />
                         <CommandGroup>
-                            <CommandItem
-                                onSelect={() => handleCopy()}
-                            >
+                            <CommandItem onSelect={() => handleCopy()}>
                                 Copy Item (not supported)
                             </CommandItem>
 
-                            <CommandItem
-                                onSelect={() => handleDelete()}
-                            >
+                            <CommandItem onSelect={() => handleDelete()}>
                                 Delete Item (not supported)
                             </CommandItem>
                         </CommandGroup>

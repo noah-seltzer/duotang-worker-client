@@ -1,5 +1,4 @@
 import * as React from 'react'
-import { X, Check } from 'lucide-react'
 
 import { cn } from '@/lib/utils'
 import { Button } from '@/components/Skeleton/Button'
@@ -21,6 +20,7 @@ import { Badge } from '@/components/Skeleton/Badge'
 import { Label } from '@/components/Skeleton/Label'
 import { useId } from 'react'
 import { WidthBox } from '@/components/Layout/WidthBox'
+import { Cross1Icon } from '@radix-ui/react-icons'
 
 export type OptionType = {
     label: string
@@ -106,7 +106,7 @@ export function MultiSelect({
                                                         )
                                                     }
                                                 >
-                                                    <X className='h-3 w-3 text-muted-foreground hover:text-foreground' />
+                                                    <Cross1Icon className='h-3 w-3 text-muted-foreground hover:text-foreground' />
                                                 </div>
                                             </Badge>
                                         ))

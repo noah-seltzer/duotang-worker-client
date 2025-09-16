@@ -1,4 +1,4 @@
-import { DOCUMENT_TYPES } from '@/data/document-list'
+import { UKRANIAN_MARINER_DOCUMENT_LIST } from '@/data/document-list'
 import { getDocumentRowType } from '@/lib/files'
 import { DocumentType } from '@/types/DocumentRowType'
 
@@ -8,7 +8,7 @@ import {
     SelectItem,
     SelectTrigger
 } from '@/components/Skeleton/Select'
-import { CheckIcon } from '@heroicons/react/20/solid'
+import { CheckIcon } from '@radix-ui/react-icons'
 
 export interface SelectOption {
     value: string
@@ -24,7 +24,7 @@ export function FileTypeSelector({
     currentOption,
     onChange
 }: FileTypeSelectorProps) {
-    const options = DOCUMENT_TYPES.map((docType) => ({
+    const options = UKRANIAN_MARINER_DOCUMENT_LIST.map((docType) => ({
         value: docType.slug,
         label: docType.label
     }))
