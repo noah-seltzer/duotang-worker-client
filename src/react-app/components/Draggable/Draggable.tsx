@@ -1,4 +1,4 @@
-import { forwardRef, HTMLProps, PropsWithChildren, useState } from 'react'
+import { HTMLProps, PropsWithChildren } from 'react'
 import {
     DndContext,
     closestCenter,
@@ -14,17 +14,11 @@ import {
     SortableContext,
     sortableKeyboardCoordinates
 } from '@dnd-kit/sortable'
-import { DraggableItem } from '@/components/Draggable/DraggableItem'
-import { Slottable } from '@radix-ui/react-slot'
-import { Badge } from '@/components/Skeleton/Badge'
 
-
-
-interface DraggableProps extends PropsWithChildren, HTMLProps<HTMLDivElement> { 
+interface DraggableProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {
     items: string[]
     onChange: (items: string[]) => void
 }
-
 
 export function Draggable({
     onChange,
@@ -69,10 +63,10 @@ export function Draggable({
                             >
                                 <Slottable id={id}>{children}</Slottable>
                                 {/* <Badge>{id.value}</Badge> */}
-                            {/* </DraggableItem> */}
+                        {/* </DraggableItem> */}
                     </div>
                     {/* <div className='flex flex-row'> */}
-                        {/* <LayoutGroup>
+                    {/* <LayoutGroup>
                             {items.map((item, i) => (
                                 <motion.div layout key={item.id}>
                                     {item.example}

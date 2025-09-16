@@ -1,7 +1,8 @@
 import { cn } from "@/lib/utils";
 import { DetailedHTMLProps, HTMLAttributes } from "react";
 
-interface GridProps extends DetailedHTMLProps<HTMLAttributes<HTMLDListElement>, HTMLDListElement> {}
+interface GridProps
+    extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {}
 
 export function Grid({ children, className, ...props}: GridProps) {
   return (

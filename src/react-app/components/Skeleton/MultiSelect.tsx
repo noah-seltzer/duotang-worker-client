@@ -20,7 +20,7 @@ import { Badge } from '@/components/Skeleton/Badge'
 import { Label } from '@/components/Skeleton/Label'
 import { useId } from 'react'
 import { WidthBox } from '@/components/Layout/WidthBox'
-import { Cross1Icon } from '@radix-ui/react-icons'
+import { CheckIcon, Cross1Icon } from '@radix-ui/react-icons'
 
 export type OptionType = {
     label: string
@@ -152,7 +152,7 @@ export function MultiSelect({
                                                 setOpen(true)
                                             }}
                                         >
-                                            <Check
+                                            <CheckIcon
                                                 className={cn(
                                                     'mr-2 h-4 w-4',
                                                     isSelected

@@ -1,10 +1,6 @@
 import { cn } from '@/lib/utils'
 import { HTMLProps } from 'react'
 
-interface WidthBoxProps extends HTMLProps<HTMLDivElement> {
-    type: 'formelement' | undefined
-}
-
 
 export function WidthBox({
     children,
