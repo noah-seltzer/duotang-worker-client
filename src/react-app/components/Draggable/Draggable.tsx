@@ -1,4 +1,4 @@
-import { HTMLProps, PropsWithChildren } from 'react'
+import { PropsWithChildren } from 'react'
 import {
     DndContext,
     closestCenter,
