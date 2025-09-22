@@ -30,15 +30,13 @@ interface ListItemBuilderProps {
     id: string
 }
 
-
 export function ListItemBuilder({ id }: ListItemBuilderProps) {
     const dispatch = useDispatch()
-    
+
     const listItem = useAppSelector((state) => selectListItemById(state, id))
-    const {name: newListName} = useAppSelector(selectNewList)
+    const { name: newListName } = useAppSelector(selectNewList)
     const { activeItems } = listItem
     const fileNameComponents = useAppSelector(selectAllFileNameComponents)
-    
 
     const setActiveItems = (items: string[]) => {
         dispatch(updateListItem({ ...listItem, activeItems: [...items] }))
@@ -46,7 +44,7 @@ export function ListItemBuilder({ id }: ListItemBuilderProps) {
     const handleUnselect = (item: string) => {
         setActiveItems(activeItems.filter((i) => i !== item))
     }
-    
+
     const handleSelect = (item: string) => {
         setActiveItems([...activeItems, item])
     }
@@ -56,7 +54,7 @@ export function ListItemBuilder({ id }: ListItemBuilderProps) {
             label = replaceSpaceWithUnderscore(listItem.label || item.example)
         }
         if (item.value === 'list-name') {
-            label = replaceSpaceWithUnderscore(newListName || item.example) 
+            label = replaceSpaceWithUnderscore(newListName || item.example)
         }
         return label + (index === activeItems.length - 1 ? '.pdf' : '_')
     }
@@ -75,7 +73,12 @@ export function ListItemBuilder({ id }: ListItemBuilderProps) {
                     label='Item Name'
                     placeholder='Passport Photo'
                     onInput={(e) => {
-                        dispatch(updateListItem({ ...listItem, label: getValueFromOnChangeEvent(e) }))
+                        dispatch(
+                            updateListItem({
+                                ...listItem,
+                                label: getValueFromOnChangeEvent(e)
+                            })
+                        )
                     }}
                 />
                 <div>
@@ -95,26 +98,34 @@ export function ListItemBuilder({ id }: ListItemBuilderProps) {
                                         <div className='flex flex-row gap-2 items-end'>
                                             <div>
                                                 <Draggable
-                                                    className='flex flex-row gap-1'
                                                     items={activeItems}
                                                     onChange={(items) =>
                                                         setActiveItems(items)
                                                     }
                                                 >
-                                                    {activeItems.map((id) => {
-                                                        const item = getItem(id)
-                                                        return (
-                                                            <DraggableItem
-                                                                id={id}
-                                                                key={id}
-                                                                lockSize={true}
-                                                            >
-                                                                <Badge>
-                                                                    {item.label}
-                                                                </Badge>
-                                                            </DraggableItem>
-                                                        )
-                                                    })}
+                                                    <div className='flex flex-row gap-1'>
+                                                        {activeItems.map(
+                                                            (id) => {
+                                                                const item =
+                                                                    getItem(id)
+                                                                return (
+                                                                    <DraggableItem
+                                                                        id={id}
+                                                                        key={id}
+                                                                        lockSize={
+                                                                            true
+                                                                        }
+                                                                    >
+                                                                        <Badge>
+                                                                            {
+                                                                                item.label
+                                                                            }
+                                                                        </Badge>
+                                                                    </DraggableItem>
+                                                                )
+                                                            }
+                                                        )}
+                                                    </div>
                                                 </Draggable>
                                                 <div className='flex flex-row mt-2'>
                                                     <LayoutGroup>
@@ -127,7 +138,10 @@ export function ListItemBuilder({ id }: ListItemBuilderProps) {
                                                                         layout
                                                                         key={id}
                                                                     >
-                                                                        {createPreview(item, i)}
+                                                                        {createPreview(
+                                                                            item,
+                                                                            i
+                                                                        )}
                                                                     </motion.div>
                                                                 )
                                                             }
@@ -148,8 +162,12 @@ export function ListItemBuilder({ id }: ListItemBuilderProps) {
                                             handleClear={() =>
                                                 setActiveItems([])
                                             }
-                                            handleCopy={() => console.log('copy')}
-                                            handleDelete={() => console.log('delete')}
+                                            handleCopy={() =>
+                                                console.log('copy')
+                                            }
+                                            handleDelete={() =>
+                                                console.log('delete')
+                                            }
                                         />
                                     </PopoverContent>
                                 </Popover>

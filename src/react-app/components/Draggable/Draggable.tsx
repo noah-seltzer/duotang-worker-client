@@ -15,17 +15,12 @@ import {
     sortableKeyboardCoordinates
 } from '@dnd-kit/sortable'
 
-interface DraggableProps extends PropsWithChildren, HTMLProps<HTMLDivElement> {
+interface DraggableProps extends PropsWithChildren {
     items: string[]
     onChange: (items: string[]) => void
 }
 
-export function Draggable({
-    onChange,
-    items: ids,
-    children,
-    ...props
-}: DraggableProps) {
+export function Draggable({ onChange, items: ids, children }: DraggableProps) {
     const sensors = useSensors(
         useSensor(PointerSensor),
         useSensor(KeyboardSensor, {
@@ -53,28 +48,7 @@ export function Draggable({
                     items={ids}
                     strategy={horizontalListSortingStrategy}
                 >
-                    <div {...props}>
-                        {children}
-                        {/* {ids.map((id) => (
-                            <DraggableItem
-                            lockSize={true}
-                            key={id}
-                            id={id}
-                            >
-                                <Slottable id={id}>{children}</Slottable>
-                                {/* <Badge>{id.value}</Badge> */}
-                        {/* </DraggableItem> */}
-                    </div>
-                    {/* <div className='flex flex-row'> */}
-                    {/* <LayoutGroup>
-                            {items.map((item, i) => (
-                                <motion.div layout key={item.id}>
-                                    {item.example}
-                                    {i === items.length - 1 ? '' : '_'}
-                                </motion.div>
-                            ))}
-                        </LayoutGroup> */}
-                    {/* </div> */}
+                    {children}
                 </SortableContext>
             </DndContext>
         </div>

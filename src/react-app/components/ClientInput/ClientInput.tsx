@@ -129,6 +129,9 @@ export function ClientInput() {
                                                 </SelectItem>
                                             )
                                         })}
+                                        <SelectItem value='default'>
+                                            Default
+                                        </SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>
