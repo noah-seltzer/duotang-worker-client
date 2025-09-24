@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './react-app/routes/__root'
 import { Route as ColorRouteImport } from './react-app/routes/color'
 import { Route as IndexRouteImport } from './react-app/routes/index'
+import { Route as ConfigureIndexRouteImport } from './react-app/routes/configure/index'
 import { Route as ListManagerRouteImport } from './react-app/routes/list/manager'
 import { Route as ListBuilderRouteImport } from './react-app/routes/list/builder'
 
@@ -22,6 +23,11 @@ const ColorRoute = ColorRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ConfigureIndexRoute = ConfigureIndexRouteImport.update({
+  id: '/configure/',
+  path: '/configure/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ListManagerRoute = ListManagerRouteImport.update({
@@ -40,12 +46,14 @@ export interface FileRoutesByFullPath {
   '/color': typeof ColorRoute
   '/list/builder': typeof ListBuilderRoute
   '/list/manager': typeof ListManagerRoute
+  '/configure': typeof ConfigureIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/color': typeof ColorRoute
   '/list/builder': typeof ListBuilderRoute
   '/list/manager': typeof ListManagerRoute
+  '/configure': typeof ConfigureIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -53,13 +61,20 @@ export interface FileRoutesById {
   '/color': typeof ColorRoute
   '/list/builder': typeof ListBuilderRoute
   '/list/manager': typeof ListManagerRoute
+  '/configure/': typeof ConfigureIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/color' | '/list/builder' | '/list/manager'
+  fullPaths: '/' | '/color' | '/list/builder' | '/list/manager' | '/configure'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/color' | '/list/builder' | '/list/manager'
-  id: '__root__' | '/' | '/color' | '/list/builder' | '/list/manager'
+  to: '/' | '/color' | '/list/builder' | '/list/manager' | '/configure'
+  id:
+    | '__root__'
+    | '/'
+    | '/color'
+    | '/list/builder'
+    | '/list/manager'
+    | '/configure/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -67,6 +82,7 @@ export interface RootRouteChildren {
   ColorRoute: typeof ColorRoute
   ListBuilderRoute: typeof ListBuilderRoute
   ListManagerRoute: typeof ListManagerRoute
+  ConfigureIndexRoute: typeof ConfigureIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -83,6 +99,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/configure/': {
+      id: '/configure/'
+      path: '/configure'
+      fullPath: '/configure'
+      preLoaderRoute: typeof ConfigureIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/list/manager': {
@@ -107,6 +130,7 @@ const rootRouteChildren: RootRouteChildren = {
   ColorRoute: ColorRoute,
   ListBuilderRoute: ListBuilderRoute,
   ListManagerRoute: ListManagerRoute,
+  ConfigureIndexRoute: ConfigureIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

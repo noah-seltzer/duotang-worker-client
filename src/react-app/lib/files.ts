@@ -1,8 +1,10 @@
+import { replaceSpaceWithUnderscore } from '@/lib/string'
 import { DEFAULT_DOCUMENT_TYPE } from '../data/document-list'
-import { CachedFile } from '@/types/CachedFile'
+import { CachedFile, ExportFile } from '@/types/CachedFile'
 import type { ClientInfo } from '@/types/ClientInfo'
 import type { DocumentType } from '@/types/DocumentRowType'
 import { ListRow } from '@/types/ListRow'
+import localforage from 'localforage'
 
 export const DEFAULT_LASTNAME = 'LastName'
 export const DEFAULT_FIRSTNAME = 'FirstName'
@@ -32,7 +34,9 @@ export const createFileName = (
     const { fileLabel, label } = row.docType
 
     return `${index + 1}${subIndexChar}_${
-        fileLabel || label
+        !!fileLabel
+            ? replaceSpaceWithUnderscore(fileLabel)
+            : replaceSpaceWithUnderscore(label)
     }_${maradString}${clientFullName}.${ext}`
 }
 
@@ -48,4 +52,32 @@ export const getDocumentRowType = (
     return (
         items.find((docType) => docType.slug === slug) || DEFAULT_DOCUMENT_TYPE
     )
+}
+
+export async function getFileBinariesFromRows(
+    rows: ListRow[],
+    cachedFiles: CachedFile[]
+) {
+    const files: ExportFile[] = []
+    const rowsWithFiles = rows.filter((row) => row.fileIds.length > 0)
+    for (let i = 0; i < rowsWithFiles.length; i++) {
+        const row = rows[i]
+        const ids = row.fileIds
+        const newFiles = await Promise.all(
+            ids.map(async (id) => {
+                const file = cachedFiles.find(
+                    (file) => file.id === id
+                ) as CachedFile
+                const fileBinary = (await localforage.getItem(id)) as File
+                return {
+                    ...file,
+                    file: fileBinary,
+                    row
+                }
+            })
+        )
+        files.push(...newFiles)
+    }
+
+    return files
 }

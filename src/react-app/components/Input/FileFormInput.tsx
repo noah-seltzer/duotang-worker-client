@@ -1,3 +1,4 @@
+import { ChangeEvent, useState } from 'react'
 import { useMsal } from '@azure/msal-react'
 import { IPublicClientApplication } from '@azure/msal-browser'
 import {
@@ -5,15 +6,14 @@ import {
     Trigger as DialogTrigger,
     Portal as DialogPortal
 } from '@radix-ui/react-dialog'
-import { OneDriveIcon } from '../Icon/OneDriveIcon'
-import { Picker } from '../OneDrive/Picker'
-import { Login } from '../Auth/Login'
+import { OneDriveIcon } from '@/components/Icon/OneDriveIcon'
+import { Picker } from '@/components/OneDrive/Picker'
+import { Login } from '@/components/Auth/Login'
 import type { OneDrivePickedFileResult } from '@/types/OneDrivePickedFileResult'
 import { fileDownloadRequest } from '@/data/auth-config'
-import { FileInput } from './FileInput'
-import { ChangeEvent, useState } from 'react'
+import { FileInput } from '@/components/Input/FileInput'
 import { Button } from '@/components/Skeleton/Button'
-import { FileDetailsList } from '../Files/Filedetails'
+import { FileDetailsList } from '@/components/Files/Filedetails'
 interface FileFormInputProps {
     onChange?: (files: FileList | null) => void
     onSaved: (fileIds: FileInput[]) => void

@@ -1,13 +1,16 @@
 import JSZip from 'jszip'
 import { saveAs } from 'file-saver'
 
-import localforage from 'localforage'
-import { createClientNameString, createFileName } from './files'
+import {
+    getFileBinariesFromRows,
+    createClientNameString,
+    createFileName
+} from './files'
 import { ListRow } from '@/types/ListRow'
 import { ClientInfo } from '@/types/ClientInfo'
 import { CachedFile } from '@/types/CachedFile'
 
-interface ExportFileData {
+export interface ExportFileData {
     name: string
     file: File
 }
@@ -15,31 +18,31 @@ interface ExportFileData {
 export const exportFiles = async (
     rows: ListRow[],
     cachedFiles: CachedFile[],
-    clientInfo: ClientInfo,
+    clientInfo: ClientInfo
 ) => {
     const clientFullName = createClientNameString(clientInfo)
-    const files: ExportFileData[] = []
+
     const rowsWithFiles = rows.filter((row) => row.fileIds.length > 0)
-    for (let i = 0; i < rowsWithFiles.length; i++) {
-        const row = rows[i]
-        const ids = row.fileIds
-        const newFiles = await Promise.all(
-            ids.map(async (id) => {
-                const file = cachedFiles.find((file) => file.id === id) as CachedFile
-                const fileBinary = (await localforage.getItem(id)) as File
-                const name = createFileName(row, clientInfo, file, i)
-                return {
-                    file: fileBinary,
-                    name
-                }
-            })
-        )
-        files.push(...newFiles)
-    }
+    const rowsWithFileBinaries = await getFileBinariesFromRows(
+        rowsWithFiles,
+        cachedFiles
+    )
+
+    const namedFiles = rowsWithFileBinaries.map((file) => {
+        return {
+            ...file,
+            name: createFileName(
+                file.row,
+                clientInfo,
+                file,
+                rows.indexOf(file.row)
+            )
+        }
+    })
 
     const zip = new JSZip()
 
-    for (const file of files) {
+    for (const file of namedFiles) {
         zip.file(file.name, file.file)
     }
 

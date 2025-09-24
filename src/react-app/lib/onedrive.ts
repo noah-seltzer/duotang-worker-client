@@ -38,7 +38,7 @@ export async function getToken(
 }
 
 /**
- * Combines an arbitrary set of paths ensuring and normalizes the slashes
+ * Combines an arbitrary set of paths, normalizing the slashes
  *
  * @param paths 0 to n path parts to combine
  */

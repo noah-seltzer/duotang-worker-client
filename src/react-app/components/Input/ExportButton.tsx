@@ -1,17 +1,23 @@
-import { selectAllFiles, selectAllRows } from '@/store/fileListSlice'
+import { selectAllFiles, selectListRows } from '@/store/fileListSlice'
 
 import { useAppSelector } from '@/store'
 import {
     selectClientById,
-    selectCurrentClientId
+    selectCurrentClientId,
+    selectDocumentListById
 } from '@/store/clientInfoSlice'
 import { Button } from '@/components/Skeleton/Button'
 import { exportFiles } from '@/lib/export'
 
-interface ExportButtonProps extends React.ComponentProps<'button'> {}
+interface ExportButtonProps extends React.ComponentProps<'button'> {
+    documentId: string
+}
 
-export function ExportButton(props: ExportButtonProps) {
-    const rows = useAppSelector(selectAllRows)
+export function ExportButton({ documentId, ...props }: ExportButtonProps) {
+    const list = useAppSelector((state) =>
+        selectDocumentListById(state, documentId)
+    )
+    const rows = useAppSelector((state) => selectListRows(state, list.id))
     const cachedFiles = useAppSelector(selectAllFiles)
     const currentClientId = useAppSelector(selectCurrentClientId)
 

@@ -50,8 +50,8 @@ export function Header() {
                     <Link className='[&.active]:font-bold' to='/list/builder'>
                         List Builder
                     </Link>
-                    <Link className='[&.active]:font-bold' to='/list/manager'>
-                        List Manager
+                    <Link className='[&.active]:font-bold' to='/configure'>
+                        Configure Onedrive
                     </Link>
                 </div>
             </nav>

@@ -2,22 +2,21 @@ import { createAsyncThunk, nanoid } from '@reduxjs/toolkit'
 import localforage from 'localforage'
 import { CachedFile, CachedFileInput } from '@/types/CachedFile'
 import { ListRow } from '@/types/ListRow'
-import { RootState } from '.'
-import { selectRowsByIds } from './fileListSlice'
+import { RootState } from '..'
+import { selectRowsByIds } from '../fileListSlice'
 
 export const addFilesToRow = createAsyncThunk<CachedFile[], CachedFileInput[]>(
     'fileRow/addFileCacheStatus',
     async (files) => {
         return Promise.all(
             files.map(async (file) => {
-                const { rowId, isMarad, name } = file
-                const newFile: CachedFile = {
-                    id: nanoid(),
-                    name,
-                    isMarad,
-                    rowId
+                const id = nanoid()
+                await localforage.setItem(id, file.file)
+                const newFile = {
+                    ...file,
+                    id,
+                    file: undefined
                 }
-                await localforage.setItem(newFile.id, file.file)
                 return newFile
             })
         )

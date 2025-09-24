@@ -1,6 +1,6 @@
 import { useAppDispatch, useAppSelector } from '../store'
 import { selectDocumentListById, updateList } from '../store/clientInfoSlice'
-import { deleteRows } from '../store/fileListThunks'
+import { deleteRows } from '../store/thunks/fileList'
 
 export function useListState(listId: string) {
     const dispatch = useAppDispatch()

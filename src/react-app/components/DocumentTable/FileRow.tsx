@@ -18,17 +18,12 @@ import {
 } from '@/components/Skeleton/DropdownMenu'
 import { FormFileDropZone } from '@/components/Form/FormFileDropZone'
 import { ChangeEvent } from 'react'
-import { addFilesToRow, updateFileAsync } from '@/store/fileListThunks'
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger
-} from '@/components/Skeleton/Popover'
-import { NewFilePreview } from '@/components/Files/NewFilePreview'
+import { addFilesToRow, updateFileAsync } from '@/store/thunks/fileList'
 import { FilePreview } from '@/components/Files/FilePreview'
 import { selectCurrentClient } from '@/store/clientInfoSlice'
 import { ClientInfo } from '@/types/ClientInfo'
 import { selectListById } from '@/store/listBuilderSlice'
+import { FileOnedriveSyncStatus } from '@/types/CachedFile'
 export interface FileRowProps {
     index: number
     rowId: string
@@ -61,8 +56,10 @@ export function FileRow({ rowId }: FileRowProps) {
             file: newFile,
             name: newFile.name,
             isMarad,
-            rowId
+            rowId,
+            oneDriveSyncStatus: 'unsynced' as FileOnedriveSyncStatus
         }
+        console.log('input', input)
         dispatch(addFilesToRow([input]))
     }
 
@@ -87,9 +84,7 @@ export function FileRow({ rowId }: FileRowProps) {
     const otherFiles = fileIds.filter((id) => id !== rowFile?.id)
 
     return (
-        <TableRow
-            disableHover={false}
-        >
+        <TableRow disableHover={false}>
             {/* Status */}
             <TableCell>
                 <Badge variant={isComplete ? 'secondary' : 'destructive'}>
@@ -105,21 +100,6 @@ export function FileRow({ rowId }: FileRowProps) {
                         dispatch(updateFileRow({ ...row, docType: value }))
                     }}
                 />
-            </TableCell>
-            <TableCell>
-                {rowFile && (
-                    <Popover>
-                        <PopoverTrigger>Show Files</PopoverTrigger>
-                        <PopoverContent className='w-fit'>
-                            <NewFilePreview fileId={rowFile.id} />
-                            {otherFiles.map((id) => (
-                                <div className='flex flex-col gap-2'>
-                                    <NewFilePreview fileId={id} />
-                                </div>
-                            ))}
-                        </PopoverContent>
-                    </Popover>
-                )}
             </TableCell>
 
             {/* Add File */}

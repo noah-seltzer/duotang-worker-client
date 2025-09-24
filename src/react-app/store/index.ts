@@ -24,8 +24,11 @@ import clientInfoSlice from '@/store/clientInfoSlice'
 import documentListSlice from '@/store/savedListSlice'
 import listBuilderSlice from '@/store/listBuilderSlice'
 import appearanceSlice from '@/store/appearanceSlice'
+import { MASLApi } from '@/store/api/msal/api'
+import { setupListeners } from '@reduxjs/toolkit/query'
 
 const rootReducer = combineReducers({
+    [MASLApi.reducerPath]: MASLApi.reducer,
     fileList: fileListSlice,
     clientInfo: clientInfoSlice,
     documentList: documentListSlice,
@@ -53,9 +56,9 @@ const middlewareOptions = {
 export const store = configureStore({
     reducer: persistedReducer,
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware(middlewareOptions).prepend(
-            listenerMiddlewareInstance.middleware
-        )
+        getDefaultMiddleware(middlewareOptions)
+            .prepend(listenerMiddlewareInstance.middleware)
+            .concat(MASLApi.middleware)
 })
 
 export const persistor = persistStore(store)
@@ -77,3 +80,5 @@ export const addAppListener = addListener as AppAddListener
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
 export const useAppDispatch = useDispatch.withTypes<AppDispatch>()
 export const useAppSelector = useSelector.withTypes<RootState>()
+
+setupListeners(store.dispatch)

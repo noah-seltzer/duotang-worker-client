@@ -4,4 +4,5 @@ export interface ListRow {
     docType: DocumentType
     fileIds: string[]
     listId: string
+    oneDriveFolderId?: string
 }

@@ -51,12 +51,6 @@ export function FormFileDropZone({
                         )}
                     </div>
                     {children}
-                    {/* {fileName && (
-                        <div className='flex flex-row justify-start items-center'>
-                            <FileIcon />
-                            <p className='pl-1 text-underline'>{fileName}</p>
-                        </div>
-                    )} */}
                 </div>
             </div>
         </>

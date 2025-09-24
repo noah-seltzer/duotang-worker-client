@@ -47,18 +47,18 @@ if (!rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement)
     root.render(
         <StrictMode>
-            <Provider store={store}>
-                <PersistGate loading={null} persistor={persistor}>
-                    <MsalProvider instance={msalInstance}>
+            <MsalProvider instance={msalInstance}>
+                <Provider store={store}>
+                    <PersistGate loading={null} persistor={persistor}>
                         <ThemeProvider
                             defaultTheme='system'
                             storageKey='duotang-theme'
                         >
                             <RouterProvider router={router} />
                         </ThemeProvider>
-                    </MsalProvider>
-                </PersistGate>
-            </Provider>
+                    </PersistGate>
+                </Provider>
+            </MsalProvider>
         </StrictMode>
     )
 }

@@ -13,14 +13,16 @@ import {
     deleteFilesFromRow,
     deleteRows,
     updateFileAsync
-} from './fileListThunks'
+} from './thunks/fileList'
 import { DocumentType } from '@/types/DocumentRowType'
 import { RootState } from '.'
 import { ListRow } from '@/types/ListRow'
 import { updateOneEntity } from './actionHelpers'
+import { selectDocumentListById } from '@/store/clientInfoSlice'
 
 export interface FileListState {
     loadingState: LOADING_STATE
+    onedriveSyncFolder?: OneDriveFolder | undefined
     rows: EntityState<ListRow, string>
     files: EntityState<CachedFile, string>
 }
@@ -42,18 +44,38 @@ export const createBlankRow = (listId: string, typeSlug?: string): ListRow => {
     }
 }
 
+export interface OneDriveFolder {
+    id: string
+    name: string
+    webUrl: string
+    webDavUrl: string
+    '@sharePoint.embedUrl': string
+    '@sharePoint.endpoint': string
+    '@sharePoint.listUrl': string
+}
+
 const initialState: FileListState = {
     rows: rowEntity.getInitialState(),
     files: fileEntity.getInitialState(),
-    loadingState: IDLE
+    loadingState: IDLE,
+    onedriveSyncFolder: undefined
 }
 
 const fileListSlice = createSlice({
     name: 'fileRow',
     initialState,
     reducers: {
+        setOneDriveSyncFolder: (
+            state,
+            action: PayloadAction<OneDriveFolder>
+        ) => {
+            state.onedriveSyncFolder = action.payload
+        },
         addRow: (state, action: PayloadAction<ListRow>) => {
             rowEntity.addOne(state.rows, action.payload)
+        },
+        updateFile: (state, action: PayloadAction<CachedFile>) => {
+            updateOneEntity(fileEntity, state.files, action.payload)
         },
         updateFileRow: (state, action: PayloadAction<ListRow>) => {
             updateOneEntity(rowEntity, state.rows, action.payload)
@@ -124,6 +146,10 @@ export const selectRowById = (state: RootState, id: string) =>
     rowSelectors.selectById(state, id)
 export const selectRowIds = (state: RootState) => rowSelectors.selectIds(state)
 export const selectAllRows = (state: RootState) => rowSelectors.selectAll(state)
+export const selectListRows = (state: RootState, listId: string) => {
+    const list = selectDocumentListById(state, listId)
+    return list.rows.map((id) => state.fileList.rows.entities[id])
+}
 export const selectRowsByIds = (state: RootState, ids: string[]) =>
     ids.map((id) => state.fileList.rows.entities[id])
 
@@ -134,6 +160,11 @@ export const selectFileIds = (state: RootState) =>
 export const selectAllFiles = (state: RootState) =>
     fileSelectors.selectAll(state)
 
-export const { updateFileRow, addRow } = fileListSlice.actions
+export const selectOneDriveFolder = (state: RootState) => {
+    return state.fileList.onedriveSyncFolder
+}
+
+export const { setOneDriveSyncFolder, updateFileRow, addRow, updateFile } =
+    fileListSlice.actions
 
 export default fileListSlice.reducer

@@ -6,7 +6,7 @@ import {
 } from '@/components/Skeleton/FloatingModal'
 import { FormHeading } from '@/components/Form/FormHeading'
 import { FileFormInput, FileInput } from '@/components/Input/FileFormInput'
-import { addFilesToRow } from '@/store/fileListThunks'
+import { addFilesToRow } from '@/store/thunks/fileList'
 import { useAppDispatch, useAppSelector } from '@/store'
 import { selectRowById } from '@/store/fileListSlice'
 import { Button } from '@/components/Skeleton/Button'

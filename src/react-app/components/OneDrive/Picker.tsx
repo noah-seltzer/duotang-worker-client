@@ -3,26 +3,14 @@ import { combine, getToken } from '@/lib/onedrive'
 import { useMsal } from '@azure/msal-react'
 import type { IPublicClientApplication } from '@azure/msal-browser'
 import { v4 as uuidv4 } from 'uuid'
-
-const channelId = uuidv4()
-
-const options = {
-    sdk: '8.0',
-    entry: {
-        oneDrive: {}
-    },
-    authentication: {},
-    messaging: {
-        origin: window.location.origin,
-        channelId: channelId
-    }
-}
+import { PickerSchema } from '@/components/OneDrive/types'
 
 const baseUrl =
     import.meta.env.VITE_HORIZON_SHAREPOINT_URL || 'https://onedrive.live.com'
 
 async function createOneDriveWindow(
     instance: IPublicClientApplication,
+    options: any,
     iframeDocument: Document,
     onClose: (command: any) => void = () => {},
     onPick: (command: any) => Promise<void> = async () => {}
@@ -213,11 +201,43 @@ async function createOneDriveWindow(
     form.submit()
 }
 
-export function Picker({
-    onPick
-}: {
+interface PickerProps {
     onPick: (command: any) => Promise<void>
-}) {
+    mode?: 'file' | 'folder'
+    multiple?: boolean
+}
+
+export function Picker({
+    onPick,
+    mode = 'file',
+    multiple = true
+}: PickerProps) {
+    const options: PickerSchema = {
+        sdk: '8.0',
+        entry: {
+            oneDrive: {}
+        },
+        authentication: {},
+        messaging: {
+            origin: window.location.origin,
+            channelId: uuidv4()
+        },
+        selection: {},
+        typesAndSources: {}
+    }
+
+    if (mode === 'folder') {
+        options.typesAndSources = {
+            mode: 'folders'
+        }
+    }
+
+    if (multiple === false) {
+        options.selection = {
+            mode: 'single'
+        }
+    }
+
     const iframeRef = useRef<HTMLIFrameElement>(null)
     const { instance } = useMsal()
 
@@ -241,6 +261,7 @@ export function Picker({
         if (contentWindow) {
             createOneDriveWindow(
                 instance,
+                options,
                 contentWindow.document,
                 onClose,
                 pick
