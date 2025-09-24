@@ -1,8 +1,8 @@
 import { useMsal } from '@azure/msal-react'
 import { loginRequest } from '@/data/auth-config.ts'
-import { PropsWithChildren } from 'react'
+import { Button } from '@/components/Skeleton/Button'
 
-export function Login({ children }: PropsWithChildren) {
+export function Login() {
     const { instance } = useMsal()
 
     const handleLogin = () => {
@@ -11,5 +11,9 @@ export function Login({ children }: PropsWithChildren) {
         })
     }
 
-    return <span onClick={handleLogin}>{children}</span>
+    return (
+        <Button variant='naked' onClick={handleLogin}>
+            Login
+        </Button>
+    )
 }

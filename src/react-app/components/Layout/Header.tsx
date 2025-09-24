@@ -1,9 +1,9 @@
 'use client'
 import { Logo } from '../Files/Logo'
-import { Login } from '../Auth/Login'
 import { useMsal } from '@azure/msal-react'
 import { ThemeSwitcher } from '../Theme/ThemeSwitcher'
 import { Link } from '@tanstack/react-router'
+import { LoginOutButtons } from '@/components/Auth/LoginOutButtons'
 
 export function Header() {
     const { instance } = useMsal()
@@ -29,21 +29,8 @@ export function Header() {
                     </button>
                 </div> */}
                 {/* Desktop Nav */}
-                <div className='hidden lg:flex lg:flex-1 lg:justify-end lg:gap-6'>
+                <div className='hidden lg:flex lg:flex-1 lg:justify-end lg:gap-6 items-center'>
                     <ThemeSwitcher />
-                    {!isLoggedIn && (
-                        <div>
-                            <Login>
-                                <a
-                                    href='#'
-                                    className='text-sm/6 font-semibold text-sidebar-foreground'
-                                >
-                                    Log in{' '}
-                                    <span aria-hidden='true'>&rarr;</span>
-                                </a>
-                            </Login>
-                        </div>
-                    )}
                     <Link className='[&.active]:font-bold' to='/'>
                         Home
                     </Link>
@@ -53,6 +40,7 @@ export function Header() {
                     <Link className='[&.active]:font-bold' to='/configure'>
                         Configure Onedrive
                     </Link>
+                    <LoginOutButtons />
                 </div>
             </nav>
             {/* <Dialog

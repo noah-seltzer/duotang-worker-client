@@ -9,9 +9,6 @@ export function DocumentManagementPage() {
 
     return (
         <>
-            <div className='flex justify-left gap-2 mb-2'>
-                <LoginOutButtons />
-            </div>
             {currentClientId && (
                 <ClientTableList currentClientId={currentClientId} />
             )}

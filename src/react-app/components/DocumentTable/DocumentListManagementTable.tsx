@@ -154,7 +154,6 @@ export function DocumentListManagementTable({
                                             onClick={() =>
                                                 startFileSync(folder)
                                             }
-                                            size='sm'
                                         >
                                             <OneDriveIcon className='stroke-primary-foreground size-5' />
                                             Sync to Onedrive
