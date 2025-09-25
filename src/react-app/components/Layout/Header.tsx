@@ -6,8 +6,6 @@ import { Link } from '@tanstack/react-router'
 import { LoginOutButtons } from '@/components/Auth/LoginOutButtons'
 
 export function Header() {
-    const { instance } = useMsal()
-
     return (
         <header className='bg-sidebar'>
             <nav
