@@ -87,7 +87,7 @@ export const MSALFiles = MASLApi.injectEndpoints({
                                             i
                                         )
                                         const response = await fetch(
-                                            `https://graph.microsoft.com/v1.0/me/drive/items/${folder.id}:/${name}:/content`,
+                                            `https://graph.microsoft.com/v1.0/me/drive/items/${clientFolderId}:/${name}:/content`,
                                             {
                                                 method: 'PUT',
                                                 body: content,
