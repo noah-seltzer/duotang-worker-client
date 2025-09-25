@@ -130,7 +130,7 @@ export function DocumentListManagementTable({
                                     {!folder && !isLoading && (
                                         <Dialog>
                                             <DialogTrigger asChild={true}>
-                                                <Button size='sm'>
+                                                <Button>
                                                     <OneDriveIcon className='stroke-primary-foreground size-5' />
                                                     Select Onedrive Folder to
                                                     sync
