@@ -1,6 +1,5 @@
 'use client'
 import { Logo } from '../Files/Logo'
-import { useMsal } from '@azure/msal-react'
 import { ThemeSwitcher } from '../Theme/ThemeSwitcher'
 import { Link } from '@tanstack/react-router'
 import { LoginOutButtons } from '@/components/Auth/LoginOutButtons'
