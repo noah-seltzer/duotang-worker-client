@@ -8,7 +8,6 @@ import { LoginOutButtons } from '@/components/Auth/LoginOutButtons'
 export function Header() {
     const { instance } = useMsal()
 
-    const isLoggedIn = instance.getAllAccounts().length > 0
     return (
         <header className='bg-sidebar'>
             <nav

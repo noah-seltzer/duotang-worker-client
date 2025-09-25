@@ -113,12 +113,11 @@ export function FileFormInput({ onSaved, onCancel }: FileFormInputProps) {
                         </DialogRoot>
                     </>
                 ) : (
-                    <Login>
-                        <Button className='flex flex-row items-center gap-2'>
-                            <OneDriveIcon className='stroke-primary-foreground size-5' />
-                            Login to select from Onedrive
-                        </Button>
-                    </Login>
+                    // <Button className='flex flex-row items-center gap-2'>
+                    //         <OneDriveIcon className='stroke-primary-foreground size-5' />
+                    //         Login to select from Onedrive
+                    //     </Button>
+                    <Login></Login>
                 )}
             </div>
             <FileDetailsList
