@@ -70,7 +70,7 @@ function FileLoader({
                         <Badge variant='secondary' className='px-0.5 py-0'>
                             {oneDriveSyncStatus === 'unsynced' && (
                                 <>
-                                    <LoaderIcon />
+                                    <LoaderIcon className='size-4' />
                                     Unsynced
                                 </>
                             )}
