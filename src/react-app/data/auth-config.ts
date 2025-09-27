@@ -65,7 +65,7 @@ export const loginRequest = {
 }
 
 export const fileDownloadRequest = {
-    scopes: msalConfig
+    scopes: MSALScopes
 }
 
 /**

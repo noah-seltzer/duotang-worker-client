@@ -1,7 +1,7 @@
 import { useAppSelector } from '@/store'
 import { MSALScopes } from '@/store/api/msal/headers'
 import { useMsal } from '@azure/msal-react'
-import { use, useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 export function useMsGraph() {
     const { instance } = useMsal()

@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery, retry } from '@reduxjs/toolkit/query/react'
-import { prepareHeaders } from '@/store/api/msal/headers'
+// import { prepareHeaders } from '@/store/api/msal/headers'
 
 export const tagTypes = ['OneDriveFiles']
 

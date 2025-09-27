@@ -21,28 +21,28 @@ import {
 
 export const MSALFiles = MASLApi.injectEndpoints({
     endpoints: (builder) => ({
-        getEmails: builder.query<any, { token: string }>({
-            async queryFn(_arg, { dispatch, getState }, _extraOptions) {
-                    const headers = {
-                        Authorization: `Bearer ${_arg.token}`,
-                        'Content-Type': 'application/json'
-                    }
-                    const querystring = {
-                        $top: '100',
-                        $select: 'subject,receivedDateTime,from,isRead',
-                        $orderby: 'receivedDateTime desc'   
-                    }
-                    const url = `https://graph.microsoft.com/v1.0/me/messages?${querystring}`
-                    try {
+        // getEmails: builder.query<any, { token: string }>({
+        //     async queryFn(_arg, { dispatch, getState }, _extraOptions) {
+        //             const headers = {
+        //                 Authorization: `Bearer ${_arg.token}`,
+        //                 'Content-Type': 'application/json'
+        //             }
+        //             const querystring = {
+        //                 $top: '100',
+        //                 $select: 'subject,receivedDateTime,from,isRead',
+        //                 $orderby: 'receivedDateTime desc'
+        //             }
+        //             const url = `https://graph.microsoft.com/v1.0/me/messages?${querystring}`
+        //             try {
 
-                        const response = await getRequest(url, headers, querystring)
-                        console.log(response)
-                    } catch (e) {
-                        console.log(e)
-                    }
-                    
-            },
-        }),
+        //                 const response = await getRequest(url, headers, querystring)
+        //                 console.log(response)
+        //             } catch (e) {
+        //                 console.log(e)
+        //             }
+
+        //     },
+        // }),
         getFileContentByID: builder.query<void, { id: string }>({
             query: ({ id }) => `/me/drive/items/${id}/content`
         }),
@@ -138,5 +138,5 @@ export const MSALFiles = MASLApi.injectEndpoints({
     })
 })
 
-export const { useGetFileContentByIDQuery, useUploadFileToFolderMutation, useGetEmailsQuery, useLazyGetEmailsQuery } =
+export const { useGetFileContentByIDQuery, useUploadFileToFolderMutation } =
     MSALFiles
