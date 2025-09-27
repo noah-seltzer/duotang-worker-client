@@ -12,6 +12,7 @@ export interface CachedFile {
     rowId: string
     oneDriveSyncStatus?: FileOnedriveSyncStatus
     oneDriveFolderId?: string
+    oneDriveItemId?: string
 }
 
 export interface ExportFile extends CachedFile {

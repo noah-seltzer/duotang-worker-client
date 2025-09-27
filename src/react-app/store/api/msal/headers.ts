@@ -7,7 +7,8 @@ export const MSALScopes = [
     'Files.Read.All',
     'Files.ReadWrite.All',
     'Sites.Read.All',
-    'Sites.ReadWrite.All'
+    'Sites.ReadWrite.All',
+    'User.Read'
 ]
 
 export const prepareHeaders = async (headers: Headers) => {

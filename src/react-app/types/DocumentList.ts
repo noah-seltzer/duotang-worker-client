@@ -1,8 +1,9 @@
 export interface DocumentList {
-    name: string,
+    name: string
     rows: string[]
     clientId: string
     id: string
+    oneDriveFolderId?: string | undefined
 }
 
-export type DocumentListInput = Omit<DocumentList, 'id'>
+export type DocumentListInput = Omit<DocumentList, 'id' | 'oneDriveFolderId'>

@@ -3,6 +3,7 @@
  * Licensed under the MIT License.
  */
 
+import { MSALScopes } from '@/store/api/msal/headers'
 import {
     LogLevel,
     type Configuration as MSALConfirguration
@@ -60,18 +61,11 @@ export const msalConfig: MSALConfirguration = {
  * https://docs.microsoft.com/en-us/azure/active-directory/develop/v2-permissions-and-consent#openid-connect-scopes
  */
 export const loginRequest = {
-    scopes: ['User.Read']
+    scopes: MSALScopes
 }
 
 export const fileDownloadRequest = {
-    scopes: [
-        'Files.Read',
-        'Files.ReadWrite',
-        'Files.Read.All',
-        'Files.ReadWrite.All',
-        'Sites.Read.All',
-        'Sites.ReadWrite.All'
-    ]
+    scopes: msalConfig
 }
 
 /**

@@ -67,7 +67,7 @@ const fileListSlice = createSlice({
     reducers: {
         setOneDriveSyncFolder: (
             state,
-            action: PayloadAction<OneDriveFolder>
+            action: PayloadAction<OneDriveFolder | undefined>
         ) => {
             state.onedriveSyncFolder = action.payload
         },

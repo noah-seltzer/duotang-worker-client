@@ -74,6 +74,9 @@ const clientInfoSlice = createSlice({
         updateClient: (state, action: PayloadAction<ClientInfo>) => {
             updateOneEntity(clientInfoEntity, state.clients, action.payload)
         },
+        updateDocumentList: (state, action: PayloadAction<DocumentList>) => {
+            updateOneEntity(documentListEntity, state.lists, action.payload)
+        },
         addClient: (state, action: PayloadAction<ClientInfoInput>) => {
             const newClient = {
                 ...action.payload,
@@ -126,7 +129,8 @@ export const {
     addClient,
     updateClient,
     addList,
-    updateList
+    updateList,
+    updateDocumentList
 } = clientInfoSlice.actions
 
 export type ClientInfoSlice = {

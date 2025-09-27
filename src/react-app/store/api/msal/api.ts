@@ -5,8 +5,8 @@ export const tagTypes = ['OneDriveFiles']
 
 const baseQuery = retry(
     fetchBaseQuery({
-        baseUrl: 'https://graph.microsoft.com/v1.0',
-        prepareHeaders
+        baseUrl: 'https://graph.microsoft.com/v1.0'
+        // prepareHeaders
     }),
     { maxRetries: 0 }
 )

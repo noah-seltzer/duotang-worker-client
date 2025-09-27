@@ -1,8 +1,8 @@
 import { useMsal } from '@azure/msal-react'
 import { loginRequest } from '@/data/auth-config.ts'
-import { Button } from '@/components/Skeleton/Button'
+import { Button, ButtonProps } from '@/components/Skeleton/Button'
 
-export function Login() {
+export function Login({ variant = 'naked', ...props }: ButtonProps) {
     const { instance } = useMsal()
 
     const handleLogin = () => {
@@ -12,7 +12,7 @@ export function Login() {
     }
 
     return (
-        <Button variant='naked' onClick={handleLogin}>
+        <Button variant={variant} {...props} onClick={handleLogin}>
             Login
         </Button>
     )
